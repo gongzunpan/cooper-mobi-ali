@@ -3,7 +3,7 @@
 //  Cooper
 //
 //  Created by sunleepy on 12-6-29.
-//  Copyright (c) 2012年 codesharp. All rights reserved.
+//  Copyright (c) 2012年 alibaba. All rights reserved.
 //
 
 #import "AppDelegate.h"
@@ -27,9 +27,9 @@
     NSManagedObjectContext *c = [self managedObjectContext];
     
 #ifdef CODESHARP_VERSION
-    NSLog(@"当前版本: codesharp");
+    NSLog(@"当前版本: alibaba");
 #else
-    NSLog(@"当前版本: not codesharp");
+    NSLog(@"当前版本: not alibaba");
 #endif
     
     if([[Constant instance] path] == nil)
