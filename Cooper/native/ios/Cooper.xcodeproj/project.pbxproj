@@ -59,8 +59,11 @@
 		18409FA715C196BD00639DEE /* incomplete-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 18409FA315C196BD00639DEE /* incomplete-small.png */; };
 		18409FA815C196BD00639DEE /* setting-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 18409FA415C196BD00639DEE /* setting-small.png */; };
 		18409FAC15C199D700639DEE /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 18409FAB15C199D700639DEE /* Test.m */; };
+<<<<<<< HEAD
 		1842238E15C924AB003C674F /* AliConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1842238D15C924AB003C674F /* AliConstant.m */; };
 		1842239815C92B8B003C674F /* DomainLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1842239715C92B8B003C674F /* DomainLabel.m */; };
+=======
+>>>>>>> cooper-mobi/master
 		184223A515C962D1003C674F /* ChangeLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 184223A415C962D1003C674F /* ChangeLog.m */; };
 		184223A915C962D3003C674F /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = 184223A815C962D2003C674F /* Task.m */; };
 		184223AC15C962D3003C674F /* TaskIdx.m in Sources */ = {isa = PBXBuildFile; fileRef = 184223AB15C962D3003C674F /* TaskIdx.m */; };
@@ -224,12 +227,15 @@
 		18409FAA15C199D700639DEE /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Test.h; path = Util/Test.h; sourceTree = "<group>"; };
 		18409FAB15C199D700639DEE /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Test.m; path = Util/Test.m; sourceTree = "<group>"; };
 		1842238B15C923A7003C674F /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		1842238C15C924AB003C674F /* AliConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AliConstant.h; path = AliExtensions/AliConstant.h; sourceTree = "<group>"; };
 		1842238D15C924AB003C674F /* AliConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AliConstant.m; path = AliExtensions/AliConstant.m; sourceTree = "<group>"; };
 		1842239615C92B8B003C674F /* DomainLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DomainLabel.h; path = AliExtensions/Controls/DomainLabel.h; sourceTree = "<group>"; };
 		1842239715C92B8B003C674F /* DomainLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DomainLabel.m; path = AliExtensions/Controls/DomainLabel.m; sourceTree = "<group>"; };
 		1842239915C9353E003C674F /* Cooper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Cooper-Info.plist"; path = "AliExtensions/Cooper-Info.plist"; sourceTree = "<group>"; };
 		1842239A15C9353E003C674F /* Cooper-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Cooper-Prefix.pch"; path = "AliExtensions/Cooper-Prefix.pch"; sourceTree = "<group>"; };
+=======
+>>>>>>> cooper-mobi/master
 		184223A315C962D1003C674F /* ChangeLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChangeLog.h; path = Models/ChangeLog.h; sourceTree = "<group>"; };
 		184223A415C962D1003C674F /* ChangeLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChangeLog.m; path = Models/ChangeLog.m; sourceTree = "<group>"; };
 		184223A715C962D2003C674F /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Task.h; path = Models/Task.h; sourceTree = "<group>"; };
@@ -394,6 +400,7 @@
 			name = TableViews;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
 		1842238515C9234D003C674F /* AliExtensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -423,6 +430,8 @@
 			name = Controls;
 			sourceTree = "<group>";
 		};
+=======
+>>>>>>> cooper-mobi/master
 		1872E82415C2676000A8EA41 /* TasklistViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1017,8 +1026,11 @@
 				18970C4E15C773340072A719 /* InputPickerButton.m in Sources */,
 				1838AAE115C7E090003EC484 /* CustomTableView.m in Sources */,
 				181DD88315C80F3300FB2ED5 /* BodyTextView.m in Sources */,
+<<<<<<< HEAD
 				1842238E15C924AB003C674F /* AliConstant.m in Sources */,
 				1842239815C92B8B003C674F /* DomainLabel.m in Sources */,
+=======
+>>>>>>> cooper-mobi/master
 				184223A515C962D1003C674F /* ChangeLog.m in Sources */,
 				184223A915C962D3003C674F /* Task.m in Sources */,
 				184223AC15C962D3003C674F /* TaskIdx.m in Sources */,

@@ -8,7 +8,13 @@
 
 #import "BaseViewController.h"
 #import "CustomButton.h"
+<<<<<<< HEAD
 #import "DomainLabel.h"
+=======
+#ifdef __ALI_VERSION__
+#import "DomainLabel.h"
+#endif
+>>>>>>> cooper-mobi/master
 #import "TaskDao.h"
 #import "TaskIdxDao.h"
 #import "ChangeLogDao.h"

@@ -6,7 +6,11 @@
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
+<<<<<<< HEAD
 @interface CustomButton : UIButton
+=======
+@interface CustomButton : UIButton 
+>>>>>>> cooper-mobi/master
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage*)image;
 
