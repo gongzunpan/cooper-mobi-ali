@@ -3,18 +3,15 @@
 //  Cooper
 //
 //  Created by Ping Li on 12-7-24.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "TaskDetailEditViewController.h"
 
-@class TaskDao;
-@class TaskIdxDao;
-@class ChangeLogDao;
-
-@interface TaskDetailViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, CommentTextFieldDelegate>
+@interface TaskDetailViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, CommentTextFieldDelegate, TaskViewDelegate, DateLabelDelegate, PriorityButtonDelegate>
 {
     UITableView *detailView;
+    UIView *footerView;
     
     UIScrollView *scrollView;
     

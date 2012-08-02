@@ -3,14 +3,10 @@
 //  Cooper
 //
 //  Created by Ping Li on 12-7-26.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "TaskDetailEditViewController.h"
-
-@interface TaskDetailEditViewController ()
-
-@end
 
 @implementation TaskDetailEditViewController
 
@@ -108,6 +104,8 @@
 
 - (void)goBack:(id)sender
 {
+    [delegate loadTaskData];
+    
     if(self.task == nil)
         [self.navigationController dismissModalViewControllerAnimated:YES];
     else {
@@ -134,13 +132,14 @@
                   status:[Tools BOOLToNSNumber:self.currentIsCompleted] 
                 priority:self.currentPriority 
                   taskid:id
-                 dueDate:self.currentDueDate
+                 dueDate:self.currentDueDate 
+                editable:[NSNumber numberWithInt:1]
               tasklistId:currentTasklistId
                 isCommit:NO];
         
         [taskIdxDao addTaskIdx:id 
                          byKey:self.currentPriority 
-                    tasklistId:self.currentTasklistId 
+                    tasklistId:currentTasklistId 
                       isCommit:NO];
         
         //insert changelog
@@ -222,7 +221,7 @@
     
     [self goBack:nil];
     //[self.navigationController dismissModalViewControllerAnimated:YES];
-    //[delegate loadTaskData];
+    ;
 }
 
 - (void)viewDidLoad
@@ -289,7 +288,7 @@
                 cell.textLabel.text = @"状态:";
                 [cell.textLabel setTextColor:[UIColor grayColor]];[cell.textLabel setFont:[UIFont boldSystemFontOfSize:16]];
                 
-                statusButton = [[CustomButton alloc] initWithFrame:CGRectZero image:[UIImage imageNamed:@"btn_bg_green.png"]];
+                statusButton = [[CustomButton alloc] initWithFrame:CGRectZero image:[UIImage imageNamed:@"btn_bg_gray.png"]];
                 statusButton.userInteractionEnabled = YES;
                 
                 [statusButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -306,7 +305,7 @@
             }
             
             CGSize size = CGSizeMake(320,10000);
-            CGSize labelsize = [statusButton.titleLabel.text sizeWithFont:[statusButton font] constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
+            CGSize labelsize = [statusButton.titleLabel.text sizeWithFont:statusButton.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
             [statusButton setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
             [cell.contentView addSubview:statusButton];
         }
@@ -345,7 +344,7 @@
             }
             
             CGSize size = CGSizeMake(320,10000);
-            CGSize labelsize = [dueDateLabel.titleLabel.text sizeWithFont:[dueDateLabel font] constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
+            CGSize labelsize = [dueDateLabel.titleLabel.text sizeWithFont:dueDateLabel.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
             [dueDateLabel setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
             [cell.contentView addSubview:dueDateLabel];
         }
@@ -376,7 +375,7 @@
             }
             
             CGSize size = CGSizeMake(320,10000);
-            CGSize labelsize = [priorityButton.titleLabel.text sizeWithFont:[priorityButton font] constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
+            CGSize labelsize = [priorityButton.titleLabel.text sizeWithFont:priorityButton.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
             [priorityButton setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
             [cell.contentView addSubview:priorityButton];
         }
@@ -481,7 +480,7 @@
     }
     
     CGSize size = CGSizeMake(320,10000);
-    CGSize labelsize = [dueDateLabel.titleLabel.text sizeWithFont:[dueDateLabel font] constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
+    CGSize labelsize = [dueDateLabel.titleLabel.text sizeWithFont:dueDateLabel.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
     [dueDateLabel setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
 }
 
@@ -504,11 +503,12 @@
                          isCommit:NO];
         
         [taskDao commitData];
-        //[delegate loadTaskData];
+        
+        [delegate loadTaskData];
     }
     
     CGSize size = CGSizeMake(320,10000);
-    CGSize labelsize = [priorityButton.titleLabel.text sizeWithFont:[priorityButton font] constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
+    CGSize labelsize = [priorityButton.titleLabel.text sizeWithFont:priorityButton.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
     [priorityButton setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
     
     
@@ -562,11 +562,11 @@
         
         [taskDao commitData];
         
-        //[delegate loadTaskData];
+        [delegate loadTaskData];
     }
     
     CGSize size = CGSizeMake(320,10000);
-    CGSize labelsize = [statusButton.titleLabel.text sizeWithFont:[statusButton font] constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
+    CGSize labelsize = [statusButton.titleLabel.text sizeWithFont:statusButton.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
     [statusButton setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)]; 
 }
 

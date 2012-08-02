@@ -3,7 +3,7 @@
 //  Cooper
 //
 //  Created by sunleepy on 12-7-8.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "Tools.h"
@@ -17,7 +17,8 @@
 
 + (NSNumber*) BOOLToNSNumber:(BOOL)input
 {
-    return [NSNumber numberWithBool:input];
+    return [NSNumber numberWithInt:input ? 1 : 0];
+    //return [NSNumber numberWithBool:input];
 }
 
 + (NSString*) NSDateToNSString:(NSDate*)input
@@ -27,7 +28,7 @@
     //dateFormatter.dateStyle = NSDateFormatterMediumStyle;
     [dateFormatter setDateFormat:@"yyyy-M-dd HH:mm:ss"];
     
-    NSDate *date = [dateFormatter stringFromDate:input];
+    NSString* date = [dateFormatter stringFromDate:input];
     
     [dateFormatter release];
     
@@ -39,7 +40,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-M-dd"];
     
-    NSDate *date = [dateFormatter stringFromDate:input];
+    NSString *date = [dateFormatter stringFromDate:input];
     
     [dateFormatter release];
     
@@ -51,7 +52,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-M-dd HH:mm:ss"];
     
-    NSData *date = [dateFormatter dateFromString:input];
+    NSDate *date = [dateFormatter dateFromString:input];
     
     [dateFormatter release];
     
@@ -63,7 +64,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-M-dd"];
     
-    NSData *date = [dateFormatter dateFromString:input];
+    NSDate *date = [dateFormatter dateFromString:input];
     
     [dateFormatter release];
     
@@ -124,6 +125,23 @@
 + (BOOL)isPad
 {
     return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+}
+
++ (void)layerTransition:(UIView *)view from:(NSString*)from
+{
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.3;
+    transition.type = kCATransitionPush;
+    transition.subtype = [from isEqualToString:@"left"] ? kCATransitionFromLeft : kCATransitionFromRight;
+    [view.layer addAnimation:transition forKey:kCATransition];
+}
+
++ (void)clearFootBlank:(UITableView *)tableView
+{
+    UIView *footer =
+    [[UIView alloc] initWithFrame:CGRectZero];
+    tableView.tableFooterView = footer;
+    [footer release];
 }
 
 @end

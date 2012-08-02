@@ -3,13 +3,15 @@
 //  Cooper
 //
 //  Created by sunleepy on 12-7-6.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 #import "RootDao.h"
 #import "TaskIdx.h"
 
 @interface TaskIdxDao : RootDao
-
+{
+    NSString* tableName;
+}
 - (NSMutableArray*)getAllTaskIdx:(NSString*)tasklistId;
 
 - (TaskIdx*)getTaskIdxByKey:(NSString*)key 
@@ -36,12 +38,12 @@
 
 - (void)deleteAllTaskIdx:(NSString*)tasklistId;
 
-- (void)adjustIndex:(NSString*)taskId 
-      sourceTaskIdx:(TaskIdx*)sTaskIdx 
- destinationTaskIdx:(TaskIdx*) dTaskIdx 
-     indexSourceRow:(NSNumber*)sourceIndexRow 
-       destIndexRow:(NSNumber*)destIndexRow 
-         tasklistId:(NSString*)tasklistId;
+- (void) adjustIndex:(NSString *)taskId 
+       sourceTaskIdx:(TaskIdx *)sTaskIdx 
+  destinationTaskIdx:(TaskIdx *)dTaskIdx 
+      sourceIndexRow:(NSNumber*)sourceIndexRow 
+        destIndexRow:(NSNumber*)destIndexRow
+          tasklistId:(NSString*)tasklistId;
 
 - (void)saveIndex:(TaskIdx*)taskIdx 
          newIndex:(NSMutableArray*)indexArray 

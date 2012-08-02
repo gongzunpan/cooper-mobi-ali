@@ -1,14 +1,14 @@
 //
-//  PriorityButton.m
+//  DomainLabel.m
 //  Cooper
 //
-//  Created by Ping Li on 12-7-26.
+//  Created by Ping Li on 12-7-25.
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
-#import "PriorityButton.h"
+#import "DomainLabel.h"
 
-@implementation PriorityButton
+@implementation DomainLabel
 
 @synthesize picker;
 @synthesize values;
@@ -17,11 +17,14 @@
 - (id)initWithFrame:(CGRect)frame
 {
     values = [[NSMutableArray array] retain];
-    [values addObject:PRIORITY_TITLE_1];
-    [values addObject:PRIORITY_TITLE_2];
-    [values addObject:PRIORITY_TITLE_3];
+#ifdef __ALI_VERSION__
+    [values addObject:DEFAULT_DOMAIN];
+#endif
+    [values addObject:@"ALIPAY"];
+    [values addObject:@"HZ"];
+    [values addObject:@"SP"];
     
-    self = [super initWithFrame:frame image:[UIImage imageNamed:@"btn_bg_green.png"]];
+    self = [super initWithFrame:frame];
     if (self) {
 		[self initalizeInputView];
         self.picker.delegate = self;
@@ -72,25 +75,25 @@
 
 - (BOOL)becomeFirstResponder {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        CGSize pickerSize = [self.picker sizeThatFits:CGSizeZero];
-        CGRect frame = self.picker.frame;
-        frame.size = pickerSize;
-        self.picker.frame = frame;
-        popoverController.popoverContentSize = pickerSize;
-        //TODO:...
-        [popoverController presentPopoverFromRect:self.frame inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        // resign the current first responder
-        for (UIView *subview in self.superview.subviews) {
-            if ([subview isFirstResponder]) {
-                [subview resignFirstResponder];
-            }
-        }
-        return NO;
-    } else {
-        [self.picker setNeedsLayout];
-    }
+    	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    		CGSize pickerSize = [self.picker sizeThatFits:CGSizeZero];
+    		CGRect frame = self.picker.frame;
+    		frame.size = pickerSize;
+    		self.picker.frame = frame;
+    		popoverController.popoverContentSize = pickerSize;
+            //TODO:...
+    		[popoverController presentPopoverFromRect:self.frame inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    		// resign the current first responder
+    		for (UIView *subview in self.superview.subviews) {
+    			if ([subview isFirstResponder]) {
+    				[subview resignFirstResponder];
+    			}
+    		}
+    		return NO;
+    	} else {
+    		[self.picker setNeedsLayout];
+    	}
 	return [super becomeFirstResponder];
 }
 
@@ -125,6 +128,7 @@
 
 //- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 //{
+//    NSLog(@"setSelected");
 //    [super setSelected:selected animated:animated];
 //	if (selected) {
 //		[self becomeFirstResponder];

@@ -3,7 +3,7 @@
 //  Cooper
 //
 //  Created by Ping Li on 12-7-26.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #include "Task.h"
@@ -14,12 +14,11 @@
 #import "TaskViewDelegate.h"
 #import "BaseViewController.h"
 #import "BodyTextView.h"
+#import "TaskDao.h"
+#import "TaskIdxDao.h"
+#import "ChangeLogDao.h"
 
-@class TaskDao;
-@class TaskIdxDao;
-@class ChangeLogDao;
-
-@interface TaskDetailEditViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,UITextViewDelegate,UITextFieldDelegate>
+@interface TaskDetailEditViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,UITextViewDelegate,UITextFieldDelegate,DateLabelDelegate,PriorityButtonDelegate>
 {
     UITableView *detailView;
      NSString *oldPriority;

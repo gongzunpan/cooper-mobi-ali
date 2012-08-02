@@ -3,7 +3,7 @@
 //  Cooper
 //
 //  Created by sunleepy on 12-7-12.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "PathViewController.h"
@@ -28,7 +28,8 @@
 {
     [super viewDidLoad];
 
-    CustomButton *saveTaskBtn = [[[CustomButton alloc] initWithFrame:CGRectMake(5,5,50,30) image:[UIImage imageNamed:@"btn_center.png"]] autorelease];
+    CustomButton *saveTaskBtn = [[[CustomButton alloc] initWithFrame:CGRectMake(5,5,50,30) 
+                                                               image:[UIImage imageNamed:@"btn_center.png"]] autorelease];
     saveTaskBtn.layer.cornerRadius = 6.0f;
     [saveTaskBtn.layer setMasksToBounds:YES];
     [saveTaskBtn addTarget:self action:@selector(saveSetting:) forControlEvents:UIControlEventTouchUpInside];
@@ -106,8 +107,8 @@
                 cell.accessoryView = textField;
             }
             
-            UITextField *currentTextField = [cell accessoryView];
-            currentTextField.text = [[Constant instance] path];
+            UITextField *currentTextField = (UITextField*)cell.accessoryView;
+            currentTextField.text = [[ConstantClass instance] rootPath];
         }
     }
     
@@ -169,7 +170,7 @@
 
 - (void)saveSetting:(id)sender
 {
-    UITableView *tv = self.view;
+    UITableView *tv = self.tableView;
     UITableViewCell *cell = [tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     UITextField *textPath = (UITextField *)cell.accessoryView;
  
@@ -178,9 +179,9 @@
         [Tools alert:@"请填写同步路径"];
         return;
     }
-    [[Constant instance] setPath:textPath.text];
+    [[ConstantClass instance] setRootPath:textPath.text];
     
-    [Constant savePathToCache];
+    [ConstantClass savePathToCache];
     
     [Tools alert:@"保存成功"];
     

@@ -2,8 +2,8 @@
 //  Tasklist.m
 //  Cooper
 //
-//  Created by sunleepy on 12-7-29.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Created by sunleepy on 12-8-1.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "Tasklist.h"
@@ -11,7 +11,9 @@
 
 @implementation Tasklist
 
+@dynamic accountId;
 @dynamic createTime;
+@dynamic editable;
 @dynamic extensions;
 @dynamic id;
 @dynamic listType;

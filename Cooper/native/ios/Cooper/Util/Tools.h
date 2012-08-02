@@ -3,7 +3,7 @@
 //  Cooper
 //
 //  Created by sunleepy on 12-7-8.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "MBProgressHUD.h"
@@ -37,5 +37,9 @@
 + (NSString*)stringWithUUID;
 
 + (BOOL)isPad;
+
++ (void)layerTransition:(UIView*)view from:(NSString*)from;
+
++ (void)clearFootBlank:(UITableView*)tableView;
 
 @end

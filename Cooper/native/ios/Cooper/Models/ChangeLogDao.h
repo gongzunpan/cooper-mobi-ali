@@ -3,14 +3,16 @@
 //  Cooper
 //
 //  Created by sunleepy on 12-7-9.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "ChangeLog.h"
 #import "RootDao.h"
 
 @interface ChangeLogDao : RootDao
-
+{
+    NSString* tableName;
+}
 - (NSMutableArray*)getAllChangeLog:(NSString*)tasklistId;
 
 - (void)insertChangeLog:(NSNumber*)type 

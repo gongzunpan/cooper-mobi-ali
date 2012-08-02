@@ -3,7 +3,7 @@
 //  Cooper
 //
 //  Created by sunleepy on 12-7-31.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "BodyTextView.h"
@@ -90,6 +90,8 @@
 	//[tableView deselectRowAtIndexPath:[tableView indexPathForCell:self] animated:YES];
     [textField resignFirstResponder];
     [super resignFirstResponder];
+    
+    return YES;
 }
 
 //- (UIView *)inputView
@@ -106,13 +108,13 @@
     return YES;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-	if (selected) {
-		[self becomeFirstResponder];
-	}
-}
+//- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+//{
+//    [super setSelected:selected animated:animated];
+//	if (selected) {
+//		[self becomeFirstResponder];
+//	}
+//}
 
 - (BOOL)hasText {
     return YES;

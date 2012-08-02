@@ -3,17 +3,17 @@
 //  Cooper
 //
 //  Created by sunleepy on 12-7-31.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
 @interface BodyTextView : UITextView
 {
-    UIToolbar *inputAccessoryView;
+    UIView *inputAccessoryView;
     
     UITextField *textField;
 }
-@property (nonatomic, strong) UIPickerView *picker;
+//@property (nonatomic, strong) UIPickerView *picker;
 
 @end

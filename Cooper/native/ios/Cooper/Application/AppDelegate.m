@@ -3,55 +3,44 @@
 //  Cooper
 //
 //  Created by sunleepy on 12-6-29.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "AppDelegate.h"
 #import "Task.h"
-
-@class TaskDao;
+#import "TaskDao.h"
 
 @implementation AppDelegate
 
 @synthesize window;
 @synthesize mainViewController;
 @synthesize timer;
+@synthesize managedObjectModel;
+@synthesize managedObjectContext;
+@synthesize persistantStoreCoordiantor;
 
-#pragma mark - application life cycle
+#pragma mark - 应用程序生命周期
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    //load from cache to get user info
-    [Constant loadFromCache]; 
+    [ConstantClass loadFromCache]; 
     
-    NSManagedObjectContext *c = [self managedObjectContext];
+    //TODO:为了能够初始化刷新数据库产生的延迟
+    [self managedObjectContext];
     
-#ifdef CODESHARP_VERSION
-    NSLog(@"当前版本: alibaba");
-#else
-    NSLog(@"当前版本: not alibaba");
-#endif
-    
-    if([[Constant instance] path] == nil)
+    if([[ConstantClass instance] rootPath] == nil)
     {
-        [[Constant instance] setPath:[[[SysConfig instance] keyValue] objectForKey: @"env_path"]];
-        [Constant savePathToCache];
+        [[ConstantClass instance] setRootPath:[[[SysConfig instance] keyValue] objectForKey: @"env_path"]];
+        [ConstantClass savePathToCache];
     }
+    
+    NSLog(@"当前网络根路径: %@",[[ConstantClass instance] rootPath]);
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     [self.window setBackgroundColor:[UIColor whiteColor]];
     
-    //the controller of first load page
     self.mainViewController = [[[MainViewController alloc] init] autorelease];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.mainViewController];
-//    if (MODEL_VERSION >= 5.0) {
-//        [navController.navigationBar setBackgroundImage:[UIImage imageNamed:NAVIGATIONBAR_BG_IMAGE] forBarMetrics:UIBarMetricsDefault];
-//    }
-//    else {
-//        UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:NAVIGATIONBAR_BG_IMAGE]] autorelease];
-//        [imageView setFrame:CGRectMake(0, 0, 320, 44)];
-//        [navController.navigationBar insertSubview:imageView atIndex:0];
-//    }
 
     self.window.rootViewController = navController;
     
@@ -68,7 +57,6 @@
 //    
 //    NSLog(@"version:%@", label);
     
-    //init timer
 //    self.timer = [NSTimer scheduledTimerWithTimeInterval:TIMER_INTERVAL target:self selector:@selector(handleTimer:) userInfo:nil repeats:YES];
 //    [self.timer fire];
     //NSSetUncaughtExceptionHandler(handleRootException);
@@ -90,7 +78,7 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     NSLog(@"进入后台运行程序");
-    //[Constant saveToCache];
+    [ConstantClass saveToCache];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -101,10 +89,8 @@
 {
     NSLog(@"重新激活程序");
     
-    if([[Constant instance] isLocalPush])
-    {
+    if([[ConstantClass instance] isLocalPush])
         [self localPush];
-    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -158,12 +144,13 @@
     int interval = LOCALPUSH_TIME;
     interval = (9 * 60 * 60 + 9 * 60 + 0);
     
-    NSDate *fireDate = [[NSDate alloc] initWithTimeInterval: interval sinceDate:today];
+    NSDate *fireDate = [[NSDate alloc] initWithTimeInterval:interval 
+                                                  sinceDate:today];
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
     if(localNotification == nil)
     {
         NSLog(@"localNotification创建为空");
-        return nil;
+        return;
     }
     localNotification.fireDate = fireDate;
     localNotification.timeZone = [NSTimeZone defaultTimeZone];

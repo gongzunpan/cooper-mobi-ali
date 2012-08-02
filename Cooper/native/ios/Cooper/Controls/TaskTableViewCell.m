@@ -3,7 +3,7 @@
 //  Cooper
 //
 //  Created by Ping Li on 12-7-23.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "TaskTableViewCell.h"
@@ -93,6 +93,10 @@
 
 - (void)setCompletedAction:(id)sender
 {
+    if(task.editable == [NSNumber numberWithInt:0])
+    {
+        return;
+    }
     if([[task.status stringValue] isEqualToString:@"1"])
     {
         UIButton *button = statusButton;
@@ -105,22 +109,24 @@
         task.status = [NSNumber numberWithInt:1];  
     }
     
-    [changeLogDao insertChangeLog:[NSNumber numberWithInt:0] dataid:task.id name:@"iscompleted" value:task.status == [NSNumber numberWithInt:1] ? @"true" : @"false" tasklistId:task.tasklistId];
+    [changeLogDao insertChangeLog:[NSNumber numberWithInt:0] 
+                           dataid:task.id 
+                             name:@"iscompleted" 
+                            value:task.status == [NSNumber numberWithInt:1] ? @"true" : @"false" 
+                       tasklistId:task.tasklistId];
     
     
     [taskDao commitData];
 }
 
-- (void)setTaskInfo:(Task *)task
+- (void)setTaskInfo:(Task *)taskInfo
 {
-    self.task = task;
+    self.task = taskInfo;
     taskDao = [[TaskDao alloc] init];
     changeLogDao = [[ChangeLogDao alloc] init];
     
-    NSLog(@"task.status:%@", [task.status stringValue]);
     if([[task.status stringValue] isEqualToString:@"1"])
     {
-        NSLog(@"complete");
         [statusButton setBackgroundImage:[UIImage imageNamed:@"complete-small.png"] forState:UIControlStateNormal];
     }
     else {
@@ -148,7 +154,12 @@
     CGFloat bodyLabelHeight = bodyLabelSize.height;
     
     int bodylines = bodyLabelHeight / 16;
-    [bodyLabel setFrame:CGRectMake(50, PADDING + subjectLabelHeight, CONTENT_WIDTH, bodyLabelHeight)];
+    
+    if(bodylines > 3)
+    {
+        bodylines = 3;
+    }
+    [bodyLabel setFrame:CGRectMake(50, PADDING + subjectLabelHeight, CONTENT_WIDTH, bodylines * 16)];
     [bodyLabel setNumberOfLines:bodylines];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -161,10 +172,10 @@
     
     CGFloat totalHeight;
     
-    if(subjectLabelHeight == 0 && bodyLabelHeight == 0)
+    if(subjectLabelHeight == 0 && bodylines * 16 == 0)
         totalHeight = 50;
     else
-        totalHeight = subjectLabelHeight + bodyLabelHeight + PADDING * 2;
+        totalHeight = subjectLabelHeight + bodylines * 16 + PADDING * 2;
     
     if(totalHeight < 50)
         totalHeight = 50;

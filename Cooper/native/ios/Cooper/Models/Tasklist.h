@@ -2,8 +2,8 @@
 //  Tasklist.h
 //  Cooper
 //
-//  Created by sunleepy on 12-7-29.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Created by sunleepy on 12-8-1.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -12,7 +12,9 @@
 
 @interface Tasklist : NSManagedObject
 
+@property (nonatomic, retain) NSString * accountId;
 @property (nonatomic, retain) NSDate * createTime;
+@property (nonatomic, retain) NSNumber * editable;
 @property (nonatomic, retain) NSString * extensions;
 @property (nonatomic, retain) NSString * id;
 @property (nonatomic, retain) NSString * listType;

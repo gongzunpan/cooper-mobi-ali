@@ -3,7 +3,7 @@
 //  Cooper
 //
 //  Created by sunleepy on 12-7-6.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "TaskService.h"
@@ -11,6 +11,9 @@
 #import "TaskIdx.h"
 #import "SBJsonParser.h"
 #import "SBJsonWriter.h"
+#import "TaskDao.h"
+#import "TaskIdxDao.h"
+#import "ChangeLogDao.h"
 
 @implementation TaskService
 
@@ -21,7 +24,7 @@
 
 + (void)getTasks:(NSString*)tasklistId delegate:(id)delegate 
 {
-    NSString *url = [[[Constant instance] path] stringByAppendingFormat:TASK_URL_GETBYPRIORITY];
+    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:TASK_URL_GETBYPRIORITY];
     NSLog(@"获取按优先级任务数据URL:%@", url);
     
     NSMutableDictionary *data = [NSMutableDictionary dictionary];
@@ -86,7 +89,7 @@
     [data setObject:taskIdxsJson forKey:@"sorts"];
     
     
-    NSString *url = [[[Constant instance] path] stringByAppendingFormat:TASK_URL_SYNC];
+    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:TASK_URL_SYNC];
     NSLog(@"同步数据路径:%@", url);
     [NetworkManager doAsynchronousPostRequest:url Delegate:delegate data:data WithInfo:nil addHeaders:nil];
 }

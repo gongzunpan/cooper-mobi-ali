@@ -3,14 +3,13 @@
 //  Cooper
 //
 //  Created by Ping Li on 12-7-23.
-//  Copyright (c) 2012年 alibaba. All rights reserved.
+//  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
 #import "Task.h"
-
-@class TaskDao;
-@class TaskIdxDao;
-@class ChangeLogDao;
+#import "TaskDao.h"
+#import "TaskIdxDao.h"
+#import "ChangeLogDao.h"
 
 @protocol TaskTableViewCellDelegate <NSObject>
 
