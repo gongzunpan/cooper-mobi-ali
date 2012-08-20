@@ -111,46 +111,60 @@ public class CooperPlugin extends Plugin {
 					else
 					{
 						//登录
+						String domain = (String)params.get("domain"); //ALI域账号
 						String username = (String)params.get("username");
 						String password = (String)params.get("password");
-						HttpResponse response = this._accountService.login(username, password);
+						HttpResponse response;
+						if(Tools.isNullOrEmpty(domain)) {
+							response = this._accountService.login(username, password);
+						}
+						else {
+							response = this._accountService.login(domain, username, password);
+						}
+						
+						//TODO:目前这样处理
 						if(response.getStatusLine().getStatusCode() == 200)
 						{
 							//取得返回的字符串  
 			                String result = EntityUtils.toString(response.getEntity());    
 			                Log.v("CooperMsg", "登录response返回字符串: " + result);
-			                   
-			                //写入缓存
-							Editor editor = this._sharedPrefs.edit();
-							//将cookie写入SharePrefs
-			                CookieStore cookieStore = this._accountService.getHttpClient().getCookieStore();
-			                List<Cookie> cookies = cookieStore.getCookies();
-			                if(cookies != null)
-			                {
-			                    for(Cookie cookie : cookies)
-			                    {
-			                    	Date expiryDate = cookie.getExpiryDate();
-			                    	//TODO:...
-//			                    	String expiryDateString = Tools.toShortDateString(expiryDate);
-			                    	SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			                    	String expiryDateString = dataFormat.format(expiryDate);
-			                        String cookieString = cookie.getName() + ";" 
-			                        		+ cookie.getValue() + ";" 
-			                        		+ cookie.getDomain() + ";"
-			                        		+ expiryDateString + ";"
-			                        		+ cookie.getPath() + ";"
-			                        		+ cookie.getComment() + ";"
-			                        		+ cookie.getCommentURL() + ";"
-			                        		+ cookie.getVersion();                        
-			                        editor.putString(cookie.getDomain(), cookieString);
-			                    }
-			                }
-							editor.putString(Constant.USERNAME_KEY, username);
-							editor.putBoolean(Constant.ISGUESTUSER_KEY, false);
-							editor.commit();
+			                
+			                if(result.indexOf("window.opener.loginSuccess") >= 0) {
+			                	//写入缓存
+								Editor editor = this._sharedPrefs.edit();
+								//将cookie写入SharePrefs
+				                CookieStore cookieStore = this._accountService.getHttpClient().getCookieStore();
+				                List<Cookie> cookies = cookieStore.getCookies();
+				                if(cookies != null)
+				                {
+				                    for(Cookie cookie : cookies)
+				                    {
+				                    	Date expiryDate = cookie.getExpiryDate();
+				                    	//TODO:...
+//				                    	String expiryDateString = Tools.toShortDateString(expiryDate);
+				                    	SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				                    	String expiryDateString = dataFormat.format(expiryDate);
+				                        String cookieString = cookie.getName() + ";" 
+				                        		+ cookie.getValue() + ";" 
+				                        		+ cookie.getDomain() + ";"
+				                        		+ expiryDateString + ";"
+				                        		+ cookie.getPath() + ";"
+				                        		+ cookie.getComment() + ";"
+				                        		+ cookie.getCommentURL() + ";"
+				                        		+ cookie.getVersion();                        
+				                        editor.putString(cookie.getDomain(), cookieString);
+				                    }
+				                }
+								editor.putString(Constant.USERNAME_KEY, username);
+								editor.putBoolean(Constant.ISGUESTUSER_KEY, false);
+								editor.commit();
 
-							resultCode.put("status", true);
-							resultCode.put("data", true);
+								resultCode.put("status", true);
+								resultCode.put("data", true);
+			                }
+			                else {
+			                	this.putResultCodeFailed(resultCode, response);	
+			                }    
 						}
 						else //TODO:statusCode:400
 						{		

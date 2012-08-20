@@ -236,7 +236,7 @@ function callIfNetworkAvailable(fn) {
     });
 }
 //用户登录
-function login(userName, password, type, callback) {
+function login(domain, userName, password, type, callback) {
     if (callback == null) {
         return;
     }
@@ -245,7 +245,7 @@ function login(userName, password, type, callback) {
             callIfNetworkAvailable(function() {
                 callNativeAPI(
                     native_refreshUrl,
-                    { key: 'Login', username: userName, password: password, type: type },
+                    { key: 'Login', domain: domain, username: userName, password: password, type: type },
                     function (result) {
                         callback(result);
                     }

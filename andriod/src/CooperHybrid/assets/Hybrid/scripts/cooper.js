@@ -468,8 +468,10 @@
 
     //登录页面:“确定”按钮事件响应
     $(document).delegate("#loginPage #loginButton", "click", function () {
+		var domain = $('#domain').val();
         var userName = $("#username").val();
         var password = $("#password").val();
+	
         if (isNullOrEmpty(userName)) {
             alert(lang.usernameCannotEmpty);
             return;
@@ -479,7 +481,7 @@
             return;
         }
 		showLoading("登录中...");
-        login(userName, password, "normal", function (result) {
+        login(domain, userName, password, "normal", function (result) {
             if (!result.status) {
                 alert(result.message);
             }

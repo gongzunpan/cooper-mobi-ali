@@ -28,11 +28,13 @@ public class Constant {
 	public static final String ISGUESTUSER_KEY = "isguestuser";
 	
 	//ServiceÂ·¾¶
-	public static final String DOMAIN = "cooper.apphb.com";
-	public static final String ROOTURL = "https://" + DOMAIN;
-//	public static final String DOMAIN = "debug.incooper.net";
-//	public static final String ROOTURL = "http://" + DOMAIN;
-	public static final String LOGIN_URL = ROOTURL + "/Account/Login";
+//	public static final String DOMAIN = "cooper.wf.taobao.org";
+//	public static final String ROOTURL = "https://" + DOMAIN;
+//	public static final String DOMAIN = "cooper.apphb.com";
+//	public static final String ROOTURL = "https://" + DOMAIN;
+	public static final String DOMAIN = "debug.incooper.net";
+	public static final String ROOTURL = "http://" + DOMAIN;
+	public static final String LOGIN_URL = ROOTURL + "/Account/ArkLogin";
 	public static final String LOGOUT_URL = ROOTURL + "/Account/logout";
 	public static final String GETTASKLISTS_URL = ROOTURL + "/Personal/GetTaskFolders";
 	public static final String TASK_GETBYPRIORITY_URL = ROOTURL + "/Personal/GetByPriority";
