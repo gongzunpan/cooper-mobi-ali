@@ -1,0 +1,12 @@
+//
+// Prefix header for all source files of the 'CooperGap' target in the 'CooperGap' project
+//
+
+#import "Util.h"
+
+#import "CooperCore/Constant.h"
+
+typedef Constant ConstantClass;
+
+//默认登录入口
+#define LOGIN_URL                       @"/account/login"
