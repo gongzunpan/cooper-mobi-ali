@@ -76,6 +76,22 @@ public class TasklistService {
 		this._requestManager = new RequestManager(this._activity);
 	}
 	
+	public HttpResponse syncTasklist(String name, String type) throws JSONException, ClientProtocolException, IOException {
+		
+		HttpPost request = new HttpPost(Constant.TASKLIST_SYNC_URL);
+		List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		postParameters.add(new BasicNameValuePair("name", name));
+		postParameters.add(new BasicNameValuePair("type", type));
+
+		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
+		request.setEntity(formEntity);
+
+		this._httpClient = this._requestManager.getHttpClient();
+		
+		HttpResponse response = this._httpClient.execute(request);
+		return response;
+	}
+	
 	public HttpResponse syncTasklists(String tasklistId)  throws JSONException, ClientProtocolException, IOException  {
 		Tasklist tasklist = this._repository.getTasklistById(tasklistId);
 		

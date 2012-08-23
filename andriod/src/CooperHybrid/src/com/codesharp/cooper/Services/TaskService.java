@@ -83,7 +83,7 @@ public class TaskService {
 		
 		String changeLogsJson = changeLogsArray.toString();
 		//TODO:暂不处理排序功能
-		String taskIdxsJson = "";
+		String taskIdxsJson = "[]";
 		
 		Log.v(Constant.MESSAGE_TAG, "changeLogsJson: " + changeLogsJson);
 		Log.v(Constant.MESSAGE_TAG, "taskIdxsJson: " + taskIdxsJson);

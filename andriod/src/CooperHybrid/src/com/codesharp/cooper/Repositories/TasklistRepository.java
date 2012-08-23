@@ -166,4 +166,19 @@ public class TasklistRepository {
 		
 		this._tasklistDao.updateInTx(tasklists);
 	}
+
+	public void adjustWithNewId(String oldId, String newId) {
+		
+		Tasklist tasklist = null;
+		List<Tasklist> tasklists = null;
+		tasklists = this._tasklistDao.queryBuilder()
+				.where(TasklistDao.Properties.TasklistId.eq(oldId))
+				.list();
+		if(tasklists.size() > 0)
+		{
+			tasklist = tasklists.get(0);
+			tasklist.setTasklistId(newId);
+		}
+		this._tasklistDao.update(tasklist);
+	}
 }

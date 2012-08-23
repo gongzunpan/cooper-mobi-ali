@@ -1,8 +1,5 @@
 package com.codesharp.cooper;
 
-import android.R.color;
-import android.os.Debug;
-
 public class Constant {
 	public static final String LOGIN = "Login";
 	public static final String LOGOUT = "Logout";
@@ -28,17 +25,18 @@ public class Constant {
 	public static final String ISGUESTUSER_KEY = "isguestuser";
 	
 	//Service路径
-//	public static final String DOMAIN = "cooper.wf.taobao.org";
-//	public static final String ROOTURL = "https://" + DOMAIN;
+	public static final String DOMAIN = "cooper.wf.taobao.org";
+	public static final String ROOTURL = "https://" + DOMAIN;
 //	public static final String DOMAIN = "cooper.apphb.com";
 //	public static final String ROOTURL = "https://" + DOMAIN;
-	public static final String DOMAIN = "debug.incooper.net";
-	public static final String ROOTURL = "http://" + DOMAIN;
+//	public static final String DOMAIN = "debug.incooper.net";
+//	public static final String ROOTURL = "http://" + DOMAIN;
 	public static final String LOGIN_URL = ROOTURL + "/Account/ArkLogin";
 	public static final String LOGOUT_URL = ROOTURL + "/Account/logout";
-	public static final String GETTASKLISTS_URL = ROOTURL + "/Personal/GetTaskFolders";
+	public static final String GETTASKLISTS_URL = ROOTURL + "/Personal/GetTasklists";
 	public static final String TASK_GETBYPRIORITY_URL = ROOTURL + "/Personal/GetByPriority";
-	public static final String TASKLISTS_SYNC_URL = ROOTURL + "/Personal/CreateTaskFolders";
+	public static final String TASKLISTS_SYNC_URL = ROOTURL + "/Personal/CreateTasklists";
+	public static final String TASKLIST_SYNC_URL = ROOTURL + "/Personal/CreateTasklist";
 	public static final String TASK_SYNC_URL = ROOTURL + "/Personal/Sync";
 	
 	public static final String PRIORITY_TITLE_1 = "尽快完成";

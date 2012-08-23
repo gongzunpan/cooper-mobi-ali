@@ -37,6 +37,7 @@
         android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale">
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="nosensor"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
