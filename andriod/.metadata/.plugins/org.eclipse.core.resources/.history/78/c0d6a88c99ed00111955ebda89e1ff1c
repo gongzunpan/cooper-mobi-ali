@@ -33,6 +33,25 @@ public class AccountService {
 		RequestManager requestManager = new RequestManager(this._activity);
 		this._httpClient = requestManager.getHttpClient();
 	}
+	
+	public HttpResponse login(String domain, String username, String password) throws ClientProtocolException, IOException {
+		HttpPost request = new HttpPost(Constant.LOGIN_URL);
+		List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		postParameters.add(new BasicNameValuePair("cbDomain", domain));
+		postParameters.add(new BasicNameValuePair("tbLoginName", username));
+		postParameters.add(new BasicNameValuePair("tbPassword", password));
+		postParameters.add(new BasicNameValuePair("state", "login"));
+		try {
+			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
+			request.setEntity(formEntity);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		request.addHeader("X-Requested-With", "xmlhttp");
+		
+		HttpResponse response = this._httpClient.execute(request);		
+		return response;
+	}
 
 	//µÇÂ¼
 	public HttpResponse login(String username, String password) throws ClientProtocolException, IOException {

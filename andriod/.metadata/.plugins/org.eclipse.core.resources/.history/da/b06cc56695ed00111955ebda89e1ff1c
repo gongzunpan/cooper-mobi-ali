@@ -73,12 +73,11 @@ public class RequestManager {
         schemeRegistry.register(new Scheme("https", new EasySSLSocketFactory(), 443));
  
         params = new BasicHttpParams();
-        
         params.setParameter(ConnManagerPNames.MAX_TOTAL_CONNECTIONS, 1);
         params.setParameter(ConnManagerPNames.MAX_CONNECTIONS_PER_ROUTE, new ConnPerRouteBean(1));
         params.setParameter(HttpProtocolParams.USE_EXPECT_CONTINUE, false);
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-        HttpProtocolParams.setContentCharset(params, "gb2312");
+        HttpProtocolParams.setContentCharset(params, "utf8");
  
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         

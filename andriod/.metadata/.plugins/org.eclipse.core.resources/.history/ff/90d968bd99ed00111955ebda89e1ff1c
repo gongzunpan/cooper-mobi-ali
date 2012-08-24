@@ -43,7 +43,7 @@ public class AccountService {
 		postParameters.add(new BasicNameValuePair("tbPassword", password));
 		postParameters.add(new BasicNameValuePair("state", "login"));
 		try {
-			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters, HTTP.UTF_8);
+			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
 			request.setEntity(formEntity);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

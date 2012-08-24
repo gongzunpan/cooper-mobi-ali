@@ -73,16 +73,15 @@ public class RequestManager {
         schemeRegistry.register(new Scheme("https", new EasySSLSocketFactory(), 443));
  
         params = new BasicHttpParams();
+        
         params.setParameter(ConnManagerPNames.MAX_TOTAL_CONNECTIONS, 1);
         params.setParameter(ConnManagerPNames.MAX_CONNECTIONS_PER_ROUTE, new ConnPerRouteBean(1));
         params.setParameter(HttpProtocolParams.USE_EXPECT_CONTINUE, false);
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-        HttpProtocolParams.setContentCharset(params, "utf8");
+        HttpProtocolParams.setContentCharset(params, "gbk");
  
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         
-//	        credentialsProvider.setCredentials(new AuthScope("cooper.apphb.com", AuthScope.ANY_PORT)
-//	        	, new UsernamePasswordCredentials("UserNameHere", "UserPasswordHere"));
         clientConnectionManager = new ThreadSafeClientConnManager(params, schemeRegistry);
  
         context = new BasicHttpContext();
@@ -91,7 +90,6 @@ public class RequestManager {
 	
 	public DefaultHttpClient getHttpClient()
 	{
-		
 		DefaultHttpClient httpClient = new DefaultHttpClient(clientConnectionManager, params);
 		
 		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this._activity.getApplicationContext());

@@ -12,7 +12,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,7 +96,7 @@ public class TaskService {
 		postParameters.add(new BasicNameValuePair("by", "ByPriority"));
 		postParameters.add(new BasicNameValuePair("sorts", taskIdxsJson));
 		try {
-			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters, HTTP.UTF_8);
+			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
 			request.setEntity(formEntity);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -115,7 +114,7 @@ public class TaskService {
 		List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		postParameters.add(new BasicNameValuePair("tasklistId", tasklistId));
 		try {
-			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters, HTTP.UTF_8);
+			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
 			request.setEntity(formEntity);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

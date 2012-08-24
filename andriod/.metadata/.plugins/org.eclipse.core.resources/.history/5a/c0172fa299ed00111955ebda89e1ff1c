@@ -21,7 +21,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -84,7 +83,7 @@ public class TasklistService {
 		postParameters.add(new BasicNameValuePair("name", name));
 		postParameters.add(new BasicNameValuePair("type", type));
 
-		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters, HTTP.UTF_8);
+		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
 		request.setEntity(formEntity);
 
 		this._httpClient = this._requestManager.getHttpClient();
@@ -109,7 +108,7 @@ public class TasklistService {
 		List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		postParameters.add(new BasicNameValuePair("data", tasklistsJson));
 
-		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters, HTTP.UTF_8);
+		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
 		request.setEntity(formEntity);
 
 		this._httpClient = this._requestManager.getHttpClient();
@@ -169,7 +168,7 @@ public class TasklistService {
 		List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		postParameters.add(new BasicNameValuePair("data", tasklistsJson));
 
-		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters, HTTP.UTF_8);
+		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
 		request.setEntity(formEntity);
 
 		this._httpClient = this._requestManager.getHttpClient();
