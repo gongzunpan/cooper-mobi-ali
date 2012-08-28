@@ -1,0 +1,10 @@
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\obj\Debug\ResolveAssemblyReference.cache
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Services.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Services.pdb
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Core.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Core.pdb
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.pdb
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Newtonsoft.Json.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Newtonsoft.Json.xml
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\MyToolkit.dll

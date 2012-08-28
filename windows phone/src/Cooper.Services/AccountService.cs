@@ -11,6 +11,8 @@ using System.Windows.Shapes;
 using Cooper.Core;
 using System.IO;
 using System.Collections.Generic;
+using MyToolkit.Networking;
+using System.Text;
 
 namespace Cooper.Services
 {
@@ -19,22 +21,37 @@ namespace Cooper.Services
         /// <summary>
         /// Ark登录
         /// </summary>
-        /// <param name="domain"></param>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
+        /// <param name="domain">域</param>
+        /// <param name="username">用户名</param>
+        /// <param name="password">密码</param>
         /// <param name="successCallback"></param>
         /// <param name="failCallback"></param>
         public void Login(string domain
             , string username
             , string password
-            , Action<string> successCallback
+            , Action<HttpWebResponse> successCallback
             , Action<Exception> failCallback)
         {
+            WebRequestWrapper.cookieContainer = null;
+
             var dict = new Dictionary<string, string>();
             dict.Add("cbDomain", domain);
             dict.Add("tbLoginName", username);
             dict.Add("tbPassword", password);
-            this.UploadString(Constant.LOGIN_URL, dict, successCallback, failCallback);
+            dict.Add("state", "login");
+
+            string loginServiceAddress = Constant.LOGIN_URL;
+
+            var text = string.Format("{{ \"cbDomain\": \"{0}\", \"tbLoginName\": \"{1}\", \"tbPassword\": \"{2}\", \"state\": \"login\"}}",
+                domain, username, password);
+
+            var request = new HttpPostRequest(loginServiceAddress);
+
+            request.RawData = Encoding.UTF8.GetBytes(text);
+            request.ContentType = "application/json";
+            Http.Post(request, AuthenticationCompleted);
+
+            //this.UploadString(Constant.LOGIN_URL, dict, successCallback, failCallback);
 
             #region 过时
             //var request = HttpWebRequest.CreateHttp(Constant.LOGIN_URL);
@@ -57,11 +74,54 @@ namespace Cooper.Services
             #endregion
         }
         /// <summary>
+        /// 普通登录
+        /// </summary>
+        /// <param name="username">用户名</param>
+        /// <param name="password">密码</param>
+        /// <param name="successCallback"></param>
+        /// <param name="failCallback"></param>
+        public void Login(string username
+            , string password
+            , Action<HttpWebResponse> successCallback
+            , Action<Exception> failCallback)
+        {
+            WebRequestWrapper.cookieContainer = null;
+
+            var dict = new Dictionary<string, string>();
+            dict.Add("userName", username);
+            dict.Add("password", password);
+
+            string loginServiceAddress =Constant.LOGIN_URL;
+
+            var text = string.Format("{{ \"userName\": \"{0}\", \"password\": \"{1}\"}}",
+                username, password);
+
+            var request = new HttpPostRequest(loginServiceAddress);
+            
+            request.RawData = Encoding.UTF8.GetBytes(text);
+            request.ContentType = "application/json";
+            Http.Post(request, AuthenticationCompleted);
+
+            //this.UploadString(Constant.LOGIN_URL, dict, successCallback, failCallback);
+        }
+        private void AuthenticationCompleted(HttpResponse authResponse)
+        {
+            string serviceAddress = Constant.GETTASKLISTS_URL;
+            if (authResponse.Successful)
+            {
+                var sessionCookies = authResponse.Cookies;
+                //var request = new HttpGetRequest(serviceAddress);
+                //request.Cookies.Add(new Cookie("SessionId", sessionCookie.Value));
+                //Http.Get(request, OperationCallCompleted);
+            }
+        }
+
+        /// <summary>
         /// 用户注销
         /// </summary>
         /// <param name="successCallback"></param>
         /// <param name="failCallback"></param>
-        public void Logout(Action<string> successCallback
+        public void Logout(Action<HttpWebResponse> successCallback
             , Action<Exception> failCallback)
         {
             this.UploadString(Constant.LOGOUT_URL, new Dictionary<string, string>(), successCallback, failCallback);

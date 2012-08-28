@@ -468,7 +468,8 @@
 
     //登录页面:“确定”按钮事件响应
     $(document).delegate("#loginPage #loginButton", "click", function () {
-		var domain = $('#domain').val();
+		//var domain = $('#domain').val();
+		var domain = '';
         var userName = $("#username").val();
         var password = $("#password").val();
 	
