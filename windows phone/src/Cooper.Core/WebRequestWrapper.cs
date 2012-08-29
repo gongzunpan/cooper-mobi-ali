@@ -13,13 +13,15 @@ using System.Linq;
 using System.IO;
 using System.Net.Browser;
 using System.IO.IsolatedStorage;
+using Hammock;
+using Hammock.Web;
+using HashTable = System.Collections.Generic.Dictionary<object, object>;
+using ArrayList = System.Collections.Generic.List<object>;
 
 namespace Cooper.Core
 {
     public abstract class WebRequestWrapper
     {
-        public static CookieContainer cookieContainer;
-
         /// <summary>
         /// 上传数据
         /// </summary>
@@ -30,64 +32,62 @@ namespace Cooper.Core
         /// <param name="failed"></param>
         protected void UploadString(string url
             , IDictionary<string, string> queries
-            , Action<HttpWebResponse> action
+            , Action<RestResponse> action
             , Action<Exception> failed)
         {
-            var data = string.Format("_={0}"
-                , DateTime.Now.ToString("yyyyMMddHHmmss"));
-            queries.ToList().ForEach(o => data += "&" + o.Key + "=" + HttpUtility.UrlEncode(o.Value));
-            HttpWebRequest request = HttpWebRequest.Create(new Uri(url)) as HttpWebRequest;
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-            if (cookieContainer == null)
+            bool httpResult = HttpWebRequest.RegisterPrefix("http://", WebRequestCreator.ClientHttp);
+            RestClient client = new RestClient();
+            client.Method = WebMethod.Post;
+            queries.ToList().ForEach(o => client.AddParameter(o.Key, HttpUtility.UrlEncode(o.Value)));
+            client.AddHeader("X-Requested-With", "xmlhttp");
+
+            client.Authority = url;
+            RestRequest restRequest = new RestRequest();
+
+            CookieContainer cookieContainer = null;
+            if (IsolatedStorageSettings.ApplicationSettings.Contains("cookies"))
             {
-                if (IsolatedStorageSettings.ApplicationSettings.Contains("cookies"))
+                cookieContainer = IsolatedStorageSettings.ApplicationSettings["cookies"] as CookieContainer;
+            }
+            else
+            {
+                cookieContainer = new CookieContainer();
+            }
+
+            restRequest.CookieContainer = cookieContainer;
+            client.BeginRequest(restRequest, (request, response, userState) =>
                 {
-                    cookieContainer = (CookieContainer)IsolatedStorageSettings.ApplicationSettings["cookies"];
-                }
-                else
-                {
-                    cookieContainer = new CookieContainer();
-                    IsolatedStorageSettings.ApplicationSettings.Add("cookies", cookieContainer);
+                    cookieContainer = response.CookieContainer;
+                    IsolatedStorageSettings.ApplicationSettings["cookies"] = cookieContainer;
                     IsolatedStorageSettings.ApplicationSettings.Save();
+
+                    if (response != null)
+                        Deployment.Current.Dispatcher.BeginInvoke(action, response);
+                    else
+                        Deployment.Current.Dispatcher.BeginInvoke(failed, new Exception("response返回为空！"));
+                });
+        }
+
+        private void BugFix_CookieDomain(CookieContainer cookieContainer)
+        {
+            System.Type _ContainerType = typeof(CookieContainer);
+            HashTable table = (HashTable)_ContainerType.InvokeMember("m_domainTable",
+                                       System.Reflection.BindingFlags.NonPublic |
+                                       System.Reflection.BindingFlags.GetField |
+                                       System.Reflection.BindingFlags.Instance,
+                                       null,
+                                       cookieContainer,
+                                       new object[] { });
+            ArrayList keys = new ArrayList(table.Keys);
+            foreach (string keyObj in keys)
+            {
+                string key = (keyObj as string);
+                if (key[0] == '.')
+                {
+                    string newKey = key.Remove(0, 1);
+                    table[newKey] = table[keyObj];
                 }
             }
-            request.CookieContainer = cookieContainer;
-            request.Headers["X-Requested-With"] = "xmlhttp";
-            //request.AllowReadStreamBuffering = true;
-
-            request.BeginGetRequestStream(result =>
-            {
-                //var request1 = result.AsyncState as HttpWebRequest;
-
-                using (var postStream = new StreamWriter(request.EndGetRequestStream(result)))
-                {
-                    postStream.Write(data);
-                }
-                request.BeginGetResponse(result1 =>
-                {
-                    try
-                    {
-                        //var req1 = result.AsyncState as HttpWebRequest;
-                        HttpWebResponse response = request.EndGetResponse(result1) as HttpWebResponse;
-                        var cookies2 = response.Cookies;
-                        var c = response.Headers["Set-Cookie"];
-                        IsolatedStorageSettings.ApplicationSettings["cookies"] = request.CookieContainer;
-                        IsolatedStorageSettings.ApplicationSettings.Save();
-
-                        var cookies = cookieContainer.GetCookies(request.RequestUri);
-                        if (response != null)
-                            Deployment.Current.Dispatcher.BeginInvoke(action, response);
-                        else
-                            Deployment.Current.Dispatcher.BeginInvoke(failed, new Exception("response返回为空！"));
-                    }
-                    catch (Exception exception)
-                    {
-                        //异常处理
-                        Deployment.Current.Dispatcher.BeginInvoke(failed, exception);
-                    }
-                }, request);
-            }, request);
         }
     }
 }

@@ -5,3 +5,4 @@ C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\obj\Debug\Cooper
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\obj\Debug\Cooper.Core.pdb
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Newtonsoft.Json.dll
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Newtonsoft.Json.xml
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Hammock.WindowsPhone.dll

@@ -66,6 +66,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Hammock.WindowsPhone">
+      <HintPath>..\..\lib\Hammock.WindowsPhone.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="MyToolkit">
@@ -74,6 +77,7 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="system.data.linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Servicemodel.Web" />
     <Reference Include="System.Windows" />
@@ -107,7 +111,9 @@
     <Content Include="CordovaSourceDictionary.xml" />
     <Content Include="www\detail-edit.htm" />
     <Content Include="www\detail.htm" />
-    <Content Include="www\index.html" />
+    <Content Include="www\index.html">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="www\login.htm" />
     <Content Include="www\sample.htm" />
     <Content Include="www\scripts\cooper.js" />
@@ -212,6 +218,10 @@
     <ProjectReference Include="..\Cooper.Core\Cooper.Core.csproj">
       <Project>{53B2427A-41AB-4E56-AA53-350229A42212}</Project>
       <Name>Cooper.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cooper.Repositories\Cooper.Repositories.csproj">
+      <Project>{FC376948-CE28-4EC2-80EC-1AAA0857763C}</Project>
+      <Name>Cooper.Repositories</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cooper.Services\Cooper.Services.csproj">
       <Project>{7F59D374-D7C3-4FFF-8690-22FB12B0749A}</Project>

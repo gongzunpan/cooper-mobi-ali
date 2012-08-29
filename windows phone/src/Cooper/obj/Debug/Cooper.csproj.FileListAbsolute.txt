@@ -32,3 +32,6 @@ C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper\Bin\Debug\Cooper.Serv
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper\Bin\Debug\Newtonsoft.Json.dll
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper\Bin\Debug\Newtonsoft.Json.xml
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper\Bin\Debug\MyToolkit.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper\Bin\Debug\Hammock.WindowsPhone.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper\Bin\Debug\Cooper.Repositories.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper\Bin\Debug\Cooper.Repositories.pdb

@@ -31,6 +31,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Cooper.Core;
 
 namespace Cooper
 {
@@ -69,6 +70,15 @@ namespace Cooper
 
             // Phone-specific initialization
             InitializePhoneApplication();
+
+            //创建数据库
+            using (CooperContext db = new CooperContext())
+            {
+                if (!db.DatabaseExists())
+                {
+                    db.CreateDatabase();
+                }
+            }
         }
 
         // Code to execute when the application is launching (eg, from Start)

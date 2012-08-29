@@ -13,6 +13,7 @@ using System.IO;
 using System.Collections.Generic;
 using MyToolkit.Networking;
 using System.Text;
+using Hammock;
 
 namespace Cooper.Services
 {
@@ -29,10 +30,10 @@ namespace Cooper.Services
         public void Login(string domain
             , string username
             , string password
-            , Action<HttpWebResponse> successCallback
+            , Action<RestResponse> successCallback
             , Action<Exception> failCallback)
         {
-            WebRequestWrapper.cookieContainer = null;
+            //WebRequestWrapper.cookieContainer = null;
 
             var dict = new Dictionary<string, string>();
             dict.Add("cbDomain", domain);
@@ -40,18 +41,18 @@ namespace Cooper.Services
             dict.Add("tbPassword", password);
             dict.Add("state", "login");
 
-            string loginServiceAddress = Constant.LOGIN_URL;
+            //string loginServiceAddress = Constant.LOGIN_URL;
 
-            var text = string.Format("{{ \"cbDomain\": \"{0}\", \"tbLoginName\": \"{1}\", \"tbPassword\": \"{2}\", \"state\": \"login\"}}",
-                domain, username, password);
+            //var text = string.Format("{{ \"cbDomain\": \"{0}\", \"tbLoginName\": \"{1}\", \"tbPassword\": \"{2}\", \"state\": \"login\"}}",
+            //    domain, username, password);
 
-            var request = new HttpPostRequest(loginServiceAddress);
+            //var request = new HttpPostRequest(loginServiceAddress);
 
-            request.RawData = Encoding.UTF8.GetBytes(text);
-            request.ContentType = "application/json";
-            Http.Post(request, AuthenticationCompleted);
+            //request.RawData = Encoding.UTF8.GetBytes(text);
+            //request.ContentType = "application/json";
+            //Http.Post(request, AuthenticationCompleted);
 
-            //this.UploadString(Constant.LOGIN_URL, dict, successCallback, failCallback);
+            this.UploadString(Constant.LOGIN_URL, dict, successCallback, failCallback);
 
             #region 过时
             //var request = HttpWebRequest.CreateHttp(Constant.LOGIN_URL);
@@ -82,28 +83,39 @@ namespace Cooper.Services
         /// <param name="failCallback"></param>
         public void Login(string username
             , string password
-            , Action<HttpWebResponse> successCallback
+            , Action<RestResponse> successCallback
             , Action<Exception> failCallback)
         {
-            WebRequestWrapper.cookieContainer = null;
+            //WebRequestWrapper.cookieContainer = null;
 
             var dict = new Dictionary<string, string>();
             dict.Add("userName", username);
             dict.Add("password", password);
 
-            string loginServiceAddress =Constant.LOGIN_URL;
+            //string loginServiceAddress =Constant.LOGIN_URL;
 
-            var text = string.Format("{{ \"userName\": \"{0}\", \"password\": \"{1}\"}}",
-                username, password);
+            //var text = string.Format("{{ \"userName\": \"{0}\", \"password\": \"{1}\"}}",
+            //    username, password);
 
-            var request = new HttpPostRequest(loginServiceAddress);
+            //var request = new HttpPostRequest(loginServiceAddress);
             
-            request.RawData = Encoding.UTF8.GetBytes(text);
-            request.ContentType = "application/json";
-            Http.Post(request, AuthenticationCompleted);
+            //request.RawData = Encoding.UTF8.GetBytes(text);
+            //request.ContentType = "application/json";
+            //Http.Post(request, AuthenticationCompleted);
 
-            //this.UploadString(Constant.LOGIN_URL, dict, successCallback, failCallback);
+            this.UploadString(Constant.LOGIN_URL, dict, successCallback, failCallback);
         }
+        /// <summary>
+        /// 用户注销
+        /// </summary>
+        /// <param name="successCallback"></param>
+        /// <param name="failCallback"></param>
+        public void Logout(Action<RestResponse> successCallback
+            , Action<Exception> failCallback)
+        {
+            this.UploadString(Constant.LOGOUT_URL, new Dictionary<string, string>(), successCallback, failCallback);
+        }
+
         private void AuthenticationCompleted(HttpResponse authResponse)
         {
             string serviceAddress = Constant.GETTASKLISTS_URL;
@@ -114,17 +126,6 @@ namespace Cooper.Services
                 //request.Cookies.Add(new Cookie("SessionId", sessionCookie.Value));
                 //Http.Get(request, OperationCallCompleted);
             }
-        }
-
-        /// <summary>
-        /// 用户注销
-        /// </summary>
-        /// <param name="successCallback"></param>
-        /// <param name="failCallback"></param>
-        public void Logout(Action<HttpWebResponse> successCallback
-            , Action<Exception> failCallback)
-        {
-            this.UploadString(Constant.LOGOUT_URL, new Dictionary<string, string>(), successCallback, failCallback);
         }
     }
 }

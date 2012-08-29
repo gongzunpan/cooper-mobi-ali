@@ -10,6 +10,10 @@ using Newtonsoft.Json;
 using WP7CordovaClassLib.Cordova;
 using WP7CordovaClassLib.Cordova.Commands;
 using WP7CordovaClassLib.Cordova.JSON;
+using Hammock;
+using Newtonsoft.Json.Linq;
+using Cooper.Core.Models;
+using Cooper.Repositories;
 
 namespace Cordova.Extension.Commands
 {
@@ -78,6 +82,57 @@ namespace Cordova.Extension.Commands
             [DataMember(IsRequired = false, Name = "tasklistId")]
             public string TasklistId;
         }
+        [DataContract]
+        public class GetTasksByPriorityOptions : SignKeyOptions
+        {
+            [DataMember(IsRequired = false, Name = "tasklistId")]
+            public string TasklistId;
+        }
+        [DataContract]
+        public class CreateTasklistOptions : SignKeyOptions
+        {
+            [DataMember(IsRequired = false, Name = "id")]
+            public string Id;
+
+            [DataMember(IsRequired = false, Name = "name")]
+            public string Name;
+
+            [DataMember(IsRequired = false, Name = "type")]
+            public string Type;
+        }
+        [DataContract]
+        public class CreateTaskOptions : SignKeyOptions
+        {
+            [DataMember(IsRequired = false, Name = "task")]
+            public string Task;
+
+            [DataMember(IsRequired = false, Name = "changes")]
+            public string Changes;
+
+            [DataMember(IsRequired = false, Name = "tasklistId")]
+            public string TasklistId;
+        }
+        [DataContract]
+        public class UpdateTaskOptions : SignKeyOptions
+        {
+            [DataMember(IsRequired = false, Name = "task")]
+            public string Task;
+
+            [DataMember(IsRequired = false, Name = "changes")]
+            public string Changes;
+
+            [DataMember(IsRequired = false, Name = "tasklistId")]
+            public string TasklistId;
+        }
+        [DataContract]
+        public class DeleteTaskOptions : SignKeyOptions
+        {
+            [DataMember(IsRequired = false, Name = "tasklistId")]
+            public string TasklistId;
+
+            [DataMember(IsRequired = false, Name = "taskId")]
+            public string TaskId;
+        }
         #endregion
 
         //控制台输出
@@ -85,11 +140,21 @@ namespace Cordova.Extension.Commands
 
         private AccountService _accountService;
         private TasklistService _tasklistService;
+        private TaskService _taskService;
+        private TasklistRepository _tasklistRepository;
+        private TaskRepository _taskRepository;
+        private TaskIdxRepository _taskIdxRepository;
+        private ChangeLogRepository _changeLogRepository;
 
         public CooperPlugin()
         {
             this._accountService = new AccountService();
             this._tasklistService = new TasklistService();
+            this._taskService = new TaskService();
+            this._tasklistRepository = new TasklistRepository();
+            this._taskRepository = new TaskRepository();
+            this._taskIdxRepository = new TaskIdxRepository();
+            this._changeLogRepository = new ChangeLogRepository();
         }
 
         /// <summary>
@@ -147,7 +212,7 @@ namespace Cordova.Extension.Commands
                                 {
                                     if (response.StatusCode == HttpStatusCode.OK)
                                     {
-                                        var responseString = this.GetResponseString(response);
+                                        var responseString = response.Content;
                                         this._console.log(string.Format("登录response返回的字符串:{0}"
                                             , responseString));
                                         IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY] = username;
@@ -178,7 +243,7 @@ namespace Cordova.Extension.Commands
                                 {
                                     if (response.StatusCode == HttpStatusCode.OK)
                                     {
-                                        var responseString = this.GetResponseString(response);
+                                        var responseString = response.Content;
                                         this._console.log(string.Format("登录response返回的字符串:{0}"
                                             , responseString));
                                         if (responseString.IndexOf("window.opener.loginSuccess") >= 0)
@@ -221,6 +286,9 @@ namespace Cordova.Extension.Commands
                             IsolatedStorageSettings.ApplicationSettings.Remove(Constant.DOMAIN);
                             IsolatedStorageSettings.ApplicationSettings.Remove(Constant.USERNAME_KEY);
                             IsolatedStorageSettings.ApplicationSettings.Remove(Constant.ISGUESTUSER_KEY);
+
+                            resultCode.Status = true;
+                            this.DispatchCommandResult(resultCode);
                         }
                         else
                         {
@@ -241,19 +309,81 @@ namespace Cordova.Extension.Commands
                 {
                     resultCode.Status = false;
                     resultCode.Message = "匿名用户不能同步任务";
+
+                    this.DispatchCommandResult(resultCode);
                 }
                 else
                 {
                     var synctasklistOptions = JsonHelper.Deserialize<SyncTasklistsOptions>(options);
                     if (string.IsNullOrEmpty(synctasklistOptions.TasklistId))
                     {
+                        List<Tasklist> tempTasklists = this._tasklistRepository.getAllTasklistByTemp();
+                        string username = IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY) ?
+                            IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY] as string : "";
+
+                        List<Tasklist> tasklists = this._tasklistRepository.GetAllTasklistByUserAndTemp();
+                        tempTasklists.AddRange(tasklists);
+
+                        foreach (var tasklist in tasklists)
+                        {
+                            tasklist.AccountId = username;
+                        }
+
+                        if (tasklists.Count > 0)
+                            this._tasklistRepository.UpdateTasklists(tasklists);
+
+                        List<Task> tasks = this._taskRepository.GetAllTaskByTemp();
+                        foreach (var task in tasks)
+                        {
+                            task.AccountId = username;
+                        }
+
+                        if (tasks.Count > 0)
+                            this._taskRepository.UpdateTasks(tasks);
+
+                        List<TaskIdx> taskIdxs = this._taskIdxRepository.GetAllTaskIdxByTemp();
+                        foreach (var taskIdx in taskIdxs)
+                        {
+                            taskIdx.AccountId = username;
+                        }
+
+                        if (taskIdxs.Count > 0)
+                            this._taskIdxRepository.UpdateTaskIdxs(taskIdxs);
+
+                        List<ChangeLog> changeLogs = this._changeLogRepository.GetAllChangeLogByTemp();
+                        foreach (var changeLog in changeLogs)
+                        {
+                            changeLog.AccountId = username;
+                        }
+
+                        if (changeLogs.Count > 0)
+                            this._changeLogRepository.UpdateChangeLogs(changeLogs);
+
+                        foreach (var tasklist in tempTasklists)
+                        {
+                            this._tasklistService.SyncTasklist(tasklist.Name
+                                , tasklist.ListType
+                                , response =>
+                                    {
+                                        if (response.StatusCode == HttpStatusCode.OK)
+                                        {
+                                            this.SyncTasklistAfterResponse("", tasklist, resultCode, response);
+                                        }
+                                        else
+                                        {
+                                            this.DispatchCommandResult(response);
+                                        }
+                                    }
+                                , exception =>
+                                    {
+                                    });
+                        }
+
                         this._tasklistService.GetTasklists(response =>
                             {
                                 if (response.StatusCode == HttpStatusCode.OK)
                                 {
-                                    var responseString = this.GetResponseString(response);
-                                    this._console.log(string.Format("GetTasklists response返回的字符串:{0}"
-                                        , responseString));
+                                    this.GetTasklistsAfterResponse("", resultCode, response);
                                 }
                                 else
                                 {
@@ -264,6 +394,65 @@ namespace Cordova.Extension.Commands
                             {
                                 this.DispatchCommandResult(exception);
                             });
+                    }
+                    else
+                    {
+                        string tasklistId = synctasklistOptions.TasklistId;
+                        if (tasklistId.IndexOf("temp_") >= 0)
+                        {
+                            Tasklist tasklist = this._tasklistRepository.GetTasklistById(tasklistId);
+                            this._tasklistService.SyncTasklist(tasklist.Name, tasklist.ListType
+                                , response =>
+                                    {
+                                        if (response.StatusCode == HttpStatusCode.OK)
+                                        {
+                                            this.SyncTasklistAfterResponse(tasklistId, tasklist, resultCode, response);
+                                        }
+                                        else
+                                        {
+                                            this.DispatchCommandResult(response);
+                                        }
+                                    }
+                                , exception =>
+                                    {
+                                        this.DispatchCommandResult(exception);
+                                    });
+
+                            this._tasklistService.GetTasklists(response =>
+                                {
+                                    if (response.StatusCode == HttpStatusCode.OK)
+                                    {
+                                        this.GetTasklistsAfterResponse(tasklistId, resultCode, response);
+                                    }
+                                    else
+                                    {
+                                        this.DispatchCommandResult(response);
+                                    }
+                                }
+                                , exception =>
+                                    {
+                                        this.DispatchCommandResult(exception);
+                                    });
+                        }
+                        else
+                        {
+                            this._taskService.SyncTasks(tasklistId
+                                , response =>
+                                    {
+                                        if (response.StatusCode == HttpStatusCode.OK)
+                                        {
+                                            this.SyncTasksAfterResponse(tasklistId, resultCode, response);
+                                        }
+                                        else
+                                        {
+                                            this.DispatchCommandResult(response);
+                                        }
+                                    }
+                                , exception =>
+                                    {
+                                        this.DispatchCommandResult(exception);
+                                    });
+                        }
                     }
                 }
                 #endregion
@@ -294,10 +483,10 @@ namespace Cordova.Extension.Commands
             {
                 #region 获取当前用户名  
                 string username = "";
-                if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
-                {
-                    username = IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY].ToString();
-                }
+                //if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+                //{
+                //    username = IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY].ToString();
+                //}
 
                 var userInfo = new UserInfo();
                 userInfo.Username = username;
@@ -307,6 +496,99 @@ namespace Cordova.Extension.Commands
                 this.DispatchCommandResult(resultCode);
                 #endregion
             }
+            else if (keyOptions.Key.Equals(Constant.GETTASKLISTS))
+            {
+                List<Tasklist> tasklists = this._tasklistRepository.GetAllTasklist();
+                bool isDefaultTasklistExist = false;
+                foreach (var tasklist in tasklists)
+                {
+                    if (tasklist.TasklistId.Equals("0"))
+                    {
+                        isDefaultTasklistExist = true;
+                        break;
+                    }
+                }
+                if (!isDefaultTasklistExist)
+                {
+                    Tasklist defaultTasklist = new Tasklist();
+                    defaultTasklist.TasklistId = "0";
+                    defaultTasklist.Name = "默认列表";
+                    defaultTasklist.ListType = "personal";
+                    defaultTasklist.Editable = true;
+                    if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+                    {
+                        defaultTasklist.AccountId = IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY].ToString();
+                    }
+                    else
+                    {
+                        defaultTasklist.AccountId = "";
+                    }
+                    this._tasklistRepository.AddTasklist(defaultTasklist);
+                    tasklists.Add(defaultTasklist);
+                }
+
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                foreach (var tasklist in tasklists)
+                {
+                    dict.Add(tasklist.TasklistId, tasklist.Name);
+                }
+                resultCode.Data = dict;
+                resultCode.Status = true;
+
+                this.DispatchCommandResult(resultCode);
+            }
+            else if (keyOptions.Key.Equals(Constant.GETTASKSBYPRIORITY))
+            {
+                var getTasksByPriorityOptions = JsonHelper.Deserialize<GetTasksByPriorityOptions>(options);
+                string tasklistId = getTasksByPriorityOptions.TasklistId;
+
+                Tasklist tasklist = this._tasklistRepository.GetTasklistById(tasklistId);
+
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict.Add("editable", tasklist.Editable);
+
+                List<TaskIdx> taskIdxs = this._taskIdxRepository.GetAllTaskIdx(tasklistId);
+
+                List<Dictionary<string, object>> task_array = new List<Dictionary<string, object>>();
+                List<Dictionary<string, object>> taskIdx_array = new List<Dictionary<string, object>>();
+
+                foreach (var taskIdx in taskIdxs)
+                {
+                    List<string> taskIdsDict = (List<string>)taskIdx.Indexes.ToJSONObject();
+                    for (int i = 0; i < taskIdsDict.Count; i++)
+                    {
+                        string taskId = taskIdsDict[i];
+                        Task task = this._taskRepository.GetTaskById(taskId);
+                        if (task != null)
+                        {
+                            Dictionary<string, object> taskDict = new Dictionary<string, object>();
+                            taskDict.Add("id", task.TaskId);
+                            taskDict.Add("subject", task.Subject);
+                            taskDict.Add("body", task.Body);
+                            taskDict.Add("isCompleted", task.Status == 1 ? "true" : "false");
+                            taskDict.Add("dueTime", task.DueDate == DateTime.MinValue ? "" : task.DueDate.ToString("yyyy-MM-dd"));
+                            taskDict.Add("priority", task.Priority);
+
+                            task_array.Add(taskDict);
+                        }
+                    }
+
+                    Dictionary<string, object> taskIdx_dict = new Dictionary<string, object>();
+                    taskIdx_dict.Add("by", "priority");
+                    taskIdx_dict.Add("key", taskIdx.Key);
+                    taskIdx_dict.Add("name", taskIdx.Name);
+                    taskIdx_dict.Add("indexes", taskIdsDict);
+                    taskIdx_array.Add(taskIdx_dict);
+                }
+
+                dict.Add("tasks", task_array);
+                dict.Add("sorts", taskIdx_array);
+
+                resultCode.Status = true;
+                resultCode.Data = dict;
+
+                this.DispatchCommandResult(resultCode);
+            }
         }
         /// <summary>
         /// 保存
@@ -314,7 +596,200 @@ namespace Cordova.Extension.Commands
         /// <param name="options">条件</param>
         public void save(string options)
         {
+            ResultCode resultCode = new ResultCode();
+
             SignKeyOptions keyOptions = JsonHelper.Deserialize<SignKeyOptions>(options);
+            if (keyOptions.Key.Equals(Constant.CREATETASKLIST))
+            {
+                CreateTasklistOptions createTasklistOptions = JsonHelper.Deserialize<CreateTasklistOptions>(options);
+
+                string tasklistId = createTasklistOptions.Id;
+                string tasklistName = createTasklistOptions.Name;
+                string tasklistType = createTasklistOptions.Type;
+
+                Tasklist tasklist = new Tasklist();
+                tasklist.TasklistId = tasklistId;
+                tasklist.Name = tasklistName;
+                tasklist.ListType = tasklistType;
+                tasklist.Editable = true;
+                if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+                {
+                    tasklist.AccountId = IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY].ToString();
+                }
+                else
+                {
+                    tasklist.AccountId = "";
+                }
+                this._tasklistRepository.AddTasklist(tasklist);
+
+                resultCode.Status = true;
+
+                this.DispatchCommandResult(resultCode);
+            }
+            else if (keyOptions.Key.Equals(Constant.CREATETASK))
+            {
+                CreateTaskOptions createTaskOptions = JsonHelper.Deserialize<CreateTaskOptions>(options);
+
+                string task = createTaskOptions.Task;
+                string changes = createTaskOptions.Changes;
+                string tasklistId = createTaskOptions.TasklistId;
+
+                Dictionary<string, object> taskDict = (Dictionary<string, object>)task.ToJSONObject();
+                List<Dictionary<string, object>> changesArray = (List<Dictionary<string, object>>)changes.ToJSONObject();
+
+                DateTime currentDate = DateTime.Now;
+
+                string subject = taskDict["subject"] as string;
+                string body = taskDict["body"] as string;
+                string isCompleted = taskDict["isCompleted"] as string;
+                string priority = taskDict["priority"] as string;
+                string id = taskDict["id"] as string;
+                string dueTime = taskDict["dueTime"] as string;
+
+                Task t = new Task();
+                t.TaskId = id;
+                t.Subject = subject;
+                t.LastUpdateDate = currentDate;
+                t.Body = body;
+                t.IsPublic = true;
+                if (isCompleted.Equals("true"))
+                {
+                    t.Status = 1;
+                }
+                else
+                {
+                    t.Status = 0;
+                }
+                t.Priority = priority;
+                if (!string.IsNullOrEmpty(dueTime))
+                {
+                    t.DueDate = Convert.ToDateTime(dueTime);
+                }
+                else
+                {
+                    t.DueDate = DateTime.MinValue;
+                }
+                t.Editable = true;
+                t.TasklistId = tasklistId;
+                if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+                {
+                    t.AccountId = IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY].ToString();
+                }
+                else
+                {
+                    t.AccountId = "";
+                }
+                this._taskRepository.AddTask(t);
+
+                this._taskIdxRepository.AddTaskIdx(id, priority, tasklistId);
+
+                for (int i = 0; i < changesArray.Count; i++)
+                {
+                    Dictionary<string, object> dict = changesArray[i];
+                    string name = dict["Name"] as string;
+                    string value = dict["Value"] as string;
+                    string taskId = dict["ID"] as string;
+                    string type = dict["Type"] as string;
+
+                    this._changeLogRepository.AddChangeLog(type, taskId, name, value, tasklistId);
+                }
+
+                resultCode.Status = true;
+
+                this.DispatchCommandResult(resultCode);
+            }
+            else if (keyOptions.Key.Equals(Constant.UPDATETASK))
+            {
+                UpdateTaskOptions updateTaskOptions = JsonHelper.Deserialize<UpdateTaskOptions>(options);
+
+                string task = updateTaskOptions.Task;
+                string changes = updateTaskOptions.Changes;
+                string tasklistId = updateTaskOptions.TasklistId;
+
+                Dictionary<string, object> taskDict = (Dictionary<string, object>)task.ToJSONObject();
+                List<Dictionary<string, object>> changesArray = (List<Dictionary<string, object>>)changes.ToJSONObject();
+
+                DateTime currentDate = DateTime.Now;
+
+                string subject = taskDict["subject"] as string;
+                string body = taskDict["body"] as string;
+                string isCompleted = taskDict["isCompleted"] as string;
+                string priority = taskDict["priority"] as string;
+                string id = taskDict["id"] as string;
+                string dueTime = taskDict["dueTime"] as string;
+
+                Task t = this._taskRepository.GetTaskById(id);
+                string oldPriority = priority;
+                if (t != null)
+                {
+                    oldPriority = t.Priority;
+                }
+                t.Subject = subject;
+                t.LastUpdateDate = currentDate;
+                t.Body = body;
+                t.IsPublic = true;
+                if (isCompleted.Equals("true"))
+                {
+                    t.Status = 1;
+                }
+                else
+                {
+                    t.Status = 0;
+                }
+                t.Priority = priority;
+                if (!string.IsNullOrEmpty(dueTime))
+                {
+                    t.DueDate = Convert.ToDateTime(dueTime);
+                }
+                else
+                {
+                    t.DueDate = DateTime.MinValue;
+                }
+                t.Editable = true;
+                t.TasklistId = tasklistId;
+                this._taskRepository.UpdateTask(t);
+
+                if (!oldPriority.Equals(priority))
+                {
+                    this._taskIdxRepository.UpdateTaskIdx(id, priority, tasklistId);
+                }
+
+                for (int i = 0; i < changesArray.Count; i++)
+                {
+                    Dictionary<string, object> dict = changesArray[i];
+                    string name = dict["Name"] as string;
+                    string value = dict["Value"] as string;
+                    string taskId = dict["ID"] as string;
+                    string type = dict["Type"] as string;
+
+                    this._changeLogRepository.AddChangeLog(type, taskId, name, value, tasklistId);
+                }
+
+                resultCode.Status = true;
+
+                this.DispatchCommandResult(resultCode);
+            }
+            else if (keyOptions.Key.Equals(Constant.DELETETASK))
+            {
+                DeleteTaskOptions deleteTaskOptions = JsonHelper.Deserialize<DeleteTaskOptions>(options);
+
+                string tasklistId = deleteTaskOptions.TasklistId;
+                string taskId = deleteTaskOptions.TaskId;
+
+                this._changeLogRepository.AddChangeLog("1", taskId, "", "", tasklistId);
+
+                this._taskIdxRepository.DeleteTaskIndexesByTaskId(taskId, tasklistId);
+
+                Task task = this._taskRepository.GetTaskById(taskId);
+                if (task != null)
+                {
+                    this._taskRepository.DeleteTask(task);
+                }
+
+                resultCode.Status = true;
+
+                this.DispatchCommandResult(resultCode);
+            }
         }
         /// <summary>
         /// 调试
@@ -329,7 +804,7 @@ namespace Cordova.Extension.Commands
         {
             this.DispatchCommandResult(new PluginResult(PluginResult.Status.OK) { Message = resultCode.ToJSONString() });
         }
-        private void DispatchCommandResult(HttpWebResponse response)
+        private void DispatchCommandResult(RestResponse response)
         {
             ResultCode resultCode = new ResultCode();
             resultCode.Status = false;
@@ -355,6 +830,349 @@ namespace Cordova.Extension.Commands
                     Console.WriteLine(responseString);
                     return responseString;
                 }
+        }
+        private string SyncTasklistAfterResponse(string tasklistId, Tasklist tasklist, ResultCode resultCode, RestResponse response)
+        {
+            string result = response.Content;
+
+            this._tasklistRepository.AdjustWithNewId(tasklist.TasklistId, result);
+
+            this._console.log(string.Format("任务列表旧值ID:{0} 变为新值ID:{1}", tasklist.TasklistId, result));
+
+            string newTasklistId = null;
+            if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+            {
+                string username = (string)IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY];
+
+                if (!string.IsNullOrEmpty(username))
+                {
+                    this._taskRepository.UpdateTasklistIdByNewId(tasklist.TasklistId, result);
+                    this._taskIdxRepository.UpdateTasklistIdByNewId(tasklist.TasklistId, result);
+                    this._changeLogRepository.UpdateTasklistIdByNewId(tasklist.TasklistId, result);
+
+                    newTasklistId = result;
+                }
+            }
+
+            return newTasklistId;
+        }
+        private void SyncTasklistAfterResponse(string tasklistId, ResultCode resultCode, RestResponse response)
+        {
+            string result = response.Content;
+            List<Dictionary<string, string>> responseArray = (List<Dictionary<string, string>>)result.ToJSONObject();
+
+            string newTasklistId = null;
+            for (int i = 0; i < responseArray.Count; i++)
+            {
+                Dictionary<string, string> dict = responseArray[i];
+                string oldId = dict["OldId"];
+                string newId = dict["NewId"];
+
+                this._console.log(string.Format("任务列表旧值ID:{0}, 变为新值ID:{1}", oldId, newId));
+
+                this._tasklistRepository.UpdateTasklistByNewId(oldId, newId);
+
+                if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+                {
+                    string username = (string)IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY];
+
+                    if (!string.IsNullOrEmpty(username))
+                    {
+                        this._taskRepository.UpdateTasklistIdByNewId(oldId, newId);
+                        this._taskIdxRepository.UpdateTasklistIdByNewId(oldId, newId);
+                        this._changeLogRepository.UpdateTasklistIdByNewId(oldId, newId);
+
+                        newTasklistId = newId;
+                    }
+                }
+            }
+
+            if (string.IsNullOrEmpty(tasklistId))
+            {
+                this._tasklistService.GetTasklists(response1 =>
+                    {
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            result = response1.Content;
+                            Dictionary<string, string> tasklistsDict = (Dictionary<string, string>)result.ToJSONObject();
+
+                            //删除当前账户所有列表
+                            this._tasklistRepository.DeleteAll();
+
+                            List<Tasklist> tasklists = new List<Tasklist>();
+                            foreach (string key in tasklistsDict.Keys)
+                            {
+                                string value = tasklistsDict[key];
+
+                                Tasklist tasklist = new Tasklist();
+                                tasklist.TasklistId = key;
+                                tasklist.Name = value;
+                                tasklist.ListType = "personal";
+                                tasklist.Editable = true;
+                                if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+                                {
+                                    string username = (string)IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY];
+                                    tasklist.AccountId = username;
+                                }
+                                else
+                                {
+                                    tasklist.AccountId = "";
+                                }
+                                tasklists.Add(tasklist);
+                            }
+                            Tasklist defaultTasklist = new Tasklist();
+                            defaultTasklist.TasklistId = "0";
+                            defaultTasklist.Name = "默认列表";
+                            defaultTasklist.ListType = "personal";
+                            defaultTasklist.Editable = true;
+                            if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+                            {
+                                string username = (string)IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY];
+                                defaultTasklist.AccountId = username;
+                            }
+                            else
+                            {
+                                defaultTasklist.AccountId = "";
+                            }
+                            tasklists.Add(defaultTasklist);
+
+                            this._tasklistRepository.AddTasklists(tasklists);
+
+                            if (tasklists.Count == 0)
+                            {
+                                resultCode.Status = true;
+                            }
+                            else
+                            {
+                                foreach (var tasklist in tasklists)
+                                {
+                                    //HACK:Fetch模式不支持同步变更
+                                    if (tasklist.TasklistId.Equals("github")
+                                        || tasklist.TasklistId.Equals("ifree")
+                                        || tasklist.TasklistId.Equals("wf"))
+                                    {
+                                        this._taskService.GetTasks(tasklist.TasklistId
+                                            , response2 =>
+                                                {
+                                                    if (response2.StatusCode == HttpStatusCode.OK)
+                                                    {
+                                                        this.GetTasksAfterResponse(tasklist.TasklistId, resultCode, response2);
+                                                    }
+                                                    else
+                                                    {
+                                                        this.DispatchCommandResult(response2);
+                                                    }
+                                                }
+                                            , exception =>
+                                                {
+                                                    this.DispatchCommandResult(exception);
+                                                });
+                                    }
+                                    else
+                                    {
+                                        this._taskService.SyncTasks(tasklist.TasklistId
+                                            , response2 =>
+                                                {
+                                                    if (response2.StatusCode == HttpStatusCode.OK)
+                                                    {
+                                                        this.SyncTasksAfterResponse(tasklist.TasklistId, resultCode, response2);
+                                                    }
+                                                    else
+                                                    {
+                                                        this.DispatchCommandResult(response2);
+                                                    }
+                                                }
+                                            , exception =>
+                                                {
+                                                    this.DispatchCommandResult(exception);
+                                                });
+                                    }
+                                    resultCode.Status = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this.DispatchCommandResult(response1);
+                        }
+                    }
+                , exception =>
+                    {
+                        this.DispatchCommandResult(exception);
+                    });
+            }
+        }
+        private void GetTasklistsAfterResponse(string tasklistId, ResultCode resultCode, RestResponse response)
+        {
+            string result = response.Content;
+            Dictionary<string, string> tasklistDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
+            //TODO:删除当前账户的所有任务列表
+
+            List<Tasklist> tasklists = new List<Tasklist>();
+            foreach (var key in tasklistDict.Keys)
+            {
+                string value = tasklistDict[key];
+
+                Tasklist tasklist = new Tasklist();
+                tasklist.TasklistId = key;
+                tasklist.Name = value;
+                tasklist.ListType = "personal";
+                tasklist.Editable = true;
+                if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+                {
+                    tasklist.AccountId = (string)IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY];
+                }
+                else
+                {
+                    tasklist.AccountId = "";
+                }
+                tasklists.Add(tasklist);
+            }
+            Tasklist defaultTasklist = new Tasklist();
+            defaultTasklist.TasklistId = "0";
+            defaultTasklist.Name = "默认列表";
+            defaultTasklist.ListType = "personal";
+            defaultTasklist.Editable = true;
+            if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+            {
+                defaultTasklist.AccountId = (string)IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY];
+            }
+            else
+            {
+                defaultTasklist.AccountId = "";
+            }
+            tasklists.Add(defaultTasklist);
+
+            this._tasklistRepository.AddTasklists(tasklists);
+
+            List<Tasklist> allTasklists = this._tasklistRepository.GetAllTasklist();
+        }
+        private void GetTasksAfterResponse(string tasklistId, ResultCode resultCode, RestResponse response)
+        {
+            string result = response.Content;
+
+            Dictionary<string, object> dict = (Dictionary<string, object>)result.ToJSONObject();
+            string tasklist_editableString = dict["Editable"] as string;
+
+            this._tasklistRepository.UpdateEditable(tasklist_editableString.Equals("true") ? 1 : 0, tasklistId);
+            this._taskRepository.DeleteAll(tasklistId);
+            this._taskIdxRepository.DeleteAll(tasklistId);
+
+            List<Dictionary<string, object>> tasksArray = (List<Dictionary<string, object>>)dict["List"];
+            List<Dictionary<string, object>> taskIdxsArray = (List<Dictionary<string, object>>)dict["Sorts"];
+
+            List<Task> tasks = new List<Task>();
+            for (int i = 0; i < tasksArray.Count; i++)
+            {
+                Dictionary<string, object> taskDict = tasksArray[i];
+                string taskId = taskDict["ID"] as string;
+                string subject = taskDict["Subejct"] as string;
+                string body = taskDict["Body"] as string;
+                bool isCompleted = (bool)taskDict["IsCompleted"];
+                string priority = taskDict["Priority"] as string;
+                bool editable = (bool)taskDict["Editable"];
+                string dueTimeString = taskDict["DueTime"] as string;
+
+                Task task = new Task();
+                task.Subject = subject;
+                DateTime currentDate = DateTime.Now;
+                task.CreateDate = currentDate;
+                task.LastUpdateDate = currentDate;
+                task.Body = body;
+                task.IsPublic = true;
+                task.Status = isCompleted ? 1 : 0;
+                task.Priority = priority;
+                task.TaskId = taskId;
+                try
+                {
+                    task.DueDate = DateTime.Parse(dueTimeString);
+                }
+                catch { }
+
+                task.Editable = editable;
+                task.TasklistId = tasklistId;
+                if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+                {
+                    string username = (string)IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY];
+                    task.AccountId = username;
+                }
+                else
+                {
+                    task.AccountId = "";
+                }
+                tasks.Add(task);
+            }
+            this._taskRepository.AddTasks(tasks);
+
+            List<TaskIdx> taskIdxs = new List<TaskIdx>();
+            for (int i = 0; i < taskIdxsArray.Count; i++)
+            {
+                Dictionary<string, object> taskIdxDict = taskIdxsArray[i];
+                string by = taskIdxDict["By"] as string;
+                string taskIdxKey = taskIdxDict["Key"] as string;
+                string name = taskIdxDict["Name"] as string;
+
+                List<string> indexsArray = (List<string>)taskIdxDict["Indexs"];
+                string indexes = indexsArray.ToJSONString();
+
+                TaskIdx taskIdx = new TaskIdx();
+                taskIdx.By = by;
+                taskIdx.Key = taskIdxKey;
+                taskIdx.Name = name;
+                taskIdx.Indexes = indexes;
+                taskIdx.TasklistId = tasklistId;
+                if (IsolatedStorageSettings.ApplicationSettings.Contains(Constant.USERNAME_KEY))
+                {
+                    string username = (string)IsolatedStorageSettings.ApplicationSettings[Constant.USERNAME_KEY];
+                    taskIdx.AccountId = username;
+                }
+                else
+                {
+                    taskIdx.AccountId = "";
+                }
+                taskIdxs.Add(taskIdx);
+            }
+            this._taskIdxRepository.AddTaskIdxs(taskIdxs);
+
+            resultCode.Status = true;
+        }
+        private void SyncTasksAfterResponse(string tasklistId, ResultCode resultCode, RestResponse response)
+        {
+            string result = response.Content;
+            List<Dictionary<string, string>> array = (List<Dictionary<string, string>>)result.ToJSONObject();
+            if (array.Count > 0)
+            {
+                for (int i = 0; i < array.Count; i++)
+                {
+                    Dictionary<string, string> dict = array[i];
+                    string oldId = dict["OldId"];
+                    string newId = dict["NewId"];
+
+                    this._console.log(string.Format("任务旧值ID:{0} 变为新值ID:{1}", oldId, newId));
+
+                    this._taskRepository.UpdateTaskIdByNewId(oldId, newId, tasklistId);
+                    this._taskIdxRepository.UpdateTaskIdxByNewId(oldId, newId, tasklistId);
+                }
+            }
+
+            this._changeLogRepository.UpdateAllToSend(tasklistId);
+
+            this._taskService.GetTasks(tasklistId
+                , response1 =>
+                    {
+                        if (response1.StatusCode == HttpStatusCode.OK)
+                        {
+                            this.GetTasksAfterResponse(tasklistId, resultCode, response1);
+                        }
+                        else
+                        {
+                            this.DispatchCommandResult(response1);
+                        }
+                    }
+                , exception =>
+                    {
+                        this.DispatchCommandResult(exception);
+                    });
         }
     }
 }

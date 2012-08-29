@@ -36,5 +36,10 @@ namespace Cooper.Core
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
         }
+
+        public static object ToJSONObject(this string value)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject(value);
+        }
     }
 }

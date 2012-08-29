@@ -57,5 +57,7 @@ namespace Cooper.Core
         public static readonly String PRIORITY_TITLE_1 = "尽快完成";
 	    public static readonly String PRIORITY_TITLE_2 = "稍后完成";
 	    public static readonly String PRIORITY_TITLE_3 = "迟些再说";
+
+        public static readonly String DB_CONNSTRING = "Data Source=isostore:/Cooper.sdf";
     }
 }
