@@ -42,10 +42,10 @@ namespace Cooper.Core
 	    //Service路径
         //public static readonly String DOMAIN = "cooper.wf.taobao.org";
         //public static readonly String ROOTURL = "https://" + DOMAIN;
-	    //public static readonly String DOMAIN = "cooper.apphb.com";
-        //public static readonly String ROOTURL = "https://" + DOMAIN;
-        public static readonly String DOMAIN = "debug.incooper.net";
-        public static readonly String ROOTURL = "http://" + DOMAIN;
+	    public static readonly String DOMAIN = "cooper.apphb.com";
+        public static readonly String ROOTURL = "https://" + DOMAIN;
+        //public static readonly String DOMAIN = "debug.incooper.net";
+        //public static readonly String ROOTURL = "http://" + DOMAIN;
 	    public static readonly String LOGIN_URL = ROOTURL + "/Account/Login";
 	    public static readonly String LOGOUT_URL = ROOTURL + "/Account/Logout";
 	    public static readonly String GETTASKLISTS_URL = ROOTURL + "/Personal/GetTasklists";

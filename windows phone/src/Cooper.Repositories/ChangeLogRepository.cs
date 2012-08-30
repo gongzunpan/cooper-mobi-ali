@@ -29,7 +29,7 @@ namespace Cooper.Repositories
         public List<ChangeLog> GetAllChangeLogByTemp()
         {
             List<ChangeLog> changeLogs = this._context.ChangeLogs
-                .Where(o => string.IsNullOrEmpty(o.AccountId))
+                .Where(o => o.AccountId.Equals(""))
                 .ToList();
             return changeLogs;
         }
@@ -48,7 +48,7 @@ namespace Cooper.Repositories
             else
             {
                 changeLogs = this._context.ChangeLogs
-                    .Where(o => string.IsNullOrEmpty(o.AccountId)
+                    .Where(o => o.AccountId.Equals("")
                         && o.TasklistId.Equals(tasklistId))
                     .ToList();
             }
@@ -82,7 +82,7 @@ namespace Cooper.Repositories
             else
             {
                 changeLogs = this._context.ChangeLogs
-                    .Where(o => string.IsNullOrEmpty(o.AccountId)
+                    .Where(o => o.AccountId.Equals("")
                         && o.TasklistId.Equals(tasklistId))
                     .ToList();
             }

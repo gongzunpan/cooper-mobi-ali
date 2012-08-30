@@ -50,7 +50,7 @@ namespace Cooper.Repositories
         {
             List<Tasklist> tasklists = this._context.Tasklists
                 .Where(o => o.TasklistId.IndexOf("temp_") >= 0
-                    && string.IsNullOrEmpty(o.AccountId))
+                    && o.AccountId.Equals(""))
                     .ToList();
             return tasklists;
         }
@@ -67,7 +67,7 @@ namespace Cooper.Repositories
             }
             else
             {
-                tasklists = this._context.Tasklists.Where(o => string.IsNullOrEmpty(o.AccountId))
+                tasklists = this._context.Tasklists.Where(o => o.AccountId.Equals(""))
                     .OrderBy(o => o.TasklistId)
                     .ToList();
             }
@@ -87,7 +87,7 @@ namespace Cooper.Repositories
             }
             else
             {
-                tasklists = this._context.Tasklists.Where(o => string.IsNullOrEmpty(o.AccountId)
+                tasklists = this._context.Tasklists.Where(o => o.AccountId.Equals("")
                    && o.TasklistId.Equals(tasklistId))
                    .ToList();
             }
@@ -118,7 +118,7 @@ namespace Cooper.Repositories
             }
             else
             {
-                tasklists = this._context.Tasklists.Where(o => string.IsNullOrEmpty(o.AccountId)).ToList();
+                tasklists = this._context.Tasklists.Where(o => o.AccountId.Equals("")).ToList();
             }
             if (tasklists != null && tasklists.Count > 0)
             {

@@ -1006,7 +1006,8 @@ namespace Cordova.Extension.Commands
         {
             string result = response.Content;
             Dictionary<string, string> tasklistDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
-            //TODO:删除当前账户的所有任务列表
+            //删除当前账户的所有任务列表
+            this._tasklistRepository.DeleteAll();
 
             List<Tasklist> tasklists = new List<Tasklist>();
             foreach (var key in tasklistDict.Keys)
@@ -1045,7 +1046,65 @@ namespace Cordova.Extension.Commands
 
             this._tasklistRepository.AddTasklists(tasklists);
 
-            List<Tasklist> allTasklists = this._tasklistRepository.GetAllTasklist();
+            if (tasklists.Count == 0)
+            {
+                resultCode.Status = true;
+
+                this.DispatchCommandResult(resultCode);
+            }
+            else
+            {
+                foreach(Tasklist tempTasklist in tasklists)
+		        {
+		        	//HACK:Fetch模式不支持同步变更
+		        	if(tempTasklist.TasklistId.Equals("github")
+                            || tempTasklist.TasklistId.Equals("ifree")
+                            || tempTasklist.TasklistId.Equals("wf"))
+		        	{
+                        this._taskService.GetTasks(tempTasklist.TasklistId
+                            , response1 =>
+                            {
+                                if (response1.StatusCode == HttpStatusCode.OK)
+                                {
+                                    this.GetTasksAfterResponse(tempTasklist.TasklistId, resultCode, response1);
+                                }
+                                else
+                                {
+                                    this.DispatchCommandResult(response1);
+                                }
+                            }
+                            , exception =>
+                            {
+                                this.DispatchCommandResult(exception);
+                            });
+		        		
+		        	}
+		        	else 
+		        	{
+		        		this._console.log("tasklistId:" + tempTasklist.TasklistId);
+                        this._taskService.SyncTasks(tempTasklist.TasklistId
+                            , response1 =>
+                            {
+                                if (response1.StatusCode == HttpStatusCode.OK)
+                                {
+                                    this.SyncTasksAfterResponse(tempTasklist.TasklistId, resultCode, response1);
+                                }
+                                else
+                                {
+                                    this.DispatchCommandResult(response1);
+                                }
+                            }
+                            , exception =>
+                            {
+                                this.DispatchCommandResult(exception);
+                            });
+			        	
+					}     		
+		        }
+                resultCode.Status = true;
+
+                this.DispatchCommandResult(resultCode);
+			}
         }
         private void GetTasksAfterResponse(string tasklistId, ResultCode resultCode, RestResponse response)
         {

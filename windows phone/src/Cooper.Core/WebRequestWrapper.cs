@@ -58,8 +58,14 @@ namespace Cooper.Core
             client.BeginRequest(restRequest, (request, response, userState) =>
                 {
                     cookieContainer = response.CookieContainer;
-                    IsolatedStorageSettings.ApplicationSettings["cookies"] = cookieContainer;
-                    IsolatedStorageSettings.ApplicationSettings.Save();
+                    try
+                    {
+                        IsolatedStorageSettings.ApplicationSettings["cookies"] = cookieContainer;
+                        IsolatedStorageSettings.ApplicationSettings.Save();
+                    }
+                    catch
+                    {
+                    }
 
                     if (response != null)
                         Deployment.Current.Dispatcher.BeginInvoke(action, response);

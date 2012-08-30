@@ -30,7 +30,7 @@ namespace Cooper.Repositories
         public List<TaskIdx> GetAllTaskIdxByTemp()
         {
             List<TaskIdx> taskIdxs = this._context.TaskIdxs
-                .Where(o => string.IsNullOrEmpty(o.AccountId))
+                .Where(o => o.AccountId.Equals(""))
                 .ToList();
             return taskIdxs;
         }
@@ -49,7 +49,7 @@ namespace Cooper.Repositories
             else
             {
                 taskIdxs = this._context.TaskIdxs
-                    .Where(o => string.IsNullOrEmpty(o.AccountId)
+                    .Where(o => o.AccountId.Equals("")
                         && o.TasklistId.Equals(tasklistId))
                     .ToList();
             }
@@ -92,7 +92,7 @@ namespace Cooper.Repositories
             else
             {
                 taskIdxs = this._context.TaskIdxs
-                    .Where(o => string.IsNullOrEmpty(o.AccountId)
+                    .Where(o => o.AccountId.Equals("")
                         && o.TasklistId.Equals(tasklistId))
                         .ToList();
             }
@@ -136,7 +136,7 @@ namespace Cooper.Repositories
                 taskIdxs = this._context.TaskIdxs
                     .Where(o => o.Key.Equals(key)
                         && o.TasklistId.Equals(tasklistId)
-                        && string.IsNullOrEmpty(o.AccountId))
+                        && o.AccountId.Equals(""))
                     .ToList();
             }
 
@@ -198,7 +198,7 @@ namespace Cooper.Repositories
             {
                 taskIdxs = this._context.TaskIdxs
                     .Where(o => o.TasklistId.Equals(tasklistId)
-                        && string.IsNullOrEmpty(o.AccountId))
+                        && o.AccountId.Equals(""))
                     .ToList();
             }
 
@@ -247,7 +247,7 @@ namespace Cooper.Repositories
             {
                 taskIdxs = this._context.TaskIdxs
                     .Where(o => o.TasklistId.Equals(tasklistId)
-                        && string.IsNullOrEmpty(o.AccountId))
+                        && o.AccountId.Equals(""))
                     .ToList();
             }
 

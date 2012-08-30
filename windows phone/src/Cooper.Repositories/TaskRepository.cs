@@ -28,7 +28,7 @@ namespace Cooper.Repositories
         public List<Task> GetAllTaskByTemp()
         {
             List<Task> tasks = this._context.Tasks
-                .Where(o => string.IsNullOrEmpty(o.AccountId))
+                .Where(o => o.AccountId.Equals(""))
                 .ToList();
             return tasks;
         }
@@ -46,7 +46,7 @@ namespace Cooper.Repositories
             }
             else
             {
-                tasks = this._context.Tasks.Where(o => string.IsNullOrEmpty(o.AccountId)
+                tasks = this._context.Tasks.Where(o => o.AccountId.Equals("")
                     && o.TasklistId.Equals(tasklistId))
                     .OrderBy(o => o.TaskId)
                     .ToList();
@@ -100,7 +100,7 @@ namespace Cooper.Repositories
             }
             else
             {
-                tasks = this._context.Tasks.Where(o => string.IsNullOrEmpty(o.AccountId)
+                tasks = this._context.Tasks.Where(o => o.AccountId.Equals("")
                     && o.TasklistId.Equals(tasklistId))
                     .ToList();
             }

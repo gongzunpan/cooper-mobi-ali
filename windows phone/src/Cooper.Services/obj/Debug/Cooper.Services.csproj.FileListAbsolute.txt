@@ -10,3 +10,15 @@ C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Ne
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\MyToolkit.dll
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Repositories.dll
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Repositories.pdb
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Services.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Services.pdb
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Core.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Repositories.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\MyToolkit.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Newtonsoft.Json.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Core.pdb
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Repositories.pdb
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Newtonsoft.Json.xml
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\obj\Debug\ResolveAssemblyReference.cache
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.pdb

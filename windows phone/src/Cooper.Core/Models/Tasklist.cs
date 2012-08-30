@@ -25,7 +25,7 @@ namespace Cooper.Core.Models
 
         [Column(IsPrimaryKey = true
             , IsDbGenerated = true
-            , DbType = "LONG NOT NULL Identity"
+            , DbType = "BIGINT NOT NULL Identity"
             , CanBeNull = false
             , AutoSync = AutoSync.OnInsert)]
         public long Id { get; set; }
