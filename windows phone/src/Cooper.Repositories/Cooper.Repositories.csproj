@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{53B2427A-41AB-4E56-AA53-350229A42212}</ProjectGuid>
+    <ProjectGuid>{FC376948-CE28-4EC2-80EC-1AAA0857763C}</ProjectGuid>
     <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cooper.Core</RootNamespace>
-    <AssemblyName>Cooper.Core</AssemblyName>
+    <RootNamespace>Cooper.Repositories</RootNamespace>
+    <AssemblyName>Cooper.Repositories</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
@@ -41,13 +41,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Hammock.WindowsPhone">
-      <HintPath>..\..\lib\Hammock.WindowsPhone.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Phone" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -57,15 +50,17 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constant.cs" />
-    <Compile Include="CooperContext.cs" />
-    <Compile Include="Models\ChangeLog.cs" />
-    <Compile Include="Models\Task.cs" />
-    <Compile Include="Models\TaskIdx.cs" />
-    <Compile Include="Models\Tasklist.cs" />
+    <Compile Include="ChangeLogRepository.cs" />
+    <Compile Include="TaskIdxRepository.cs" />
+    <Compile Include="TasklistRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools.cs" />
-    <Compile Include="WebRequestWrapper.cs" />
+    <Compile Include="TaskRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cooper.Core\Cooper.Core.csproj">
+      <Project>{53B2427A-41AB-4E56-AA53-350229A42212}</Project>
+      <Name>Cooper.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

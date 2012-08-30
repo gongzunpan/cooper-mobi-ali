@@ -13,7 +13,7 @@ namespace Cooper.Core
     /// <summary>
     /// 辅助工具类
     /// </summary>
-    public class Tools
+    public static class Tools
     {
         /// <summary>
         /// 是否连接网络
@@ -26,6 +26,20 @@ namespace Cooper.Core
 
             bool connected = interfaceInfo.InterfaceState == ConnectState.Connected;
             return connected;
+        }
+        /// <summary>
+        /// 转换为Json字符串
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string ToJSONString(this object obj)
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+        }
+
+        public static object ToJSONObject(this string value)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject(value);
         }
     }
 }

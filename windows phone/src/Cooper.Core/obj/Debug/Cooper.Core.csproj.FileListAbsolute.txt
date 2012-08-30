@@ -1,0 +1,16 @@
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Cooper.Core.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Cooper.Core.pdb
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\obj\Debug\ResolveAssemblyReference.cache
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\obj\Debug\Cooper.Core.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\obj\Debug\Cooper.Core.pdb
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Newtonsoft.Json.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Newtonsoft.Json.xml
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Hammock.WindowsPhone.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Cooper.Core.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Cooper.Core.pdb
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Hammock.WindowsPhone.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Newtonsoft.Json.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Newtonsoft.Json.xml
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\obj\Debug\ResolveAssemblyReference.cache
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\obj\Debug\Cooper.Core.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\obj\Debug\Cooper.Core.pdb

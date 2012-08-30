@@ -452,7 +452,7 @@
     }
     //判断当前访问页面是否在移动设备
     function isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent);
     }
     //判断是否是空字符串
     function isNullOrEmpty(value) {
@@ -468,7 +468,8 @@
 
     //登录页面:“确定”按钮事件响应
     $(document).delegate("#loginPage #loginButton", "click", function () {
-		var domain = $('#domain').val();
+		//var domain = $('#domain').val();
+		var domain = '';
         var userName = $("#username").val();
         var password = $("#password").val();
 	
