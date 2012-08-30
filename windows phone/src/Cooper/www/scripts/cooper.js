@@ -510,7 +510,7 @@
     //登录页面:“跳过”按钮事件响应
     $(document).delegate("#loginPage #skipLoginButton", "click", function () {
         if (isMobileDevice()) {
-            login("", "", "anonymous", function (result) {
+            login("", "", "", "anonymous", function (result) {
                 if (!result.status) {
                     alert(result.message);
                 }

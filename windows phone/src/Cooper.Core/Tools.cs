@@ -41,5 +41,10 @@ namespace Cooper.Core
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject(value);
         }
+
+        public static DateTime ToDefault(this DateTime value)
+        {
+            return DateTime.Parse("1970-01-01");
+        }
     }
 }

@@ -46,7 +46,7 @@ namespace Cooper.Repositories
             return tasklists;
         }
 
-        public List<Tasklist> getAllTasklistByTemp()
+        public List<Tasklist> GetAllTasklistByTemp()
         {
             List<Tasklist> tasklists = this._context.Tasklists
                 .Where(o => o.TasklistId.IndexOf("temp_") >= 0
@@ -123,8 +123,8 @@ namespace Cooper.Repositories
             if (tasklists != null && tasklists.Count > 0)
             {
                 this._context.Tasklists.DeleteAllOnSubmit<Tasklist>(tasklists);
-            }
-            this._context.SubmitChanges();
+                this._context.SubmitChanges();
+            }   
         }
 
         public void AddTasklist(Tasklist tasklist)

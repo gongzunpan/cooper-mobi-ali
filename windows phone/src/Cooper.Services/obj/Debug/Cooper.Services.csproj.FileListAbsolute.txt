@@ -5,8 +5,6 @@ C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Co
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Core.pdb
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.dll
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.pdb
-C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Newtonsoft.Json.dll
-C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Newtonsoft.Json.xml
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\MyToolkit.dll
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Repositories.dll
 C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Repositories.pdb
@@ -22,3 +20,13 @@ D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Ne
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\obj\Debug\ResolveAssemblyReference.cache
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.dll
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.pdb
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Services.dll
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Services.pdb
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Core.dll
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Repositories.dll
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\Bin\Debug\MyToolkit.dll
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Core.pdb
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Repositories.pdb
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\obj\Debug\ResolveAssemblyReference.cache
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.dll
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.pdb

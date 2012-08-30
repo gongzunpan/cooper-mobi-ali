@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +14,7 @@ using System.Windows.Shapes;
 using Cooper.Core;
 using Cooper.Core.Models;
 using System.Collections;
+using Newtonsoft.Json.Linq;
 
 namespace Cooper.Repositories
 {
@@ -61,11 +61,11 @@ namespace Cooper.Repositories
             List<TaskIdx> taskIdxs = this.GetAllTaskIdx(tasklistId);
             foreach (var taskIdx in taskIdxs)
             {
-                List<string> sIndexesArray = (List<string>)taskIdx.Indexes.ToJSONObject();
+                JArray sIndexesArray = (JArray)taskIdx.Indexes.ToJSONObject();
                 int i = 0;
                 for (int index = 0; index < sIndexesArray.Count; index++)
                 {
-                    string taskId = sIndexesArray[index] as string;
+                    string taskId = sIndexesArray[index].Value<string>();
                     if (taskId == oldId)
                     {
                         sIndexesArray[i] = newId;
@@ -141,7 +141,7 @@ namespace Cooper.Repositories
             }
 
             TaskIdx taskIdx = null;
-            List<string> indexesArray = null;
+            JArray indexesArray = null;
             if (taskIdxs == null || (taskIdxs != null && taskIdxs.Count == 0))
             {
                 taskIdx = new TaskIdx();
@@ -158,18 +158,18 @@ namespace Cooper.Repositories
                 {
                     taskIdx.AccountId = "";
                 }
-                indexesArray = new List<string>();
+                indexesArray = new JArray();
             }
             else
             {
                 taskIdx = taskIdxs[0];
                 if (string.IsNullOrEmpty(taskIdx.Indexes))
                 {
-                    indexesArray = new List<string>();
+                    indexesArray = new JArray();
                 }
                 else
                 {
-                    indexesArray = (List<string>)taskIdx.Indexes.ToJSONObject();
+                    indexesArray = (JArray)taskIdx.Indexes.ToJSONObject();
                 }
             }
             indexesArray.Add(taskId);
@@ -206,13 +206,13 @@ namespace Cooper.Repositories
             {
                 foreach (var taskIdx in taskIdxs)
                 {
-                    List<string> indexesArray = null;
-                    List<string> newIndexesArray = null;
-                    indexesArray = (List<string>)taskIdx.Indexes.ToJSONObject();
-                    newIndexesArray = new List<string>();
+                    JArray indexesArray = null;
+                    JArray newIndexesArray = null;
+                    indexesArray = (JArray)taskIdx.Indexes.ToJSONObject();
+                    newIndexesArray = new JArray();
                     for (int i = 0; i < indexesArray.Count; i++)
                     {
-                        string currentTaskId = indexesArray[i];
+                        string currentTaskId = indexesArray[i].Value<string>();
                         if (!currentTaskId.Equals(taskId))
                         {
                             newIndexesArray.Add(currentTaskId);
@@ -255,13 +255,13 @@ namespace Cooper.Repositories
             {
                 foreach (var taskIdx in taskIdxs)
                 {
-                    List<string> indexesArray = null;
-                    List<string> newIndexesArray = null;
-                    indexesArray = (List<string>)taskIdx.Indexes.ToJSONObject();
-                    newIndexesArray = new List<string>();
+                    JArray indexesArray = null;
+                    JArray newIndexesArray = null;
+                    indexesArray = (JArray)taskIdx.Indexes.ToJSONObject();
+                    newIndexesArray = new JArray();
                     for (int i = 0; i < indexesArray.Count; i++)
                     {
-                        string currentTaskId = indexesArray[i];
+                        string currentTaskId = indexesArray[i].Value<string>();
                         if (!currentTaskId.Equals(taskId))
                         {
                             newIndexesArray.Add(currentTaskId);

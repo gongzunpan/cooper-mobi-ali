@@ -22,7 +22,6 @@ namespace Cooper.Core.Models
         {
             this.CreateDate = DateTime.Now;
             this.LastUpdateDate = DateTime.Now;
-            this.DueDate = DateTime.MinValue;
         }
 
         [Column(IsPrimaryKey = true
@@ -41,8 +40,8 @@ namespace Cooper.Core.Models
         [Column]
         public DateTime CreateDate { get; set; }
 
-        [Column]
-        public DateTime DueDate { get; set; }
+        [Column(CanBeNull = true)]
+        public DateTime? DueDate { get; set; }
 
         [Column]
         public string TaskId { get; set; }

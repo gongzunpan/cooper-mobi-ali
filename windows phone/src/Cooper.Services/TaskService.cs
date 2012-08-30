@@ -13,6 +13,7 @@ using Hammock;
 using System.Collections.Generic;
 using Cooper.Core.Models;
 using Cooper.Repositories;
+using Newtonsoft.Json.Linq;
 
 namespace Cooper.Services
 {
@@ -28,17 +29,19 @@ namespace Cooper.Services
         }
 
         public void GetTasks(string tasklistId
-            , Action<RestResponse> successCallback
-            , Action<Exception> failCallback)
+            , Action<RestResponse, object> successCallback
+            , Action<Exception> failCallback
+            , object userState)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("tasklistId", tasklistId);
-            this.UploadString(Constant.TASK_GETBYPRIORITY_URL, dict, successCallback, failCallback);
+            this.UploadString(Constant.TASK_GETBYPRIORITY_URL, dict, successCallback, failCallback, userState);
         }
 
         public void SyncTasks(string tasklistId
-            , Action<RestResponse> successCallback
-            , Action<Exception> failCallback)
+            , Action<RestResponse, object> successCallback
+            , Action<Exception> failCallback
+            , object userState)
         {
             List<ChangeLog> changeLogs = this._changeLogRepository.GetAllChangeLog(tasklistId);
             List<Dictionary<string, string>> changeLogsArray = new List<Dictionary<string, string>>();
@@ -62,14 +65,14 @@ namespace Cooper.Services
                 dict.Add("Key", taskIdx.Key);
                 dict.Add("Name", taskIdx.Name);
 
-                List<string> indexesArray = null;
+                JArray indexesArray = null;
                 if(string.IsNullOrEmpty(taskIdx.Indexes))
                 {
-                    indexesArray = new List<string>();
+                    indexesArray = new JArray();
                 }
                 else
                 {
-                    indexesArray = (List<string>)taskIdx.Indexes.ToJSONObject();
+                    indexesArray = (JArray)taskIdx.Indexes.ToJSONObject();
                 }
                 dict.Add("Indexs", indexesArray.ToJSONString());
 
@@ -89,7 +92,7 @@ namespace Cooper.Services
             postDict.Add("by", "ByPriority");
             postDict.Add("sorts", taskIdxsJson);
 
-            this.UploadString(Constant.TASK_SYNC_URL, postDict, successCallback, failCallback);
+            this.UploadString(Constant.TASK_SYNC_URL, postDict, successCallback, failCallback, userState);
         }
     }
 }

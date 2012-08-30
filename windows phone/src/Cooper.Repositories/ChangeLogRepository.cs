@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -89,6 +88,7 @@ namespace Cooper.Repositories
             if (changeLogs.Count > 0)
             {
                 this._context.ChangeLogs.DeleteAllOnSubmit<ChangeLog>(changeLogs);
+                this._context.SubmitChanges();
             }
         }
 

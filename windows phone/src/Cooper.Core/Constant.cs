@@ -40,13 +40,14 @@ namespace Cooper.Core
 	    public static readonly String ISGUESTUSER_KEY = "isguestuser";
 	
 	    //Service路径
-        //public static readonly String DOMAIN = "cooper.wf.taobao.org";
-        //public static readonly String ROOTURL = "https://" + DOMAIN;
-	    public static readonly String DOMAIN = "cooper.apphb.com";
+        public static readonly String DOMAIN = "cooper.wf.taobao.org";
         public static readonly String ROOTURL = "https://" + DOMAIN;
-        //public static readonly String DOMAIN = "debug.incooper.net";
+	    //public static readonly String DOMAIN = "cooper.apphb.com";
+        //public static readonly String ROOTURL = "https://" + DOMAIN;
+        //public static readonly String DOMAIN = "10.13.25.81:9012";
         //public static readonly String ROOTURL = "http://" + DOMAIN;
-	    public static readonly String LOGIN_URL = ROOTURL + "/Account/Login";
+        //public static readonly String LOGIN_URL = ROOTURL + "/Account/Login";
+	    public static readonly String LOGIN_URL = ROOTURL + "/Account/ArkLogin";
 	    public static readonly String LOGOUT_URL = ROOTURL + "/Account/Logout";
 	    public static readonly String GETTASKLISTS_URL = ROOTURL + "/Personal/GetTasklists";
 	    public static readonly String TASK_GETBYPRIORITY_URL = ROOTURL + "/Personal/GetByPriority";

@@ -14,3 +14,11 @@ D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\Newton
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\obj\Debug\ResolveAssemblyReference.cache
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\obj\Debug\Cooper.Core.dll
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\obj\Debug\Cooper.Core.pdb
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\Bin\Debug\Cooper.Core.dll
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\Bin\Debug\Cooper.Core.pdb
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\Bin\Debug\Hammock.WindowsPhone.dll
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\Bin\Debug\Newtonsoft.Json.dll
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\Bin\Debug\Newtonsoft.Json.xml
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\obj\Debug\ResolveAssemblyReference.cache
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\obj\Debug\Cooper.Core.dll
+C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\obj\Debug\Cooper.Core.pdb
