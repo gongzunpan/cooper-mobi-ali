@@ -25,6 +25,7 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.codesharp.cooper.ChangeLog;
 import com.codesharp.cooper.Constant;
 import com.codesharp.cooper.MainActivity;
 import com.codesharp.cooper.Task;
@@ -207,17 +208,75 @@ public class CooperPlugin extends Plugin {
 						{
 							if(Tools.isNullOrEmpty(params.getString("tasklistId")))
 							{
-								//同步任务列表
-								HttpResponse response = this._tasklistService.syncTasklists();
+								//获取待同步的Tasklist
+								List<Tasklist> tempTasklists = this._tasklistRepository.getAllTasklistByTemp();
+								String username = this._sharedPrefs.contains(Constant.USERNAME_KEY) ? 
+										 this._sharedPrefs.getString(Constant.USERNAME_KEY, "") : "";
+
+								List<Tasklist> tasklists = this._tasklistRepository.getAllTasklistByUserAndTemp();
+								tempTasklists.addAll(tasklists);
 								
+								for (Tasklist tasklist : tasklists) {
+									tasklist.setAccountId(username);
+								}
+								if(tasklists.size() > 0)
+									this._tasklistRepository.updateTasklists(tasklists);
+								
+								List<Task> tasks = this._taskRepository.getAllTaskByTemp();
+								for (Task task : tasks) {
+									task.setAccountId(username);
+								}
+								if(tasks.size() > 0)
+									this._taskRepository.updateTasks(tasks);
+								
+								List<TaskIdx> taskIdxs = this._taskIdxRepository.getAllTaskIdxByTemp();
+								for (TaskIdx taskIdx : taskIdxs) {
+									taskIdx.setAccountId(username);
+								}
+								if(taskIdxs.size() > 0)
+									this._taskIdxRepository.updateTaskIdxs(taskIdxs);
+								
+								List<ChangeLog> changeLogs = this._changeLogRepository.getAllChangeLogByTemp();
+								for (ChangeLog changeLog : changeLogs) {
+									changeLog.setAccountId(username);
+								}		
+								if(changeLogs.size() > 0)
+									this._changeLogRepository.updateChangeLogs(changeLogs);
+								
+								//遍历同步Tasklist
+								for (Tasklist tasklist : tempTasklists) {
+									HttpResponse response = this._tasklistService.syncTasklist(tasklist.getName(), tasklist.getListType());
+									if(response.getStatusLine().getStatusCode() == 200)
+									{
+										this.syncTasklistAfterResponse("", tasklist, resultCode, response);
+									}
+									else
+									{
+										this.putResultCodeFailed(resultCode, response);
+									}
+								}
+								
+								HttpResponse response = this._tasklistService.getTasklists();
 								if(response.getStatusLine().getStatusCode() == 200)
 								{
-									this.syncTasklistsAfterResponse("", resultCode, response);
+									this.getTasklistsAfterResponse("", resultCode, response);
 								}
 								else
 								{
 									this.putResultCodeFailed(resultCode, response);
 								}
+								
+//								//同步任务列表
+//								HttpResponse response = this._tasklistService.syncTasklists();
+//								
+//								if(response.getStatusLine().getStatusCode() == 200)
+//								{
+//									this.syncTasklistsAfterResponse("", resultCode, response);
+//								}
+//								else
+//								{
+//									this.putResultCodeFailed(resultCode, response);
+//								}
 							}
 							else
 							{
@@ -225,16 +284,37 @@ public class CooperPlugin extends Plugin {
 								
 								if(tasklistId.indexOf("temp_") >= 0)
 								{
-									HttpResponse response = this._tasklistService.syncTasklists(tasklistId);
+									Tasklist tasklist = this._tasklistRepository.getTasklistById(tasklistId);
+									HttpResponse response = this._tasklistService.syncTasklist(tasklist.getName(), tasklist.getListType());
 									if(response.getStatusLine().getStatusCode() == 200)
 									{
-										this.syncTasklistsAfterResponse(tasklistId, resultCode, response);
-										resultCode.put("status", true);
+										this.syncTasklistAfterResponse(tasklistId, tasklist, resultCode, response);
 									}
 									else
 									{
 										this.putResultCodeFailed(resultCode, response);
 									}
+									
+									response = this._tasklistService.getTasklists();
+									if(response.getStatusLine().getStatusCode() == 200)
+									{
+										this.getTasklistsAfterResponse(tasklistId, resultCode, response);
+									}
+									else
+									{
+										this.putResultCodeFailed(resultCode, response);
+									}
+										
+//									HttpResponse response = this._tasklistService.syncTasklists(tasklistId);
+//									if(response.getStatusLine().getStatusCode() == 200)
+//									{
+//										this.syncTasklistsAfterResponse(tasklistId, resultCode, response);
+//										resultCode.put("status", true);
+//									}
+//									else
+//									{
+//										this.putResultCodeFailed(resultCode, response);
+//									}
 								}
 								else 
 								{
@@ -247,6 +327,8 @@ public class CooperPlugin extends Plugin {
 									{
 										this.putResultCodeFailed(resultCode, response);
 									}
+									
+									resultCode.put("status", true);
 								}	
 							}
 						}
@@ -602,6 +684,135 @@ public class CooperPlugin extends Plugin {
 		
 		return null;
 	}
+	
+	private void getTasklistsAfterResponse(String tasklistId, JSONObject resultCode, HttpResponse response)
+			throws ParseException, IOException, JSONException {
+//		if(Tools.isNullOrEmpty(tasklistId))
+//		{
+				String result = EntityUtils.toString(response.getEntity());
+				JSONObject tasklistsDict = new JSONObject(result);
+				
+				//删除当前账户所有列表
+				this._tasklistRepository.deleteAll();
+				
+				List<Tasklist> tasklists = new ArrayList<Tasklist>();
+				Iterator keyIter = tasklistsDict.keys();   
+		        while(keyIter.hasNext())   
+		        {   
+		            String key = (String)keyIter.next();   
+		            String value = (String)tasklistsDict.get(key);   
+	
+		            Tasklist tempTasklist = new Tasklist();
+		            tempTasklist.setTasklistId(key);
+		            tempTasklist.setName(value);
+		            tempTasklist.setListType("personal");
+		            tempTasklist.setEditable(true);
+		            if(this._sharedPrefs.contains(Constant.USERNAME_KEY))
+		            {
+		            	tempTasklist.setAccountId(this._sharedPrefs.getString(Constant.USERNAME_KEY, ""));
+		            }
+		            else {
+		            	tempTasklist.setAccountId("");
+					}
+		            tasklists.add(tempTasklist);
+		        } 
+		        Tasklist defaultTasklist = new Tasklist();
+		        defaultTasklist.setTasklistId("0");
+		        defaultTasklist.setName("默认列表");
+		        defaultTasklist.setListType("personal");
+		        defaultTasklist.setEditable(true);
+	            if(this._sharedPrefs.contains(Constant.USERNAME_KEY))
+	            {
+	            	defaultTasklist.setAccountId(this._sharedPrefs.getString(Constant.USERNAME_KEY, ""));
+	            }
+	            else {
+					defaultTasklist.setAccountId("");
+				}
+	            tasklists.add(defaultTasklist);
+	            
+	            this._tasklistRepository.addTasklists(tasklists);
+		        
+		        if(tasklists.size() == 0)
+		        {
+		        	resultCode.put("status", true);
+		        }
+		        else
+		        {
+		        	for(Tasklist tempTasklist : tasklists)
+		        	{
+		        		//HACK:Fetch模式不支持同步变更
+		        		if(tempTasklist.getTasklistId().equals("github") 
+		        				|| tempTasklist.getTasklistId().equals("ifree")
+		        				|| tempTasklist.getTasklistId().equals("wf"))
+		        		{
+		        			response = this._taskService.getTasks(tempTasklist.getTasklistId());
+		        			if(response.getStatusLine().getStatusCode() == 200)
+			        		{
+		        				this.getTasksAfterResponse(tempTasklist.getTasklistId(), resultCode, response);
+			        		}
+		        			else 
+			        		{
+			        			this.putResultCodeFailed(resultCode, response);
+							}
+		        		}
+		        		else 
+		        		{
+		        			Log.v(Constant.MESSAGE_TAG, "tasklistId:" + tempTasklist.getTasklistId());
+		        			response = this._taskService.syncTasks(tempTasklist.getTasklistId());
+			        		if(response.getStatusLine().getStatusCode() == 200)
+			        		{
+			        			this.syncTasksAfterResponse(tempTasklist.getTasklistId(), resultCode, response);
+			        		}
+			        		else 
+			        		{
+			        			this.putResultCodeFailed(resultCode, response);
+							}
+						}     		
+		        	}
+		        	resultCode.put("status", true);
+				}	
+//		}
+//		else 
+//		{
+//			if(!Tools.isNullOrEmpty(newTasklistId))
+//			{
+//				response = this._taskService.syncTasks(newTasklistId);
+//	    		if(response.getStatusLine().getStatusCode() == 200)
+//	    		{
+//	    			this.syncTasksAfterResponse(newTasklistId, resultCode, response);
+//	    		}
+//	    		else 
+//	    		{
+//	    			this.putResultCodeFailed(resultCode, response);
+//				}
+//			}
+//		}
+	}
+	
+	private String syncTasklistAfterResponse(String tasklistId, Tasklist tasklist, JSONObject resultCode, HttpResponse response)
+			throws ParseException, IOException, JSONException {
+		String result = EntityUtils.toString(response.getEntity());
+		
+		this._tasklistRepository.adjustWithNewId(tasklist.getTasklistId(), result);
+		
+		Log.v(Constant.MESSAGE_TAG, String.format("任务列表旧值ID: %s 变为新值ID: %s", tasklist.getTasklistId(), result));
+		
+		String newTasklistId = null;
+		if(this._sharedPrefs.contains(Constant.USERNAME_KEY))
+		{
+			String username = this._sharedPrefs.getString(Constant.USERNAME_KEY, "");
+			if(username != null && username != "")
+			{
+				this._taskRepository.updateTasklistIdByNewId(tasklist.getTasklistId(), result);
+				this._taskIdxRepository.updateTasklistIdByNewId(tasklist.getTasklistId(), result);
+				this._changeLogRepository.updateTasklistIdByNewId(tasklist.getTasklistId(), result);
+				
+				newTasklistId = result;
+			}
+		}
+		
+		return newTasklistId;
+	}
 
 	private void syncTasklistsAfterResponse(String tasklistId,
 			JSONObject resultCode, HttpResponse response) throws ParseException, IOException, JSONException {
@@ -690,7 +901,9 @@ public class CooperPlugin extends Plugin {
 		        	for(Tasklist tasklist : tasklists)
 		        	{
 		        		//HACK:Fetch模式不支持同步变更
-		        		if(tasklist.getTasklistId().equals("github"))
+		        		if(tasklist.getTasklistId().equals("github")
+		        				|| tasklist.getTasklistId().equals("ifree")
+		        				|| tasklist.getTasklistId().equals("wf"))
 		        		{
 		        			response = this._taskService.getTasks(tasklist.getTasklistId());
 		        			if(response.getStatusLine().getStatusCode() == 200)

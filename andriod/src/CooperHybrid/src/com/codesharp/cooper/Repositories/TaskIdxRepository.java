@@ -244,7 +244,9 @@ public class TaskIdxRepository {
 				taskIdx.setIndexes(newIndexesArray.toString());
 			}
 			
-			this._taskIdxDao.updateInTx(taskIdxs);
+			if(taskIdxs.size() > 0) {
+				this._taskIdxDao.updateInTx(taskIdxs);
+			}
 		}
 	}
 

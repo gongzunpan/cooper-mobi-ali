@@ -9,7 +9,8 @@
 <fullyQualifiedTypeName name="org.apache.http.HttpRequest"/>
 <fullyQualifiedTypeName name="com.codesharp.cooper.Tasklist"/>
 <fullyQualifiedTypeName name="java.lang.String"/>
-<fullyQualifiedTypeName name="org.apache.http.HttpResponse"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="com.codesharp.cooper.Constant"/>
+<fullyQualifiedTypeName name="org.apache.http.HttpResponse"/>
+<fullyQualifiedTypeName name="org.apache.http.protocol.HTTP"/>
 </qualifiedTypeNameHistroy>
