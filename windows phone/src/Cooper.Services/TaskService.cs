@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Cooper.Core.Models;
 using Cooper.Repositories;
 using Newtonsoft.Json.Linq;
+using SBHTTPSClient;
 
 namespace Cooper.Services
 {
@@ -29,17 +30,21 @@ namespace Cooper.Services
         }
 
         public void GetTasks(string tasklistId
-            , Action<RestResponse, object> successCallback
+            , Action<TElHTTPSClient, string, object> successCallback
             , Action<Exception> failCallback
             , object userState)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("tasklistId", tasklistId);
-            this.UploadString(Constant.TASK_GETBYPRIORITY_URL, dict, successCallback, failCallback, userState);
+
+            RequestManager requestManager = new RequestManager();
+            requestManager.Post(Constant.TASK_GETBYPRIORITY_URL, dict, successCallback, failCallback, userState);
+
+            //this.UploadString(Constant.TASK_GETBYPRIORITY_URL, dict, successCallback, failCallback, userState);
         }
 
         public void SyncTasks(string tasklistId
-            , Action<RestResponse, object> successCallback
+            , Action<TElHTTPSClient, string, object> successCallback
             , Action<Exception> failCallback
             , object userState)
         {
@@ -92,7 +97,10 @@ namespace Cooper.Services
             postDict.Add("by", "ByPriority");
             postDict.Add("sorts", taskIdxsJson);
 
-            this.UploadString(Constant.TASK_SYNC_URL, postDict, successCallback, failCallback, userState);
+            RequestManager requestManager = new RequestManager();
+            requestManager.Post(Constant.TASK_SYNC_URL, postDict, successCallback, failCallback, userState);
+
+            //this.UploadString(Constant.TASK_SYNC_URL, postDict, successCallback, failCallback, userState);
         }
     }
 }

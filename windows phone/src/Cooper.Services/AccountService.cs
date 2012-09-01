@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using MyToolkit.Networking;
 using System.Text;
 using Hammock;
+using SBHTTPSClient;
 
 namespace Cooper.Services
 {
@@ -30,7 +31,7 @@ namespace Cooper.Services
         public void Login(string domain
             , string username
             , string password
-            , Action<RestResponse, object> successCallback
+            , Action<TElHTTPSClient, string, object> successCallback
             , Action<Exception> failCallback
             , object userState)
         {
@@ -39,7 +40,11 @@ namespace Cooper.Services
             dict.Add("tbLoginName", username);
             dict.Add("tbPassword", password);
             dict.Add("state", "login");
-            this.UploadString(Constant.LOGIN_URL, dict, successCallback, failCallback, userState);
+
+            RequestManager requestManager = new RequestManager();
+            requestManager.Post(Constant.LOGIN_URL, dict, successCallback, failCallback, userState);
+
+            //this.UploadString(Constant.LOGIN_URL, dict, successCallback, failCallback, userState);
         }
         /// <summary>
         /// 普通登录
@@ -65,14 +70,17 @@ namespace Cooper.Services
         /// </summary>
         /// <param name="successCallback"></param>
         /// <param name="failCallback"></param>
-        public void Logout(Action<RestResponse, object> successCallback
+        public void Logout(Action<TElHTTPSClient, string, object> successCallback
             , Action<Exception> failCallback)
         {
-            this.UploadString(Constant.LOGOUT_URL
-                , new Dictionary<string, string>()
-                , successCallback
-                , failCallback
-                , new Dictionary<string, object>());
+            RequestManager requestManager = new RequestManager();
+            requestManager.Post(Constant.LOGOUT_URL, new Dictionary<string, string>(), successCallback, failCallback, new Dictionary<string, object>());
+
+            //this.UploadString(Constant.LOGOUT_URL
+            //    , new Dictionary<string, string>()
+            //    , successCallback
+            //    , failCallback
+            //    , new Dictionary<string, object>());
         }
     }
 }

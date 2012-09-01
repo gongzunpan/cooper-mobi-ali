@@ -22,3 +22,9 @@ C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\Bin\Debug\Newtonso
 C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\obj\Debug\ResolveAssemblyReference.cache
 C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\obj\Debug\Cooper.Core.dll
 C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Core\obj\Debug\Cooper.Core.pdb
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\SecureBlackbox.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\SecureBlackbox.HTTP.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\SecureBlackbox.SSLClient.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\SecureBlackbox.SSLCommon.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\SecureBlackbox.HTTPCommon.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Core\Bin\Debug\SecureBlackbox.XML.dll

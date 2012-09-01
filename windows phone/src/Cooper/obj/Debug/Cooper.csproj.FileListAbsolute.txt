@@ -109,3 +109,5 @@ C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper\obj\Debug\Cooper.g.reso
 C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper\obj\Debug\Cooper.dll
 C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper\obj\Debug\Cooper.pdb
 C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper\obj\Debug\XapCacheFile.xml
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper\Bin\Debug\SecureBlackbox.HTTPCommon.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper\Bin\Debug\SecureBlackbox.XML.dll

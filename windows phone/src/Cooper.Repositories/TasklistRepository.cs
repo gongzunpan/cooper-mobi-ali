@@ -149,6 +149,11 @@ namespace Cooper.Repositories
             this._context.SubmitChanges();
         }
 
+        public void UpdateEditable(Tasklist tasklist)
+        {
+            this._context.SubmitChanges();
+        }
+
         public void UpdateTasklists(List<Tasklist> tasklists)
         {
             this._context.SubmitChanges();

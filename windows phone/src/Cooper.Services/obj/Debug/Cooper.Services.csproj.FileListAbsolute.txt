@@ -13,7 +13,6 @@ D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Co
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Core.dll
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Repositories.dll
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\MyToolkit.dll
-D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Newtonsoft.Json.dll
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Core.pdb
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Cooper.Repositories.pdb
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\Newtonsoft.Json.xml
@@ -30,3 +29,9 @@ C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\Bin\Debug\Coop
 C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\obj\Debug\ResolveAssemblyReference.cache
 C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.dll
 C:\GitHub\codesharp\cooper-mobi\windows phone\src\Cooper.Services\obj\Debug\Cooper.Services.pdb
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\SecureBlackbox.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\SecureBlackbox.HTTP.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\SecureBlackbox.SSLClient.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\SecureBlackbox.SSLCommon.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\SecureBlackbox.HTTPCommon.dll
+D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Services\Bin\Debug\SecureBlackbox.XML.dll

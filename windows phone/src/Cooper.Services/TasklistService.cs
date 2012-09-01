@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Cooper.Core;
 using System.Collections.Generic;
 using Hammock;
+using SBHTTPSClient;
 
 namespace Cooper.Services
 {
@@ -21,15 +22,18 @@ namespace Cooper.Services
         /// </summary>
         /// <param name="successCallback"></param>
         /// <param name="failCallback"></param>
-        public void GetTasklists(Action<RestResponse, object> successCallback
+        public void GetTasklists(Action<TElHTTPSClient, string, object> successCallback
             , Action<Exception> failCallback
             , object userState)
         {
-             this.UploadString(Constant.GETTASKLISTS_URL
-                 , new Dictionary<string, string>()
-                 , successCallback
-                 , failCallback
-                 , userState);
+            RequestManager requestManager = new RequestManager();
+            requestManager.Post(Constant.GETTASKLISTS_URL, new Dictionary<string, string>(), successCallback, failCallback, userState);
+
+             //this.UploadString(Constant.GETTASKLISTS_URL
+             //    , new Dictionary<string, string>()
+             //    , successCallback
+             //    , failCallback
+             //    , userState);
         }
         /// <summary>
         /// 同步任务列表
@@ -39,14 +43,18 @@ namespace Cooper.Services
         /// <param name="successCallback"></param>
         /// <param name="failCallback"></param>
         public void SyncTasklist(string name, string type
-            , Action<RestResponse, object> successCallback
+            , Action<TElHTTPSClient, string, object> successCallback
             , Action<Exception> failCallback
             , object userState)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("name", name);
             dict.Add("type", type);
-            this.UploadString(Constant.TASKLIST_SYNC_URL, dict, successCallback, failCallback, userState);
+
+            RequestManager requestManager = new RequestManager();
+            requestManager.Post(Constant.TASKLIST_SYNC_URL, dict, successCallback, failCallback, userState);
+
+            //this.UploadString(Constant.TASKLIST_SYNC_URL, dict, successCallback, failCallback, userState);
         }
     }
 }
