@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using Cooper.Core;
 using Cooper.Core.Models;
 using System.IO.IsolatedStorage;
+using System.Data.Linq;
 
 namespace Cooper.Repositories
 {
@@ -104,8 +105,8 @@ namespace Cooper.Repositories
             if (tasklist != null)
             {
                 tasklist.TasklistId = newId;
+                this.DBContextSubmitChanges();
             }
-            this._context.SubmitChanges();
         }
 
         public void DeleteAll()
@@ -123,20 +124,21 @@ namespace Cooper.Repositories
             if (tasklists != null && tasklists.Count > 0)
             {
                 this._context.Tasklists.DeleteAllOnSubmit<Tasklist>(tasklists);
-                this._context.SubmitChanges();
+
+                this.DBContextSubmitChanges();
             }   
         }
 
         public void AddTasklist(Tasklist tasklist)
         {
             this._context.Tasklists.InsertOnSubmit(tasklist);
-            this._context.SubmitChanges();
+            this.DBContextSubmitChanges();
         }
 
         public void AddTasklists(List<Tasklist> tasklists)
         {
             this._context.Tasklists.InsertAllOnSubmit<Tasklist>(tasklists);
-            this._context.SubmitChanges();
+            this.DBContextSubmitChanges();
         }
 
         public void UpdateEditable(int editable, string tasklistId)
@@ -146,17 +148,17 @@ namespace Cooper.Repositories
             {
                 tasklist.Editable = editable == 1;
             }
-            this._context.SubmitChanges();
+            this.DBContextSubmitChanges();
         }
 
         public void UpdateEditable(Tasklist tasklist)
         {
-            this._context.SubmitChanges();
+            this.DBContextSubmitChanges();
         }
 
         public void UpdateTasklists(List<Tasklist> tasklists)
         {
-            this._context.SubmitChanges();
+            this.DBContextSubmitChanges();
         }
 
         public void AdjustWithNewId(string oldId, string newId)
@@ -168,7 +170,24 @@ namespace Cooper.Repositories
                 tasklist = tasklists[0];
                 tasklist.TasklistId = newId;
             }
-            this._context.SubmitChanges();
+            this.DBContextSubmitChanges();
+        }
+
+        private void DBContextSubmitChanges()
+        {
+            try
+            {
+                this._context.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);
+            }
+            catch (System.Data.Linq.ChangeConflictException ex)
+            {
+                this._context.ChangeConflicts.ResolveAll(RefreshMode.KeepCurrentValues);  //保持当前的值
+                this._context.ChangeConflicts.ResolveAll(RefreshMode.OverwriteCurrentValues);//保持原来的更新,放弃了当前的值.
+                this._context.ChangeConflicts.ResolveAll(RefreshMode.KeepChanges);//保存原来的值 有冲突的话保存当前版本
+
+                // 注意：解决完冲突后还得 SubmitChanges() 一次，不然一样是没有更新到数据库的
+                this._context.SubmitChanges();
+            }
         }
     }
 }

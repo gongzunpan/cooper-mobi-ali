@@ -49,16 +49,16 @@
       <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SecureBlackbox">
-      <HintPath>..\..\..\..\..\..\SecureBlackbox.NET\Assemblies\WP75\SecureBlackbox.dll</HintPath>
+      <HintPath>..\..\lib\SecureBlackbox.NET\WP75\SecureBlackbox.dll</HintPath>
     </Reference>
     <Reference Include="SecureBlackbox.HTTP">
-      <HintPath>..\..\..\..\..\..\SecureBlackbox.NET\Assemblies\WP75\SecureBlackbox.HTTP.dll</HintPath>
+      <HintPath>..\..\lib\SecureBlackbox.NET\WP75\SecureBlackbox.HTTP.dll</HintPath>
     </Reference>
     <Reference Include="SecureBlackbox.SSLClient">
-      <HintPath>..\..\..\..\..\..\SecureBlackbox.NET\Assemblies\WP75\SecureBlackbox.SSLClient.dll</HintPath>
+      <HintPath>..\..\lib\SecureBlackbox.NET\WP75\SecureBlackbox.SSLClient.dll</HintPath>
     </Reference>
     <Reference Include="SecureBlackbox.SSLCommon">
-      <HintPath>..\..\..\..\..\..\SecureBlackbox.NET\Assemblies\WP75\SecureBlackbox.SSLCommon.dll</HintPath>
+      <HintPath>..\..\lib\SecureBlackbox.NET\WP75\SecureBlackbox.SSLCommon.dll</HintPath>
     </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Windows" />

@@ -75,11 +75,12 @@ namespace Cooper.Core
 
         private void HTTPSClient_OnPreparedHeaders(object Sender, SBStringList.TElStringList Headers)
         {
+            Headers.Remove("User-Agent: SecureBlackbox");
             //string s = Environment.NewLine + "Sending headers: " + Environment.NewLine + Headers.Text + Environment.NewLine;
         }
         private void HTTPSClient_OnSendData(object Sender, byte[] Buffer)
         {
-            //string s = System.Text.Encoding.UTF8.GetString(Buffer, 0, Buffer.Length);
+            string s = System.Text.Encoding.UTF8.GetString(Buffer, 0, Buffer.Length);
         }
         private void HTTPSClient_OnRedirection(object Sender, string OldURL, string NewURL, ref TSBBoolean AllowRedirection)
         {

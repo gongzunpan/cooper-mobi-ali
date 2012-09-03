@@ -77,10 +77,18 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SecureBlackbox, Version=9.1.216.0, Culture=neutral, PublicKeyToken=56f660015fdbba89, processorArchitecture=MSIL" />
-    <Reference Include="SecureBlackbox.HTTP, Version=9.1.216.0, Culture=neutral, PublicKeyToken=56f660015fdbba89, processorArchitecture=MSIL" />
-    <Reference Include="SecureBlackbox.SSLClient, Version=9.1.216.0, Culture=neutral, PublicKeyToken=56f660015fdbba89, processorArchitecture=MSIL" />
-    <Reference Include="SecureBlackbox.SSLCommon, Version=9.1.216.0, Culture=neutral, PublicKeyToken=56f660015fdbba89, processorArchitecture=MSIL" />
+    <Reference Include="SecureBlackbox, Version=9.1.216.0, Culture=neutral, PublicKeyToken=56f660015fdbba89, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\SecureBlackbox.NET\WP75\SecureBlackbox.dll</HintPath>
+    </Reference>
+    <Reference Include="SecureBlackbox.HTTP, Version=9.1.216.0, Culture=neutral, PublicKeyToken=56f660015fdbba89, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\SecureBlackbox.NET\WP75\SecureBlackbox.HTTP.dll</HintPath>
+    </Reference>
+    <Reference Include="SecureBlackbox.SSLClient, Version=9.1.216.0, Culture=neutral, PublicKeyToken=56f660015fdbba89, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\SecureBlackbox.NET\WP75\SecureBlackbox.SSLClient.dll</HintPath>
+    </Reference>
+    <Reference Include="SecureBlackbox.SSLCommon, Version=9.1.216.0, Culture=neutral, PublicKeyToken=56f660015fdbba89, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\SecureBlackbox.NET\WP75\SecureBlackbox.SSLCommon.dll</HintPath>
+    </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Servicemodel.Web" />

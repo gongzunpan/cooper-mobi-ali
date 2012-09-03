@@ -29,3 +29,11 @@ D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debu
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debug\SecureBlackbox.SSLCommon.dll
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debug\SecureBlackbox.HTTPCommon.dll
 D:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debug\SecureBlackbox.XML.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debug\Newtonsoft.Json.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debug\SecureBlackbox.HTTP.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debug\SecureBlackbox.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debug\SecureBlackbox.SSLClient.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debug\SecureBlackbox.SSLCommon.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debug\SecureBlackbox.HTTPCommon.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debug\SecureBlackbox.XML.dll
+C:\GitHub\ali-ent\cooper-mobi-ali\windows phone\src\Cooper.Repositories\Bin\Debug\Newtonsoft.Json.xml
