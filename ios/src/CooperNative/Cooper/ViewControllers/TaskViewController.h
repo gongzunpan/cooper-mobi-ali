@@ -6,21 +6,21 @@
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
-#import "TaskService.h"
+#import "CooperService/TaskService.h"
 #import "TaskViewDelegate.h"
 #import "BaseTableViewController.h"
 #import "TaskTableViewCell.h"
-#import "TaskDao.h"
-#import "TaskIdxDao.h"
-#import "ChangeLogDao.h"
-#import "TasklistDao.h"
+#import "CooperRepository/TaskDao.h"
+#import "CooperRepository/TaskIdxDao.h"
+#import "CooperRepository/ChangeLogDao.h"
+#import "CooperRepository/TasklistDao.h"
+//#import "CodesharpSDK/MoveTableView.h"
 
 @interface TaskViewController : BaseTableViewController<UISearchDisplayDelegate
     , UISearchBarDelegate
     , NetworkDelegate
     , TaskViewDelegate
-    , TaskTableViewCellDelegate
->
+    , TaskTableViewCellDelegate>
 {
     MBProgressHUD *HUD;
     
@@ -29,15 +29,14 @@
     ChangeLogDao *changeLogDao;
     TasklistDao *tasklistDao;
     
-    TaskRequestType requestType;
     UIView *emptyView;
-    UIButton *editBtn;
-    
+    UIView *editBtn;
+    UIView *syncBtn;
+    UIView *addBtn;
 }
 @property (nonatomic,retain) NSString* currentTasklistId;
 @property (nonatomic, retain) NSMutableArray *taskIdxGroup;
 @property (nonatomic, retain) NSMutableArray *taskGroup;
-@property (nonatomic, retain) UIButton *addBtn;
 
 @property (nonatomic, retain) NSString *filterStatus;
 

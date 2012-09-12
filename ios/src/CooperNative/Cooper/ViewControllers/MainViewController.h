@@ -9,10 +9,12 @@
 
 #import "LoginViewDelegate.h"
 #import "BaseViewController.h"
+#import "BaseNavigationController.h"
+#import "TaskListViewController.h"
+#import "LoginViewController.h"
 
 @interface MainViewController : BaseViewController<LoginViewDelegate,UITabBarControllerDelegate>
-{
-    //是否可登录
-    bool _launching;
-}
+
+@property (nonatomic, retain) BaseNavigationController *tasklistNavController;
+@property (nonatomic, retain) BaseNavigationController *loginViewNavController;
 @end

@@ -7,47 +7,57 @@
 //
 
 #import "AppDelegate.h"
-#import "Task.h"
-#import "TaskDao.h"
+#import "CooperRepository/TaskDao.h"
+#import "CodesharpSDK/VersionObject.h"
+#import "CooperService/VersionService.h"
+#import "GTMHTTPFetcher.h"
 
 @implementation AppDelegate
 
 @synthesize window;
 @synthesize mainViewController;
-@synthesize timer;
 @synthesize managedObjectModel;
 @synthesize managedObjectContext;
 @synthesize persistantStoreCoordiantor;
+//@synthesize timer;
 
 #pragma mark - 应用程序生命周期
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSLog(@"当前版本网络地址: %@",[[ConstantClass instance] rootPath]);
+    
+    //从缓存中加载数据
     [ConstantClass loadFromCache]; 
     
-    //TODO:为了能够初始化刷新数据库产生的延迟
+    //HACK:为了能够初始化刷新数据库产生的延迟
     [self managedObjectContext];
     
-    if([[ConstantClass instance] rootPath] == nil)
+    
+    if([[ConstantClass instance] rootPath] == nil
+       || [[ConstantClass instance] rootPath] == @"")
     {
-        [[ConstantClass instance] setRootPath:[[[SysConfig instance] keyValue] objectForKey: @"env_path"]];
+        NSString* path = [[[SysConfig instance] keyValue] objectForKey: @"env_path"];
+        //如果rootPath不存在数据，将从env_path刷一份数据
+        [[ConstantClass instance] setRootPath:path];
+        //保存路径
         [ConstantClass savePathToCache];
     }
     
-    NSLog(@"当前网络根路径: %@",[[ConstantClass instance] rootPath]);
-    
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    [self.window setBackgroundColor:[UIColor whiteColor]];
+    self.window.backgroundColor = [UIColor whiteColor];
     
-    self.mainViewController = [[[MainViewController alloc] init] autorelease];
+    self.mainViewController = [[MainViewController alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.mainViewController];
 
     self.window.rootViewController = navController;
     
     [self.window makeKeyAndVisible];
     
+    //[GTMHTTPFetcher setLoggingEnabled:YES];
+    
     //应用徽章数字置零
-    application.applicationIconBadgeNumber = 0; 
+//    application.applicationIconBadgeNumber = 0; 
     
 //    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];  
 //    NSString *name = [infoDictionary objectForKey:@"CFBundleDisplayName"];  
@@ -77,7 +87,8 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    NSLog(@"进入后台运行程序");
+    NSLog(@"应用程序进入后台运行");
+    
     [ConstantClass saveToCache];
 }
 
@@ -87,19 +98,23 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSLog(@"重新激活程序");
+    NSLog(@"应用程序重新从后台载入");
     
-    if([[ConstantClass instance] isLocalPush])
-        [self localPush];
+    //检测版本
+    //[self checkVersionForUpdate];
+    
+//    if([[ConstantClass instance] isLocalPush])
+//        [self localPush];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    //chear managedObjectContext
+    NSLog(@"应用程序即将终止");
+    
     NSError *error = nil;
     if (managedObjectContext != nil) {
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+			NSLog(@"未处理的异常: %@, %@", error, [error userInfo]);
 			abort();
         } 
     }
@@ -113,13 +128,29 @@
 
 - (void)dealloc
 {
-    [managedObjectModel release];
-    [managedObjectContext release];
-    [persistentStoreCoordinator release];
-    [mainViewController release];
-    NSLog(@"dealloc app");
-    //[timer release];
+    RELEASE(managedObjectModel);
+    RELEASE(managedObjectContext);
+    RELEASE(persistantStoreCoordiantor);
+    RELEASE(mainViewController);
+    RELEASE(window);
     [super dealloc];
+}
+
+#pragma mark - 相关操作
+
+//检测版本
+- (void)checkVersionForUpdate
+{
+    //获取当前版本 
+    VersionObject *versionObject = [VersionObject getVersionObject:[[NSBundle mainBundle] infoDictionary]];
+    
+    //[AssertHelper isTrue:[versionObject.version isEqualToString:@"0.1"]: @"版本不对"];
+    
+    //TODO:请求服务端的当前版本比较version
+    NSMutableDictionary *context = [NSMutableDictionary dictionary];
+    [context setObject:@"getCurrentAppVersion" forKey:@"key"];
+    [context setObject:versionObject.version forKey:@"localVersion"];
+    [VersionService getCurrentAppVersion:context delegate:self];
 }
 
 //本地推送通知
@@ -144,7 +175,7 @@
     int interval = LOCALPUSH_TIME;
     interval = (9 * 60 * 60 + 9 * 60 + 0);
     
-    NSDate *fireDate = [[NSDate alloc] initWithTimeInterval:interval 
+    NSDate *fireDate = [[NSDate alloc] initWithTimeInterval:interval
                                                   sinceDate:today];
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
     if(localNotification == nil)
@@ -154,13 +185,13 @@
     }
     localNotification.fireDate = fireDate;
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
-    localNotification.alertBody = [NSString stringWithFormat:@"您有%d条未完成的任务即将过期，请及时处理", tasks.count]; 
+    localNotification.alertBody = [NSString stringWithFormat:@"您有%d条未完成的任务即将过期，请及时处理", tasks.count];
     localNotification.alertAction = @"查看详情";
     localNotification.soundName = UILocalNotificationDefaultSoundName;
     localNotification.applicationIconBadgeNumber = tasks.count;
     
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];  
-    [localNotification release];  
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+    [localNotification release];
 }
 
 #pragma mark - Core Data 相关
@@ -196,7 +227,7 @@
     }
 	
     NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: STORE_DBNAME]];
-    NSLog(@"storeurl: %@", [storeUrl relativeString]);
+    NSLog(@"sqlite数据库存储路径: %@", [storeUrl relativeString]);
     //HACK:可以保持数据库自动兼容
     NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],NSMigratePersistentStoresAutomaticallyOption,[NSNumber numberWithBool:YES],NSInferMappingModelAutomaticallyOption, nil];
 	NSError *error = nil;
@@ -210,7 +241,45 @@
 }
 //应用程序的Documents目录路径
 - (NSString *)applicationDocumentsDirectory {
-	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];    
 }
+
+#pragma mark - 有关事件动作
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSLog(@"请求响应数据: %@, %d",[request responseString], [request responseStatusCode]);
+    
+    NSString *key = [request.userInfo objectForKey:@"key"];
+    NSString *localVersion = [request.userInfo objectForKey:@"localVersion"];
+    if([key isEqualToString:@"getCurrentAppVersion"])
+    {
+        if([request responseStatusCode] == 200) 
+        {
+            //TODO:“0.2”为request返回值
+            if(![localVersion isEqualToString:@"0.2"])
+            {
+                [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"发现新版本 %@",@"0.2"]
+                                            message:@"修改Bug"  
+                                           delegate:self 
+                                  cancelButtonTitle:@"稍后再说" 
+                                  otherButtonTitles:@"马上更新",nil]
+                 show];
+            }
+
+        }
+    }
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    NSLog(@"错误异常: %@", request.error);
+}
+
+- (void)addRequstToPool:(ASIHTTPRequest *)request
+{
+    NSLog(@"发送请求URL: %@", request.url);
+}
+    
 
 @end

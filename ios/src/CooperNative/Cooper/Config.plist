@@ -10,5 +10,15 @@
 	<string>跳过</string>
 	<key>login_btn_text</key>
 	<string>登录</string>
+	<key>googlelogin_btn_text</key>
+	<string>谷歌登录</string>
+	<key>googleClientId</key>
+	<string>585828767504.apps.googleusercontent.com</string>
+	<key>googleClientSecret</key>
+	<string>EoRiUVUV1rkxSOU28BQzorFC</string>
+	<key>googleScope</key>
+	<string>https://www.googleapis.com/auth/plus.me</string>
+	<key>google_redirect_uri</key>
+	<string>https://cooper.wf.taobao.org/Account/GoogleLogin</string>
 </dict>
 </plist>

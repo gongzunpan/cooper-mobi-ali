@@ -6,11 +6,15 @@
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
-#import "CustomToolbar.h"
-#import "Tasklist.h"
-#import "InputPickerButton.h"
+#import "InputPickerView.h"
 #import "BaseViewController.h"
-#import "TasklistDao.h"
+#import "CooperRepository/TasklistDao.h"
+#import "CooperRepository/TaskDao.h"
+#import "CooperRepository/TaskIdxDao.h"
+#import "CooperRepository/ChangeLogDao.h"
+#import "CooperService/TasklistNewService.h"
+#import "CooperService/TaskNewService.h"
+#import "CodesharpSDK/ASINetworkQueue.h"
 
 #define RECENTLYTASKLIST_COUNT  4
 
@@ -18,19 +22,24 @@
     , UITableViewDataSource
     , UITabBarControllerDelegate
     , InputPickerDelegate
+//    , HttpWebRequestDelegate
 >
 {
-    MBProgressHUD *HUD;
-    TasklistRequestType requestType;
-    InputPickerButton *editBtn;
-    UIButton *syncBtn;
-    TasklistDao *tasklistDao;
+    InputPickerView *editBtn;
+    UIView *syncBtn;
+    UIButton *settingBtn;
+    UITableView *tasklistTableView;
     
-    NSString* tempTasklistId;
+    TasklistNewService *tasklistService;
+    TaskNewService *taskService;
+    ASINetworkQueue *networkQueue;
+    
+    TasklistDao *tasklistDao;
+    TaskDao *taskDao;
+    TaskIdxDao *taskIdxDao;
+    ChangeLogDao *changeLogDao;
 }
 
 @property (nonatomic, retain) NSMutableArray *tasklists;
-@property (nonatomic, retain) UITableView *tasklistTableView; 
-//@property (nonatomic, retain) NSString* tempTasklistId;
 
 @end

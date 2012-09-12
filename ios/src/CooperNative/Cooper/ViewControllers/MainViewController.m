@@ -7,51 +7,39 @@
 //
 
 #import "MainViewController.h"
-#import "BaseNavigationController.h"
 #import "TaskViewController.h"
-#import "LoginViewController.h"
 #import "TasklistViewController.h"
 
 @implementation MainViewController
 
+@synthesize tasklistNavController;
+@synthesize loginViewNavController;
+
+# pragma mark - UI相关
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    //初始化设置为YES
-    _launching = YES;
     
-    if (_launching == YES) 
+    if ([[[ConstantClass instance] loginType] isEqualToString:@"anonymous"]
+        || [[[ConstantClass instance] loginType] isEqualToString:@"normal"]
+        || [[[ConstantClass instance] loginType] isEqualToString:@"google"])
     {
-        _launching = NO;
-        
-        if ([[ConstantClass instance] isSaveUser]) 
-        {
-            [self loginExit];
-        }
-        else 
-        {
-            LoginViewController *viewController = [[LoginViewController alloc] init];
-            viewController.delegate = self;
-            [self.navigationController presentModalViewController:viewController animated:NO];
-            //[viewController release];
-        }
+        //跳过登录
+        [self loginFinish];
     }
-}
-
-- (void)loginExit
-{
-    NSLog(@"退出登录");
-    
-    //打开任务列表
-    TasklistViewController *tasklistController = [[[TasklistViewController alloc] init] autorelease];
-                       
-    BaseNavigationController *tasklist_navController = [[[BaseNavigationController alloc] initWithRootViewController:tasklistController] autorelease];
-    
-    [self.navigationController presentModalViewController:tasklist_navController animated:NO];
-    
-    //[tasklist_navController release];
-    //[tasklistController release]; 
+    else 
+    {
+        if(loginViewNavController == nil)
+        {
+            //登录
+            LoginViewController *loginViewController = [[LoginViewController alloc] init];
+            loginViewController.delegate = self;
+            loginViewNavController = [[BaseNavigationController alloc] initWithRootViewController:loginViewController];
+            [loginViewController release];
+        }
+        [self.navigationController presentModalViewController:loginViewNavController animated:NO];
+    }
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
@@ -65,38 +53,51 @@
                 if ([subview isKindOfClass:[UILabel class]])
                 {
                     UILabel *label = (UILabel *)subview;
-                    
-                    [label setTextColor:[UIColor whiteColor]];
+                    label.textColor = [UIColor whiteColor];
                 }
             }
         }
     } 
-    
-    if(tabBarController.selectedIndex == 0
-       || tabBarController.selectedIndex == 1 
-       || tabBarController.selectedIndex == 2)
-    {
-        UINavigationController* controller = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:tabBarController.selectedIndex];
-
-        if(controller == nil)
-        {
-            NSLog(@"controller:%@", [controller description]);
-        }
-        else {
-            TaskViewController *tvController = (TaskViewController *)[controller.viewControllers objectAtIndex:0];
-            if(tvController != nil)
-                [tvController loadTaskData];
-        }
-    }
 }
+
 - (void)viewDidUnload
 {
+    loginViewNavController = nil;
+    tasklistNavController = nil;
     [super viewDidUnload];
+}
+
+- (void)dealloc
+{
+    RELEASE(loginViewNavController);
+    RELEASE(tasklistNavController);
+    [super dealloc];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+# pragma mark - 相关动作事件
+
+- (void)loginFinish
+{
+    NSLog(@"登录完毕");
+    
+    //打开任务列表
+    if(tasklistNavController == nil)
+    {
+        TasklistViewController *tasklistViewController = [[TasklistViewController alloc] init];
+        tasklistNavController = [[BaseNavigationController alloc] initWithRootViewController:tasklistViewController];
+        [tasklistViewController release];
+    }
+    [self.navigationController presentModalViewController:tasklistNavController animated:NO];
+}
+
+- (void)googleLoginFinish
+{
+    
 }
 
 @end

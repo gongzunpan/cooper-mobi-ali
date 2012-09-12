@@ -121,7 +121,7 @@
     HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
     HUD.labelText = @"请求失败";
     HUD.mode = MBProgressHUDModeCustomView;
-	[HUD hide:YES afterDelay:0.3];
+	[HUD hide:YES afterDelay:1];
 }
 
 + (NSString*) stringWithUUID {
@@ -152,6 +152,16 @@
     [[UIView alloc] initWithFrame:CGRectZero];
     tableView.tableFooterView = footer;
     [footer release];
+}
+
++ (float)screenMaxWidth
+{
+    return [Tools isPad] ? 768 : 320;
+}
+
++ (float)screenMaxHeight
+{
+    return [Tools isPad] ? 1024 : 480;
 }
 
 @end

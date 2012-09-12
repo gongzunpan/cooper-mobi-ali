@@ -16,6 +16,7 @@
 @synthesize priorityButton;
 @synthesize statusButton;
 @synthesize bodyTextView;
+@synthesize bodyScrollView;
 @synthesize delegate;
 @synthesize currentTasklistId;
 @synthesize currentIsCompleted;
@@ -52,7 +53,7 @@
     UIBarButtonItem *saveButton = [[[UIBarButtonItem alloc] initWithCustomView:saveTaskBtn] autorelease];
     self.navigationItem.rightBarButtonItem = saveButton;
     
-    CGRect tableViewRect = CGRectMake(0, 0, 320, 480);
+    CGRect tableViewRect = CGRectMake(0, 0, [Tools screenMaxWidth], [Tools screenMaxHeight]);
     UITableView* tempTableView = [[[UITableView alloc] initWithFrame:tableViewRect style:UITableViewStylePlain] autorelease];
     //[tempTableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLineEtched];
     //tempTableView.scrollEnabled = NO;
@@ -117,10 +118,9 @@
 {
     if(self.task == nil)
     {
-        //TODO:日期格式
         NSString *guid = [Tools stringWithUUID];
         
-        NSString *id = [NSString stringWithFormat:@"temp_%@_%@", self.currentPriority, guid];
+        NSString *id = [NSString stringWithFormat:@"temp_%@", guid];
         
         NSDate *currentDate = [NSDate date];
         
@@ -129,7 +129,7 @@
           lastUpdateDate:currentDate
                     body:bodyTextView.text 
                 isPublic:[Tools BOOLToNSNumber:YES] 
-                  status:[Tools BOOLToNSNumber:self.currentIsCompleted] 
+                  status:[Tools BOOLToNSNumber:[self taskIsFinish]] 
                 priority:self.currentPriority 
                   taskid:id
                  dueDate:self.currentDueDate 
@@ -165,7 +165,7 @@
         [changeLogDao insertChangeLog:[NSNumber numberWithInt:0] 
                                dataid:id 
                                  name:@"iscompleted" 
-                                value:self.currentIsCompleted ? @"true" : @"false" 
+                                value:[self taskIsFinish] ? @"true" : @"false" 
                            tasklistId:self.currentTasklistId];
         
         [taskDao commitData];
@@ -177,7 +177,7 @@
              lastUpdateDate:[NSDate date] 
                        body:bodyTextView.text 
                    isPublic:[Tools BOOLToNSNumber:YES] 
-                     status:[Tools BOOLToNSNumber:self.currentIsCompleted] 
+                     status:[Tools BOOLToNSNumber:[self taskIsFinish]] 
                    priority:self.currentPriority 
                     dueDate:self.currentDueDate
                  tasklistId:self.currentTasklistId
@@ -213,15 +213,13 @@
         [changeLogDao insertChangeLog:[NSNumber numberWithInt:0] 
                                dataid:self.task.id 
                                  name:@"iscompleted" 
-                                value:self.currentIsCompleted ? @"true" : @"false"
+                                value:[self taskIsFinish] ? @"true" : @"false"
                            tasklistId:currentTasklistId];
         
         [taskDao commitData];
     }
     
     [self goBack:nil];
-    //[self.navigationController dismissModalViewControllerAnimated:YES];
-    ;
 }
 
 - (void)viewDidLoad
@@ -304,7 +302,7 @@
                 [statusButton setTitleColor: self.task.status == [NSNumber numberWithInt:1] ?[UIColor whiteColor] : [UIColor blackColor] forState:UIControlStateNormal];
             }
             
-            CGSize size = CGSizeMake(320,10000);
+            CGSize size = CGSizeMake([Tools screenMaxWidth], 10000);
             CGSize labelsize = [statusButton.titleLabel.text sizeWithFont:statusButton.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
             [statusButton setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
             [cell.contentView addSubview:statusButton];
@@ -343,7 +341,7 @@
                 [self.dueDateLabel setTitle:@"请选择    >" forState:UIControlStateNormal];
             }
             
-            CGSize size = CGSizeMake(320,10000);
+            CGSize size = CGSizeMake([Tools screenMaxWidth], 10000);
             CGSize labelsize = [dueDateLabel.titleLabel.text sizeWithFont:dueDateLabel.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
             [dueDateLabel setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
             [cell.contentView addSubview:dueDateLabel];
@@ -374,7 +372,7 @@
                 oldPriority = [task.priority copy];
             }
             
-            CGSize size = CGSizeMake(320,10000);
+            CGSize size = CGSizeMake([Tools screenMaxWidth], 10000);
             CGSize labelsize = [priorityButton.titleLabel.text sizeWithFont:priorityButton.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
             [priorityButton setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
             [cell.contentView addSubview:priorityButton];
@@ -388,7 +386,7 @@
                 cell.textLabel.text = @"标题:";
                 [cell.textLabel setTextColor:[UIColor grayColor]];[cell.textLabel setFont:[UIFont boldSystemFontOfSize:16]];
                 
-                subjectTextField = [[UITextField alloc] initWithFrame:CGRectMake(110, 10, 200, 25)];
+                subjectTextField = [[UITextField alloc] initWithFrame:CGRectMake(110, 10, [Tools screenMaxWidth] - 120, 25)];
                 subjectTextField.userInteractionEnabled = YES;
                 [subjectTextField setReturnKeyType:UIReturnKeyDone];
                 [subjectTextField setTextAlignment:UITextAlignmentLeft];
@@ -416,12 +414,18 @@
                 [bodyTextView setAutocapitalizationType:UITextAutocapitalizationTypeNone];
                 [bodyTextView setAutocorrectionType:UITextAutocorrectionTypeNo];
                 bodyTextView.returnKeyType = UIReturnKeyDefault;  
-                bodyTextView.keyboardType = UIKeyboardTypeDefault;  
+                bodyTextView.keyboardType = UIReturnKeyDone;  
                 bodyTextView.scrollEnabled = YES;  
                 bodyTextView.autoresizingMask = UIViewAutoresizingFlexibleHeight; 
                 bodyTextView.delegate = self;
                 [bodyTextView setFont:[UIFont systemFontOfSize:16]];
-                [cell.contentView addSubview:bodyTextView];
+                
+                bodyScrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 240)] autorelease];
+                [bodyScrollView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+                [bodyScrollView setContentSize:bodyTextView.frame.size];
+                [bodyScrollView addSubview:bodyTextView];
+                
+                [cell addSubview:bodyScrollView];
                 
                 bodyCell = cell;
             }
@@ -432,11 +436,11 @@
             }
             
             int totalheight = bodyTextView.contentSize.height;
-            if(bodyTextView.contentSize.height < 300)
-            {
-                totalheight = 300;
-            }
-            [cell setFrame:CGRectMake(0, 0, 320, totalheight)];
+//            if(bodyTextView.contentSize.height < 300)
+//            {
+//                totalheight = 300;
+//            }
+            [cell setFrame:CGRectMake(0, 0, [Tools screenMaxWidth], totalheight + 200)];
         }
         else {
             cell = [tableView dequeueReusableCellWithIdentifier:@"UnknownCell"];
@@ -479,7 +483,7 @@
         //[delegate loadTaskData];
     }
     
-    CGSize size = CGSizeMake(320,10000);
+    CGSize size = CGSizeMake([Tools screenMaxWidth], 10000);
     CGSize labelsize = [dueDateLabel.titleLabel.text sizeWithFont:dueDateLabel.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
     [dueDateLabel setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
 }
@@ -507,7 +511,7 @@
         [delegate loadTaskData];
     }
     
-    CGSize size = CGSizeMake(320,10000);
+    CGSize size = CGSizeMake([Tools screenMaxWidth], 10000);
     CGSize labelsize = [priorityButton.titleLabel.text sizeWithFont:priorityButton.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
     [priorityButton setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
     
@@ -527,6 +531,11 @@
 - (void)selectPriority
 {
     [self.priorityButton becomeFirstResponder];
+}
+
+- (BOOL)taskIsFinish
+{
+    return [statusButton.titleLabel.text isEqualToString:@"完成    >"];
 }
 
 - (void)switchStatus
@@ -565,7 +574,7 @@
         [delegate loadTaskData];
     }
     
-    CGSize size = CGSizeMake(320,10000);
+    CGSize size = CGSizeMake([Tools screenMaxWidth],10000);
     CGSize labelsize = [statusButton.titleLabel.text sizeWithFont:statusButton.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
     [statusButton setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)]; 
 }
@@ -576,22 +585,30 @@
     
     CGFloat totalheight = bodyTextView.contentSize.height;
     
-    CGPoint center = viewCenter;
+//    CGPoint center = viewCenter;
 
-    if(totalheight > 116.0)
-    {
-        CGFloat line = (totalheight - 116.0) / 50.0;
-        
-                
-        center.y -= 256 + 50 * line;
-        center.y += 120.0f;
-        self.view.center = center;
-    }
-    else {
-        center.y -= 256;
-        center.y += 120.0f;
-        self.view.center = center;
-    }
+//    float height = 116.0 + [Tools screenMaxHeight] - 480;
+//    if(totalheight > height)
+//    {
+//        CGFloat line = (totalheight - height) / 50.0;
+//        
+//                
+//        center.y -= 256 + 50 * line;
+//        center.y += 120.0f;
+//        self.view.center = center;
+//    }
+//    else {
+//        center.y -= 256;
+//        center.y += 120.0f;
+//        self.view.center = center;
+//    }
+    
+    //TODO:目前是无效的，后面处理
+    [bodyScrollView setContentSize:bodyTextView.contentSize];
+    
+    CGRect rect = bodyCell.frame;
+    rect.size.height = totalheight;
+    bodyCell.frame = rect;
     
     return YES;
 }

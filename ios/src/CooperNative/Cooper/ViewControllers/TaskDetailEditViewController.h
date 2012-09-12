@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
-#include "Task.h"
+#import "CooperCore/Task.h"
 #import "CustomButton.h"
 #import "DateLabel.h"
 #import "PriorityButton.h"
@@ -14,9 +14,9 @@
 #import "TaskViewDelegate.h"
 #import "BaseViewController.h"
 #import "BodyTextView.h"
-#import "TaskDao.h"
-#import "TaskIdxDao.h"
-#import "ChangeLogDao.h"
+#import "CooperRepository/TaskDao.h"
+#import "CooperRepository/TaskIdxDao.h"
+#import "CooperRepository/ChangeLogDao.h"
 
 @interface TaskDetailEditViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,UITextViewDelegate,UITextFieldDelegate,DateLabelDelegate,PriorityButtonDelegate>
 {
@@ -34,6 +34,7 @@
 @property (retain, nonatomic) Task *task;
 @property (retain, nonatomic) UITextField   *subjectTextField;
 @property (retain, nonatomic) BodyTextView    *bodyTextView;
+@property (retain, nonatomic) UIScrollView    *bodyScrollView;
 @property (assign, nonatomic) BOOL currentIsCompleted;
 @property (retain, nonatomic) NSDate *currentDueDate;
 @property (retain, nonatomic) DateLabel *dueDateLabel;

@@ -5,12 +5,9 @@
 
 #import "Util.h"
 
-#import "Constant.h"
+#import "CooperCore/Constant.h"
 
 typedef Constant ConstantClass;
-
-//默认登录入口
-#define LOGIN_URL                       @"/account/login"
 
 
 

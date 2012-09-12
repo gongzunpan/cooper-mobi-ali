@@ -87,7 +87,7 @@
     [data setObject:tasklistId forKey:@"tasklistId"];
     [data setObject:changeLogsJson forKey:@"changes"];
     [data setObject:@"ByPriority" forKey:@"by"];
-    [data setObject:@"" forKey:@"sorts"];
+    [data setObject:taskIdxsJson forKey:@"sorts"];
     
     
     NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:TASK_SYNC_URL];
@@ -105,13 +105,18 @@
     NSMutableArray *changeLogs = [changeLogDao getAllChangeLog:tasklistId];
     NSLog("改变记录总数: %d", changeLogs.count);
     
-    //排序处理
-    //NSMutableArray *taskIdxs = [taskIdxDao getAllTaskIdx:tasklistId];
-    
-    NSMutableArray *taskIdxs = [NSMutableArray array];
+    NSMutableArray *taskIdxs = nil;
+    if([[[ConstantClass instance] sortHasChanged] isEqualToString:@"true"])
+    {
+        taskIdxs = [taskIdxDao getAllTaskIdx:tasklistId];
+    }
+    else
+    {
+        taskIdxs = [NSMutableArray array];
+    }
     
     [changeLogDao release];
-    //[taskIdxDao release];
+    [taskIdxDao release];
     
     [TaskService syncTasks:tasklistId changeLogs:changeLogs taskIdxs:taskIdxs context:context delegate:delegate];
 }

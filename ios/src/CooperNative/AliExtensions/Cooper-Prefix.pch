@@ -8,15 +8,15 @@
 #define __ALI_VERSION__
 
 //当前版本为ALI版本
-#import "AliConstant.h"
+#import "CooperCore/Constant.h"
 
-typedef AliConstant ConstantClass;
+typedef Constant ConstantClass;
 
 //默认域名
 #define DEFAULT_DOMAIN                  @"TAOBAO-HZ"
 
 //Ark登录入口
-#define LOGIN_URL                       @"/account/arklogin"
+#define LOGIN_URL                       @"/Account/ArkLogin"
 
 
 

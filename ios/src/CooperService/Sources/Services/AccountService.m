@@ -40,9 +40,21 @@
     [data setObject:username forKey:@"tbLoginName"];
     [data setObject:password forKey:@"tbPassword"];
     
-    NSString* url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:LOGIN_URL];
+    NSString* url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ARKLOGIN_URL];
     NSLog(@"登录请求: %@", url);
     
+    [NetworkManager doAsynchronousPostRequest:url Delegate:delegate data:data WithInfo:context addHeaders:nil];
+}
+
++ (void)googleLogin:(NSString*)refreshToken
+            context:(NSMutableDictionary*)context
+           delegate:(id)delegate
+{
+    NSMutableDictionary *data = [NSMutableDictionary dictionary];
+    [data setObject:refreshToken forKey:@"refreshToken"];
+    
+    NSString* url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:@"/Account/GoogleLoginByRefreshToken"];
+    NSLog(@"正在进行登录请求: %@", url);
     [NetworkManager doAsynchronousPostRequest:url Delegate:delegate data:data WithInfo:context addHeaders:nil];
 }
 
@@ -70,7 +82,7 @@
 {
     NSString* url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:LOGOUT_URL];
     NSLog(@"正在进行注销请求: %@",url);
-    [NetworkManager doAsynchronousGetRequest:url Delegate:delegate WithInfo:context];
+    [NetworkManager doAsynchronousPostRequest:url Delegate:delegate data:nil WithInfo:context addHeaders:nil];
 }
 
 @end

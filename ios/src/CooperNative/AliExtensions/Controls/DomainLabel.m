@@ -83,7 +83,7 @@
     		self.picker.frame = frame;
     		popoverController.popoverContentSize = pickerSize;
             //TODO:...
-    		[popoverController presentPopoverFromRect:self.frame inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    		[popoverController presentPopoverFromRect:CGRectMake(self.frame.origin.x - 550, self.frame.origin.y, self.frame.size.width, self.frame.size.height) inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     		// resign the current first responder
     		for (UIView *subview in self.superview.subviews) {
     			if ([subview isFirstResponder]) {

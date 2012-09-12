@@ -10,11 +10,12 @@
 
 @interface Constant : NSObject
 
-//@property (nonatomic,retain) NSString *domain;
+@property (nonatomic,retain) NSString *sortHasChanged;
+@property (nonatomic,retain) NSString *domain;
 @property (nonatomic,retain) NSString *username;
 @property (nonatomic,retain) NSString *password;
 @property (nonatomic,retain) NSString *token;
-@property (nonatomic,assign) bool isGuestUser;
+@property (nonatomic,assign) NSString *loginType;
 @property (nonatomic,retain) NSString *rootPath;
 @property (nonatomic,retain) NSMutableArray *recentlyIds;
 @property (nonatomic,assign) bool isLocalPush;
@@ -26,7 +27,8 @@
 + (void)saveToCache;
 + (void)loadFromCache;
 + (void)savePathToCache;
-+ (void)saveRecentlyIdsToCache;
-+ (void)saveIsLocalPushToCache;
++ (void)saveSortHasChangedToCache;
+//+ (void)saveRecentlyIdsToCache;
+//+ (void)saveIsLocalPushToCache;
 
 @end

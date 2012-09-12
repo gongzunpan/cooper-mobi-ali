@@ -11,10 +11,10 @@
 #ifdef __ALI_VERSION__
 #import "DomainLabel.h"
 #endif
-#import "TaskDao.h"
-#import "TaskIdxDao.h"
-#import "ChangeLogDao.h"
-#import "TasklistDao.h"
+#import "CooperRepository/TaskDao.h"
+#import "CooperRepository/TaskIdxDao.h"
+#import "CooperRepository/ChangeLogDao.h"
+#import "CooperRepository/TasklistDao.h"
 
 @interface AccountViewController : BaseViewController<UITableViewDelegate
     , UITableViewDataSource
@@ -23,9 +23,6 @@
 #endif
 >
 {
-    MBProgressHUD *HUD;
-    AccountRequestType requestType;
-    
     //TODO:需要完善
     int lock_counter;
     
@@ -33,13 +30,16 @@
     TaskIdxDao *taskIdxDao;
     ChangeLogDao *changeLogDao;
     TasklistDao *tasklistDao;
+    
+    UIView *accountView;
+    UIButton *btnBack;
 }
 
-@property (retain, nonatomic) UITextField *textUsername;
-@property (retain, nonatomic) UITextField *textPassword;
-@property (retain, nonatomic) UITableView *loginTableView;
-@property (retain, nonatomic) UIView *accountView;
-@property (retain, nonatomic) CustomButton *btnLogin;
+//@property (retain, nonatomic) UITextField *textUsername;
+//@property (retain, nonatomic) UITextField *textPassword;
+//@property (retain, nonatomic) UITableView *loginTableView;
+//@property (retain, nonatomic) UIView *accountView;
+//@property (retain, nonatomic) CustomButton *btnLogin;
 #ifdef __ALI_VERSION__
 @property (retain, nonatomic) DomainLabel *domainLabel;
 #endif

@@ -6,10 +6,10 @@
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
-#import "Task.h"
-#import "TaskDao.h"
-#import "TaskIdxDao.h"
-#import "ChangeLogDao.h"
+#import "CooperCore/Task.h"
+#import "CooperRepository/TaskDao.h"
+#import "CooperRepository/TaskIdxDao.h"
+#import "CooperRepository/ChangeLogDao.h"
 
 @protocol TaskTableViewCellDelegate <NSObject>
 
