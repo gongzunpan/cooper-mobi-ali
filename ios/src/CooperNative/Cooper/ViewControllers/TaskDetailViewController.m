@@ -69,7 +69,7 @@
     UIBarButtonItem *editButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:editBtn] autorelease];
     self.navigationItem.rightBarButtonItem = editButtonItem;
     
-    if(task.editable == [NSNumber numberWithInt:0])
+    if([[task.editable stringValue] isEqualToString:[[NSNumber numberWithInt:0] stringValue]])
     {
         editBtn.hidden = YES;
     }
@@ -243,7 +243,7 @@
                 dueDateLabel = [[DateLabel alloc] initWithFrame:CGRectZero];
                 dueDateLabel.userInteractionEnabled = YES;
                 
-                if(task.editable != [NSNumber numberWithInt:0])
+                if(![[task.editable stringValue] isEqualToString:[[NSNumber numberWithInt:0] stringValue]])
                 {
                     UITapGestureRecognizer *recog = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectDueDate)];
                     [self.dueDateLabel addGestureRecognizer:recog];
@@ -277,7 +277,7 @@
                 priorityButton = [[PriorityButton alloc] initWithFrame:CGRectZero];
                 priorityButton.userInteractionEnabled = YES;
                 
-                if(task.editable != [NSNumber numberWithInt:0])
+                if(![[task.editable stringValue] isEqualToString: [[NSNumber numberWithInt:0] stringValue]])
                 {
                     UITapGestureRecognizer *recog = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectPriority)];
                     [priorityButton addGestureRecognizer:recog];
@@ -446,7 +446,7 @@
 
 - (void)switchStatus
 {
-    if(task.editable == [NSNumber numberWithInt:0])
+    if([[task.editable stringValue] isEqualToString:[[NSNumber numberWithInt:0] stringValue]])
         return;
     
     bool isfinish;
