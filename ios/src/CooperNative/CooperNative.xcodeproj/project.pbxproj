@@ -1319,7 +1319,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
+				USER_HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR) \"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts\"";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1338,7 +1338,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
+				USER_HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR) \"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts\"";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
