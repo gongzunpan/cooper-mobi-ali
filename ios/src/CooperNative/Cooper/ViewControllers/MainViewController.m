@@ -14,6 +14,7 @@
 
 @synthesize tasklistNavController;
 @synthesize loginViewNavController;
+@synthesize taskOptionNavController;
 
 # pragma mark - UI相关
 
@@ -84,15 +85,28 @@
 - (void)loginFinish
 {
     NSLog(@"登录完毕");
-    
-    //打开任务列表
-    if(tasklistNavController == nil)
+ 
+    if([[[ConstantClass instance] loginType] isEqualToString:@"anonymous"])
     {
-        TasklistViewController *tasklistViewController = [[TasklistViewController alloc] init];
-        tasklistNavController = [[BaseNavigationController alloc] initWithRootViewController:tasklistViewController];
-        [tasklistViewController release];
+        //打开任务列表
+        if(tasklistNavController == nil)
+        {
+            TasklistViewController *tasklistViewController = [[TasklistViewController alloc] init];
+            tasklistNavController = [[BaseNavigationController alloc] initWithRootViewController:tasklistViewController];
+            [tasklistViewController release];
+        }
+        [self.navigationController presentModalViewController:tasklistNavController animated:NO];
     }
-    [self.navigationController presentModalViewController:tasklistNavController animated:NO];
+    else
+    {
+        if(taskOptionNavController == nil)
+        {
+            TaskOptionViewController *taskOptionViewController = [[TaskOptionViewController alloc] init];
+            taskOptionNavController = [[BaseNavigationController alloc] initWithRootViewController:taskOptionViewController];
+            [taskOptionViewController release];
+        }
+        [self.navigationController presentModalViewController:taskOptionNavController animated:NO];
+    }
 }
 
 - (void)googleLoginFinish

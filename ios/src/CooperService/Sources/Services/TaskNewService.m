@@ -69,7 +69,7 @@
     [params setObject:tasklistId forKey:@"tasklistId"];
     
     HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context Delegate:delegate];
+    [request postAsync:url params:params headers:nil context:context delegate:delegate];
     [request release];
 }
 
@@ -115,7 +115,7 @@
         {
             NSMutableDictionary *dict = [NSMutableDictionary dictionary];
             [dict setObject:changeLog.changeType forKey:@"Type"];
-            [dict setObject:changeLog.dataid forKey:@"ID"];
+            [dict setObject:changeLog.dataId forKey:@"ID"];
             [dict setObject:(changeLog.name == nil ? @"" : changeLog.name)forKey:@"Name"];
             if([changeLog.name isEqualToString:@"isCompleted"])
             {

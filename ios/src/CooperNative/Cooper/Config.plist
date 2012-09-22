@@ -19,6 +19,6 @@
 	<key>googleScope</key>
 	<string>https://www.googleapis.com/auth/plus.me</string>
 	<key>google_redirect_uri</key>
-	<string>https://cooper.wf.taobao.org/Account/GoogleLogin</string>
+	<string>https://cooper.apphb.com/Account/GoogleLogin</string>
 </dict>
 </plist>

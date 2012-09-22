@@ -155,12 +155,11 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     CGRect tableViewRect = CGRectMake(0, 0, [Tools screenMaxWidth], [Tools screenMaxHeight] - 49 - 64);
-    UITableView* tempTableView = [[UITableView alloc] initWithFrame:tableViewRect style:UITableViewStylePlain];
+    UITableView* tempTableView = [[[UITableView alloc] initWithFrame:tableViewRect style:UITableViewStylePlain] autorelease];
     [tempTableView setBackgroundColor:[UIColor whiteColor]];
     
     //去掉底部空白
-    UIView *footer =
-    [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
     tempTableView.tableFooterView = footer;
     
     taskView = tempTableView;
@@ -177,7 +176,6 @@
     }
     
     [self.view addSubview: taskView];
-    [tempTableView release];
 }
 
 #pragma mark - 动作相关事件
@@ -309,13 +307,13 @@
                     
                     NSLog(@"任务旧值ID: %@ 变为新值ID:%@", oldId, newId);
                     
-                    [taskDao updateTaskIdByNewId:oldId newId:newId tasklistId:currentTasklistId];
+                    [taskDao updateTaskIdByNewId:oldId newId:newId];
                     [taskIdxDao updateTaskIdxByNewId:oldId newId:newId tasklistId:currentTasklistId];
                 }
             }
             
             //修正changeLog
-            [changeLogDao updateAllToSend:currentTasklistId];
+            [changeLogDao deleteChangeLogByTasklistId:currentTasklistId];
             [changeLogDao commitData];
             
             [[ConstantClass instance] setSortHasChanged:@""];
@@ -519,8 +517,15 @@
 //}
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    NSLog(@"手指撮动了");
-    return UITableViewCellEditingStyleDelete;
+    Task *task = [[self.taskGroup objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if(![[task.editable stringValue] isEqualToString:[[NSNumber numberWithInt:0] stringValue]])
+    {
+        return UITableViewCellEditingStyleDelete;
+    }
+    else
+    {
+        return UITableViewCellEditingStyleNone;
+    }
 }
 
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath

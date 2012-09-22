@@ -18,6 +18,7 @@
 @synthesize subjectLabel;
 @synthesize bodyLabel;
 @synthesize dueDateLabel;
+@synthesize assigneeNameLabel;
 @synthesize statusButton;
 @synthesize arrowButton;
 @synthesize leftView;
@@ -51,9 +52,15 @@
     [dueDateLabel setFont:[UIFont systemFontOfSize:14]];
     [dueDateLabel setTextColor:APP_BACKGROUNDCOLOR];
     
+    assigneeNameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [assigneeNameLabel setLineBreakMode:UILineBreakModeWordWrap];
+    assigneeNameLabel.font = [UIFont systemFontOfSize:12];
+    assigneeNameLabel.textColor = APP_BACKGROUNDCOLOR;
+    
     [self.contentView addSubview:subjectLabel];
     [self.contentView addSubview:bodyLabel];
     [self.contentView addSubview:dueDateLabel];
+    [self.contentView addSubview:assigneeNameLabel];
     
     self.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 30)];
     
@@ -109,13 +116,25 @@
         task.status = [NSNumber numberWithInt:1];  
     }
     
-    [changeLogDao insertChangeLog:[NSNumber numberWithInt:0] 
-                           dataid:task.id 
-                             name:@"iscompleted" 
-                            value:task.status == [NSNumber numberWithInt:1] ? @"true" : @"false" 
-                       tasklistId:task.tasklistId];
-    
-    
+    if(self.task.tasklistId != nil)
+    {
+        [changeLogDao insertChangeLog:[NSNumber numberWithInt:0]
+                               dataid:task.id
+                                 name:@"iscompleted"
+                                value:task.status == [NSNumber numberWithInt:1] ? @"true" : @"false"
+                           tasklistId:task.tasklistId];
+    }
+    else if(self.task.teamId != nil)
+    {
+        [changeLogDao insertChangeLogByTeam:[NSNumber numberWithInt:0]
+                                     dataId:task.id name:@"iscompleted"
+                                      value:task.status == [NSNumber numberWithInt:1] ? @"true" : @"false"
+                                     teamId:self.task.teamId
+                                  projectId:nil
+                                   memberId:nil
+                                        tag:nil];
+    }
+        
     [taskDao commitData];
 }
 
@@ -124,6 +143,7 @@
     self.task = taskInfo;
     taskDao = [[TaskDao alloc] init];
     changeLogDao = [[ChangeLogDao alloc] init];
+    teamMemberDao = [[TeamMemberDao alloc] init];
     
     if([[task.status stringValue] isEqualToString:@"1"])
     {
@@ -133,34 +153,30 @@
         [statusButton setBackgroundImage:[UIImage imageNamed:@"incomplete-small.png"] forState:UIControlStateNormal];
     }
     
+    CGFloat totalHeight = 0;
+    
     subjectLabel.text = task.subject; 
-  
     CGSize subjectLabelSize = [subjectLabel.text sizeWithFont:subjectLabel.font 
                                     constrainedToSize:CGSizeMake(CONTENT_WIDTH + [Tools screenMaxWidth] - 320, MAX_HEIGHT)
                                         lineBreakMode:UILineBreakModeWordWrap];
-        
     CGFloat subjectLabelHeight = subjectLabelSize.height;
-  
     int subjectlines = subjectLabelHeight / 16;
-    [subjectLabel setFrame:CGRectMake(50, PADDING, CONTENT_WIDTH + [Tools screenMaxWidth] - 320, subjectLabelHeight)];
-    [subjectLabel setNumberOfLines:subjectlines];
+    subjectLabel.frame = CGRectMake(50, PADDING, CONTENT_WIDTH + [Tools screenMaxWidth] - 320, subjectLabelHeight);
+    subjectLabel.numberOfLines = subjectlines; 
+    totalHeight += subjectLabelHeight + PADDING;
     
-    bodyLabel.text = task.body; 
-    
+    bodyLabel.text = task.body;  
     CGSize bodyLabelSize = [bodyLabel.text sizeWithFont:bodyLabel.font 
                                             constrainedToSize:CGSizeMake(CONTENT_WIDTH + [Tools screenMaxWidth] - 320, MAX_HEIGHT) 
                                                 lineBreakMode:UILineBreakModeWordWrap];
-    
-    CGFloat bodyLabelHeight = bodyLabelSize.height;
-    
-    int bodylines = bodyLabelHeight / 16;
-    
+    CGFloat bodyLabelHeight = bodyLabelSize.height; 
+    int bodylines = bodyLabelHeight / 14;
     if(bodylines > 3)
     {
         bodylines = 3;
     }
-    [bodyLabel setFrame:CGRectMake(50, PADDING + subjectLabelHeight, CONTENT_WIDTH + [Tools screenMaxWidth] - 320, bodylines * 16)];
-    [bodyLabel setNumberOfLines:bodylines];
+    bodyLabel.frame = CGRectMake(50, totalHeight + PADDING, CONTENT_WIDTH + [Tools screenMaxWidth] - 320, bodylines * 14);
+    bodyLabel.numberOfLines = bodylines;
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"M-dd"];
@@ -170,25 +186,30 @@
         [dueDateLabel setFrame:CGRectMake(260  + [Tools screenMaxWidth] - 320, PADDING, 80, 20)];
     }
     
-    CGFloat totalHeight;
+    totalHeight += PADDING + bodylines * 14;
     
-    if(subjectLabelHeight == 0 && bodylines * 16 == 0)
-        totalHeight = 50;
-    else
-        totalHeight = subjectLabelHeight + bodylines * 16 + PADDING * 2;
+//    if(subjectLabelHeight == 0 && bodylines * 16 == 0)
+//        totalHeight = 50;
+//    else
+//        totalHeight = subjectLabelHeight + bodylines * 16 ;
     
     if(totalHeight < 50)
         totalHeight = 50;
-    [self setFrame:CGRectMake(0, 0, CONTENT_WIDTH + [Tools screenMaxWidth] - 320, totalHeight)];
-    [leftView setFrame:CGRectMake(0, 0, 40, totalHeight)];
     
-//    CGRect rightRect = rightView.frame;
-//    rightRect.size.height = totalHeight;
-//    [rightView setFrame:rightRect];
-//    
-//    CGRect arrayRect = arrowButton.frame;
-//    arrayRect.origin.y = (totalHeight - 14) / 2.0;
-//    [arrowButton setFrame:arrayRect];
+    assigneeNameLabel.frame = CGRectMake(50, totalHeight + PADDING, [Tools screenMaxWidth], 12);
+    if(self.task.assigneeId != nil)
+    {
+        TeamMember *teamMember = [teamMemberDao getTeamMemberByTeamId:self.task.teamId
+                                                           assigneeId:self.task.assigneeId];
+        if(teamMember != nil)
+        {
+            assigneeNameLabel.text = teamMember.name;
+        } 
+    }
+    
+//    NSLog(@"height:%f,subject:%@", totalHeight, task.subject);
+    [self setFrame:CGRectMake(0, 0, CONTENT_WIDTH + [Tools screenMaxWidth] - 320, totalHeight + 22)];
+    [leftView setFrame:CGRectMake(0, 0, 40, totalHeight + 22)];
 }
 
 - (void)dealloc
@@ -197,11 +218,13 @@
     [subjectLabel release];
     [bodyLabel release];
     [dueDateLabel release];
+    [assigneeNameLabel release];
     [leftView release];
     //[rightView release];
     [statusButton release];
     [changeLogDao release];
     [taskDao release];
+    [teamMemberDao release];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

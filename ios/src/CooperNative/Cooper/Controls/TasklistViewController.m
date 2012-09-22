@@ -17,6 +17,7 @@
 @implementation TasklistViewController
 
 @synthesize tasklists;
+@synthesize setting_navViewController;
 
 # pragma mark - UI相关
 
@@ -31,7 +32,9 @@
     tasklistService = [[TasklistNewService alloc] init];
     taskService = [[TaskNewService alloc] init];
     
-    self.title = APP_TITLE;
+    self.title = @"个人任务";
+    
+    UITapGestureRecognizer *recognizer = nil;
     
     //任务列表View
     tasklistTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
@@ -42,24 +45,41 @@
     [self.view addSubview:tasklistTableView];
     
     //左上自定义导航
-    CustomToolbar *toolBar = [[CustomToolbar alloc] initWithFrame:CGRectMake(0, 0, 80, 45)];
+    CustomToolbar *toolBar = [[CustomToolbar alloc] initWithFrame:CGRectMake(0, 0, 120, 45)];
     
+    int left = 0;
+    if(![[[ConstantClass instance] loginType] isEqualToString:@"anonymous"])
+    { 
+        //左上后退按钮
+        backBtn = [[UIView alloc] initWithFrame:CGRectMake(left, 0, 38, 45)];
+        UIImageView *backImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(5, 10, 27, 27)] autorelease];
+        UIImage *backImage = [UIImage imageNamed:BACK_IMAGE];
+        backImageView.image = backImage;
+        [backBtn addSubview:backImageView];
+        recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backToOption:)];
+        [backBtn addGestureRecognizer:recognizer];
+        [recognizer release];
+        [toolBar addSubview:backBtn];
+        
+        left += 40;
+    }
+
     //左上编辑按钮
-    editBtn = [[InputPickerView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
+    editBtn = [[InputPickerView alloc] initWithFrame:CGRectMake(left, 0, 38, 45)];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 10, 27, 27)];
     UIImage *editImage = [UIImage imageNamed:EDIT_IMAGE];
     imageView.image = editImage;
     [editBtn addSubview:imageView];
     [imageView release];
     
-    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addTasklist:)];
+    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addTasklist:)];
     [editBtn addGestureRecognizer:recognizer];
     editBtn.delegate = self;
     [recognizer release];
     [toolBar addSubview:editBtn];
     
     //左上同步按钮
-    syncBtn = [[UIView alloc] initWithFrame:CGRectMake(40, 0, 38, 45)];
+    syncBtn = [[UIView alloc] initWithFrame:CGRectMake(80, 0, 38, 45)];
     UIImageView *settingImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(5, 10, 27, 27)] autorelease];
     UIImage *settingImage = [UIImage imageNamed:REFRESH_IMAGE];
     settingImageView.image = settingImage;
@@ -119,17 +139,19 @@
 
 - (void)dealloc
 {
-    RELEASE(self.tasklists);
+    RELEASE(tasklists);
     RELEASE(tasklistTableView);
     RELEASE(tasklistDao);
     RELEASE(taskDao);
     RELEASE(taskIdxDao);
     RELEASE(changeLogDao);
+    RELEASE(backBtn);
     RELEASE(editBtn);
     RELEASE(syncBtn);
     RELEASE(settingBtn);
     RELEASE(tasklistService);
     RELEASE(taskService);
+    RELEASE(setting_navViewController);
     [super dealloc];
 }
 
@@ -196,25 +218,36 @@
 
 - (void)settingAction:(id)sender
 {
-    //设置
-    SettingViewController *settingViewController = [[SettingViewController alloc] initWithNibName:@"SettingViewController"
-                                                                                           bundle:nil
-                                                                                         setTitle:@"设置" 
-                                                                                         setImage:SETTING_IMAGE];
-    
-    BaseNavigationController *setting_navViewController = [[[BaseNavigationController alloc] initWithRootViewController:settingViewController] autorelease];
-    
-    //后退按钮
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(5, 5, 25, 25);
-    [backBtn setBackgroundImage:[UIImage imageNamed:BACK_IMAGE] forState:UIControlStateNormal];
-    [backBtn addTarget: self action: @selector(goBack:) forControlEvents: UIControlEventTouchUpInside];
-    
-    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-    settingViewController.navigationItem.leftBarButtonItem = backButtonItem;
-    [backButtonItem release];
-    
-    [self.navigationController presentModalViewController:setting_navViewController animated:YES];
+    if(setting_navViewController == nil)
+    {
+        //设置
+        SettingViewController *settingViewController = [[SettingViewController alloc] initWithNibName:@"SettingViewController" bundle:nil setTitle:@"设置" setImage:SETTING_IMAGE];
+        
+        setting_navViewController = [[BaseNavigationController alloc] initWithRootViewController:settingViewController];
+        
+        //后退按钮
+        UIButton *btnBack = [UIButton buttonWithType:UIButtonTypeCustom];
+        btnBack.frame = CGRectMake(5, 5, 25, 25);
+        [btnBack setBackgroundImage:[UIImage imageNamed:BACK_IMAGE] forState:UIControlStateNormal];
+        [btnBack addTarget: self action: @selector(goBack:) forControlEvents: UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
+        settingViewController.navigationItem.leftBarButtonItem = backButtonItem;
+        [self.navigationController presentModalViewController:setting_navViewController animated:YES];
+        
+        [backButtonItem release];
+        [settingViewController release];
+    }
+    else
+    {
+        [self.navigationController presentModalViewController:setting_navViewController animated:YES];
+    }
+}
+
+- (void)backToOption:(id)sender
+{
+    [Tools layerTransition:self.navigationController.view from:@"left"];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 - (void)goBack:(id)sender
@@ -272,13 +305,13 @@
                     
                     NSLog(@"任务旧值ID: %@ 变为新值ID:%@", oldId, newId);
                     
-                    [taskDao updateTaskIdByNewId:oldId newId:newId tasklistId:currentTasklistId];
+                    [taskDao updateTaskIdByNewId:oldId newId:newId];
                     [taskIdxDao updateTaskIdxByNewId:oldId newId:newId tasklistId:currentTasklistId];
                 }
             }
             
             //修正changeLog
-            [changeLogDao updateAllToSend:currentTasklistId];
+            [changeLogDao deleteChangeLogByTasklistId:currentTasklistId];
             [changeLogDao commitData];
             
 //            NSMutableDictionary *context = [NSMutableDictionary dictionary];
@@ -568,7 +601,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"];
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray; 
         UIView *selectedView = [[UIView alloc] initWithFrame:cell.frame];
         selectedView.backgroundColor = [UIColor colorWithRed:220/255.0f green:220/255.0f blue:220/255.0f alpha:1.0];
         //设置选中后cell的背景颜色

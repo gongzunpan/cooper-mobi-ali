@@ -57,7 +57,7 @@
 {
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [backBtn setFrame:CGRectMake(5, 5, 25, 25)];
-    [backBtn setBackgroundImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [backBtn setBackgroundImage:[UIImage imageNamed:BACK_IMAGE] forState:UIControlStateNormal];
     [backBtn addTarget: self action: @selector(goBack:) forControlEvents: UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:backBtn] autorelease];
     self.navigationItem.leftBarButtonItem = backButtonItem;
@@ -69,24 +69,22 @@
     UIBarButtonItem *editButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:editBtn] autorelease];
     self.navigationItem.rightBarButtonItem = editButtonItem;
     
-    if([[task.editable stringValue] isEqualToString:[[NSNumber numberWithInt:0] stringValue]])
+    if(![[task.editable stringValue] isEqualToString:[[NSNumber numberWithInt:0] stringValue]])
+    {
+        editBtn.hidden = NO;
+    }
+    else
     {
         editBtn.hidden = YES;
     }
-    else {
-        editBtn.hidden = NO;
-    }
     
-    CGRect tableViewRect = CGRectMake(0, 0, [Tools screenMaxWidth], 1200);
+    CGRect tableViewRect = CGRectMake(0, 0, [Tools screenMaxWidth], [Tools screenMaxHeight] - 20);
     UITableView* tempTableView = [[[UITableView alloc] initWithFrame:tableViewRect style:UITableViewStylePlain] autorelease];
-    //[tempTableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLineEtched];
-    //tempTableView.scrollEnabled = NO;
     tempTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [tempTableView setBackgroundColor:[UIColor whiteColor]];
     
     //去掉底部空白
-    UIView *footer =
-    [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
     tempTableView.tableFooterView = footer;
     
     detailView = tempTableView;
@@ -104,10 +102,10 @@
 	BaseNavigationController *navController = [[[BaseNavigationController alloc] initWithRootViewController:webViewController] autorelease];
 	[navController setModalPresentationStyle:UIModalPresentationFullScreen];
 	[navController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-
+    
 	[self presentModalViewController:navController animated:YES];
     
-//    [[UIApplication sharedApplication] openURL:[link URL]];
+    //    [[UIApplication sharedApplication] openURL:[link URL]];
 }
 
 - (void)goBack:(id)sender
@@ -153,7 +151,6 @@
 {
     [delegate loadTaskData];
 }
-
 
 - (void)viewDidLoad
 {
@@ -210,7 +207,14 @@
                 [cell.textLabel setTextColor:[UIColor grayColor]];[cell.textLabel setFont:[UIFont boldSystemFontOfSize:16]];
                 
                 statusButton = [[CustomButton alloc] initWithFrame:CGRectZero image:[UIImage imageNamed:@"btn_bg_gray.png"]];
-                statusButton.userInteractionEnabled = YES;
+                if(![[task.editable stringValue] isEqualToString:[[NSNumber numberWithInt:0] stringValue]])
+                {
+                    statusButton.userInteractionEnabled = YES;
+                }
+                else
+                {
+                    statusButton.userInteractionEnabled = NO;
+                }
                 
                 [statusButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
                 
@@ -241,7 +245,14 @@
                 [cell.textLabel setTextColor:[UIColor grayColor]];[cell.textLabel setFont:[UIFont boldSystemFontOfSize:16]];
                 
                 dueDateLabel = [[DateLabel alloc] initWithFrame:CGRectZero];
-                dueDateLabel.userInteractionEnabled = YES;
+                if(![[task.editable stringValue] isEqualToString:[[NSNumber numberWithInt:0] stringValue]])
+                {
+                    dueDateLabel.userInteractionEnabled = YES;
+                }
+                else
+                {
+                    dueDateLabel.userInteractionEnabled = NO;
+                }  
                 
                 if(![[task.editable stringValue] isEqualToString:[[NSNumber numberWithInt:0] stringValue]])
                 {
@@ -275,7 +286,6 @@
                 [cell.textLabel setTextColor:[UIColor grayColor]];[cell.textLabel setFont:[UIFont boldSystemFontOfSize:16]];
                 
                 priorityButton = [[PriorityButton alloc] initWithFrame:CGRectZero];
-                priorityButton.userInteractionEnabled = YES;
                 
                 if(![[task.editable stringValue] isEqualToString: [[NSNumber numberWithInt:0] stringValue]])
                 {
@@ -283,6 +293,11 @@
                     [priorityButton addGestureRecognizer:recog];
                     priorityButton.delegate = self;
                     [recog release];
+                    priorityButton.userInteractionEnabled = YES;
+                }
+                else
+                {
+                    priorityButton.userInteractionEnabled = NO;
                 }
                 
                 [priorityButton setTitle:[NSString stringWithFormat:@"%@    >",PRIORITY_TITLE_1] forState:UIControlStateNormal];
@@ -310,7 +325,7 @@
             if(!cell)
             {
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SubjectBodyCell"] autorelease];
-      
+                
                 self.subjectLabel = [[UILabel alloc] initWithFrame:CGRectZero];
                 subjectLabel.userInteractionEnabled = YES;
                 [subjectLabel setLineBreakMode:UILineBreakModeWordWrap];
@@ -343,28 +358,27 @@
             CGSize subjectLabelSize = [subjectLabel.text sizeWithFont:subjectLabel.font
                                                     constrainedToSize:CGSizeMake(280 + [Tools screenMaxWidth] - 320, 10000)
                                                         lineBreakMode:UILineBreakModeWordWrap];
-
+            
             CGFloat subjectLabelHeight = subjectLabelSize.height + 20;
-
+            
             int subjectlines = subjectLabelHeight / 16;
             int totalLabelHeight = subjectLabelHeight;
             [subjectLabel setFrame:CGRectMake(20, 5, 280 + [Tools screenMaxWidth] - 320, totalLabelHeight)];
             [subjectLabel setNumberOfLines:subjectlines];
-
+            
             CGFloat bodyLabelHeight = [JSCoreTextView measureFrameHeightForText:bodyLabel.text
-                                                              fontName:font
-                                                              fontSize:size
-                                                    constrainedToWidth:bodyLabel.frame.size.width - (paddingLeft * 2)
-                                                            paddingTop:paddingTop
-                                                           paddingLeft:paddingLeft];
+                                                                       fontName:font
+                                                                       fontSize:size
+                                                             constrainedToWidth:bodyLabel.frame.size.width - (paddingLeft * 2)
+                                                                     paddingTop:paddingTop
+                                                                    paddingLeft:paddingLeft];
             CGRect textFrame = [bodyLabel frame];
             textFrame.size.height = bodyLabelHeight;
             textFrame.origin.y = totalLabelHeight;
             [bodyLabel setFrame:textFrame];
-
-            totalLabelHeight += bodyLabelHeight + 800;
             
-            [cell setFrame:CGRectMake(0, 0, [Tools screenMaxWidth],totalLabelHeight)];
+            totalLabelHeight += bodyLabelHeight + 10;
+            [cell setFrame:CGRectMake(0, 0, [Tools screenMaxWidth], totalLabelHeight)];
         }
         else {
             cell = [tableView dequeueReusableCellWithIdentifier:@"UnknownCell"];
@@ -540,9 +554,9 @@
 //
 //
 //        [detailView setFrame:CGRectMake(0, 0, 320, 2000)];
-//        
+//
 //    }
-//    return footerView; 
+//    return footerView;
 //}
 
 - (NSString*)getPriorityKey:(NSString*)priorityValue

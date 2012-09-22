@@ -40,7 +40,7 @@
     
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [backBtn setFrame:CGRectMake(5, 5, 25, 25)];
-    [backBtn setBackgroundImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [backBtn setBackgroundImage:[UIImage imageNamed:BACK_IMAGE] forState:UIControlStateNormal];
     [backBtn addTarget: self action: @selector(goBack:) forControlEvents: UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:backBtn] autorelease];
     self.navigationItem.leftBarButtonItem = backButtonItem;
@@ -55,14 +55,11 @@
     
     CGRect tableViewRect = CGRectMake(0, 0, [Tools screenMaxWidth], [Tools screenMaxHeight]);
     UITableView* tempTableView = [[[UITableView alloc] initWithFrame:tableViewRect style:UITableViewStylePlain] autorelease];
-    //[tempTableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLineEtched];
-    //tempTableView.scrollEnabled = NO;
     tempTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [tempTableView setBackgroundColor:[UIColor whiteColor]];
     
     //去掉底部空白
-    UIView *footer =
-    [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
     tempTableView.tableFooterView = footer;
     
     detailView = tempTableView;
