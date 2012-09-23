@@ -24,9 +24,9 @@
 + (NSString*) NSDateToNSString:(NSDate*)input
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //dateFormatter.timeStyle = NSDateFormatterNoStyle;
-    //dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+    [dateFormatter setTimeZone:timeZone];
+    [dateFormatter setDateFormat:@"yyyy-M-d H:m:s"];
     
     NSString* date = [dateFormatter stringFromDate:input];
     
@@ -38,6 +38,8 @@
 + (NSString*) ShortNSDateToNSString:(NSDate*)input
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+    [dateFormatter setTimeZone:timeZone];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
     NSString *date = [dateFormatter stringFromDate:input];
@@ -50,7 +52,9 @@
 + (NSDate*) NSStringToNSDate:(NSString*)input
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+    [dateFormatter setTimeZone:timeZone];
+    [dateFormatter setDateFormat:@"yyyy-M-d H:m:s"];
     
     NSDate *date = [dateFormatter dateFromString:input];
     
@@ -62,6 +66,8 @@
 + (NSDate*) NSStringToShortNSDate:(NSString*)input
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+    [dateFormatter setTimeZone:timeZone];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
     NSDate *date = [dateFormatter dateFromString:input];
