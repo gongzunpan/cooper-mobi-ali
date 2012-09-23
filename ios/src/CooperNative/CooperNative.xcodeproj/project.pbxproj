@@ -55,6 +55,9 @@
 		1872E82315C2667B00A8EA41 /* BaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1872E82215C2667B00A8EA41 /* BaseTableViewController.m */; };
 		1872E82715C26B6000A8EA41 /* TasklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1872E82615C26B6000A8EA41 /* TasklistViewController.m */; };
 		1872E82A15C2703600A8EA41 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1872E82915C2703500A8EA41 /* BaseNavigationController.m */; };
+		18748792160ECC12003110EE /* AliConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1874878C160ECC12003110EE /* AliConstant.m */; };
+		18748793160ECC12003110EE /* DomainLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1874878F160ECC12003110EE /* DomainLabel.m */; };
+		18748794160ECC12003110EE /* Cooper-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18748790160ECC12003110EE /* Cooper-Info.plist */; };
 		187E6DB515E310ED00A85ECF /* MoveTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E6DB215E310ED00A85ECF /* MoveTableView.m */; };
 		187E6DB615E310ED00A85ECF /* MoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E6DB415E310ED00A85ECF /* MoveTableViewCell.m */; };
 		187E6EA015E3532A00A85ECF /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 187E6E9F15E3532A00A85ECF /* SenTestingKit.framework */; };
@@ -94,9 +97,6 @@
 		18A92DBA15D2EA2800423A55 /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A92DB515D2EA2800423A55 /* GTMOAuth2ViewControllerTouch.m */; };
 		18A92DBB15D2EA2800423A55 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18A92DB615D2EA2800423A55 /* GTMOAuth2ViewTouch.xib */; };
 		18A92DBD15D2EA5600423A55 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A92DBC15D2EA5600423A55 /* Security.framework */; };
-		18CD0913160D83AD0013B6DD /* AliConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CD090D160D83AD0013B6DD /* AliConstant.m */; };
-		18CD0914160D83AD0013B6DD /* DomainLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CD0910160D83AD0013B6DD /* DomainLabel.m */; };
-		18CD0915160D83AD0013B6DD /* Cooper-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18CD0911160D83AD0013B6DD /* Cooper-Info.plist */; };
 		18DECB4015C6396700A51305 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DECB3F15C6396700A51305 /* AccountViewController.m */; };
 		18E2974815BCE99400DCED79 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18E2974715BCE99400DCED79 /* Config.plist */; };
 		18E2975815BD12F500DCED79 /* cooper.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E2975715BD12F500DCED79 /* cooper.png */; };
@@ -287,6 +287,12 @@
 		1872E82615C26B6000A8EA41 /* TasklistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TasklistViewController.m; path = Controls/TasklistViewController.m; sourceTree = "<group>"; };
 		1872E82815C2703500A8EA41 /* BaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseNavigationController.h; path = Controls/BaseNavigationController.h; sourceTree = "<group>"; };
 		1872E82915C2703500A8EA41 /* BaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BaseNavigationController.m; path = Controls/BaseNavigationController.m; sourceTree = "<group>"; };
+		1874878B160ECC12003110EE /* AliConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliConstant.h; sourceTree = "<group>"; };
+		1874878C160ECC12003110EE /* AliConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliConstant.m; sourceTree = "<group>"; };
+		1874878E160ECC12003110EE /* DomainLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomainLabel.h; sourceTree = "<group>"; };
+		1874878F160ECC12003110EE /* DomainLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainLabel.m; sourceTree = "<group>"; };
+		18748790160ECC12003110EE /* Cooper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cooper-Info.plist"; sourceTree = "<group>"; };
+		18748791160ECC12003110EE /* Cooper-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Cooper-Prefix.pch"; sourceTree = "<group>"; };
 		187E6DB115E310ED00A85ECF /* MoveTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoveTableView.h; path = Controls/MoveTableView.h; sourceTree = "<group>"; };
 		187E6DB215E310ED00A85ECF /* MoveTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoveTableView.m; path = Controls/MoveTableView.m; sourceTree = "<group>"; };
 		187E6DB315E310ED00A85ECF /* MoveTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoveTableViewCell.h; path = Controls/MoveTableViewCell.h; sourceTree = "<group>"; };
@@ -341,12 +347,6 @@
 		18A92DB515D2EA2800423A55 /* GTMOAuth2ViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2ViewControllerTouch.m; sourceTree = "<group>"; };
 		18A92DB615D2EA2800423A55 /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GTMOAuth2ViewTouch.xib; sourceTree = "<group>"; };
 		18A92DBC15D2EA5600423A55 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		18CD090C160D83AD0013B6DD /* AliConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliConstant.h; sourceTree = "<group>"; };
-		18CD090D160D83AD0013B6DD /* AliConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliConstant.m; sourceTree = "<group>"; };
-		18CD090F160D83AD0013B6DD /* DomainLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomainLabel.h; sourceTree = "<group>"; };
-		18CD0910160D83AD0013B6DD /* DomainLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainLabel.m; sourceTree = "<group>"; };
-		18CD0911160D83AD0013B6DD /* Cooper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cooper-Info.plist"; sourceTree = "<group>"; };
-		18CD0912160D83AD0013B6DD /* Cooper-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Cooper-Prefix.pch"; sourceTree = "<group>"; };
 		18DECB3E15C6396700A51305 /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountViewController.h; path = ViewControllers/AccountViewController.h; sourceTree = "<group>"; };
 		18DECB3F15C6396700A51305 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountViewController.m; path = ViewControllers/AccountViewController.m; sourceTree = "<group>"; };
 		18E2974715BCE99400DCED79 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
@@ -488,6 +488,27 @@
 			name = TasklistViewController;
 			sourceTree = "<group>";
 		};
+		1874878A160ECC12003110EE /* AliExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				1874878B160ECC12003110EE /* AliConstant.h */,
+				1874878C160ECC12003110EE /* AliConstant.m */,
+				1874878D160ECC12003110EE /* Controls */,
+				18748790160ECC12003110EE /* Cooper-Info.plist */,
+				18748791160ECC12003110EE /* Cooper-Prefix.pch */,
+			);
+			path = AliExtensions;
+			sourceTree = "<group>";
+		};
+		1874878D160ECC12003110EE /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				1874878E160ECC12003110EE /* DomainLabel.h */,
+				1874878F160ECC12003110EE /* DomainLabel.m */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
 		187E6EA315E3532A00A85ECF /* CooperNativeUnitTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -593,27 +614,6 @@
 			path = ../../lib/GoogleOAuth2;
 			sourceTree = "<group>";
 		};
-		18CD090B160D83AD0013B6DD /* AliExtensions */ = {
-			isa = PBXGroup;
-			children = (
-				18CD090C160D83AD0013B6DD /* AliConstant.h */,
-				18CD090D160D83AD0013B6DD /* AliConstant.m */,
-				18CD090E160D83AD0013B6DD /* Controls */,
-				18CD0911160D83AD0013B6DD /* Cooper-Info.plist */,
-				18CD0912160D83AD0013B6DD /* Cooper-Prefix.pch */,
-			);
-			path = AliExtensions;
-			sourceTree = "<group>";
-		};
-		18CD090E160D83AD0013B6DD /* Controls */ = {
-			isa = PBXGroup;
-			children = (
-				18CD090F160D83AD0013B6DD /* DomainLabel.h */,
-				18CD0910160D83AD0013B6DD /* DomainLabel.m */,
-			);
-			path = Controls;
-			sourceTree = "<group>";
-		};
 		18E2F89D15F4D9050062E57F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -675,7 +675,7 @@
 		EE396256159D34380018B9EC = {
 			isa = PBXGroup;
 			children = (
-				18CD090B160D83AD0013B6DD /* AliExtensions */,
+				1874878A160ECC12003110EE /* AliExtensions */,
 				1891ABD315D2D58600C7E8DA /* Dependencies */,
 				18A92D9E15D2E97400423A55 /* Images */,
 				EE87F78C15A3F50100DA8E7F /* Sources */,
@@ -1131,7 +1131,7 @@
 				18A92DA715D2E97400423A55 /* icon.png in Resources */,
 				18A92DA815D2E97400423A55 /* icon@2x.png in Resources */,
 				18A92DBB15D2EA2800423A55 /* GTMOAuth2ViewTouch.xib in Resources */,
-				18CD0915160D83AD0013B6DD /* Cooper-Info.plist in Resources */,
+				18748794160ECC12003110EE /* Cooper-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1239,8 +1239,8 @@
 				6A7D87C4160B5536004C7C9C /* TeamTaskDetailViewController.m in Sources */,
 				6A7D87C7160C0AEA004C7C9C /* TeamTaskOptionViewController.m in Sources */,
 				6A7D87CA160C6499004C7C9C /* TeamTaskDetailEditViewController.m in Sources */,
-				18CD0913160D83AD0013B6DD /* AliConstant.m in Sources */,
-				18CD0914160D83AD0013B6DD /* DomainLabel.m in Sources */,
+				18748792160ECC12003110EE /* AliConstant.m in Sources */,
+				18748793160ECC12003110EE /* DomainLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
