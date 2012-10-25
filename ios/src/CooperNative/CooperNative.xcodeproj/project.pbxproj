@@ -34,7 +34,6 @@
 		1810151D15C04B9A00D67C06 /* PriorityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1810151B15C04B9A00D67C06 /* PriorityViewController.m */; };
 		1810151E15C04B9A00D67C06 /* PriorityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1810151C15C04B9A00D67C06 /* PriorityViewController.xib */; };
 		1810152615C04BAF00D67C06 /* TaskDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1810152315C04BAF00D67C06 /* TaskDetailViewController.m */; };
-		1810152B15C04BC100D67C06 /* TaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1810152815C04BC100D67C06 /* TaskViewController.m */; };
 		1810152C15C04BC100D67C06 /* TaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1810152915C04BC100D67C06 /* TaskViewController.xib */; };
 		181DD88315C80F3300FB2ED5 /* BodyTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 181DD88215C80F3300FB2ED5 /* BodyTextView.m */; };
 		1835EFD115C0CA59004AF233 /* incomplete.png in Resources */ = {isa = PBXBuildFile; fileRef = 1835EFCE15C0CA59004AF233 /* incomplete.png */; };
@@ -55,9 +54,6 @@
 		1872E82315C2667B00A8EA41 /* BaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1872E82215C2667B00A8EA41 /* BaseTableViewController.m */; };
 		1872E82715C26B6000A8EA41 /* TasklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1872E82615C26B6000A8EA41 /* TasklistViewController.m */; };
 		1872E82A15C2703600A8EA41 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1872E82915C2703500A8EA41 /* BaseNavigationController.m */; };
-		18748792160ECC12003110EE /* AliConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1874878C160ECC12003110EE /* AliConstant.m */; };
-		18748793160ECC12003110EE /* DomainLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1874878F160ECC12003110EE /* DomainLabel.m */; };
-		18748794160ECC12003110EE /* Cooper-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18748790160ECC12003110EE /* Cooper-Info.plist */; };
 		187E6DB515E310ED00A85ECF /* MoveTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E6DB215E310ED00A85ECF /* MoveTableView.m */; };
 		187E6DB615E310ED00A85ECF /* MoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E6DB415E310ED00A85ECF /* MoveTableViewCell.m */; };
 		187E6EA015E3532A00A85ECF /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 187E6E9F15E3532A00A85ECF /* SenTestingKit.framework */; };
@@ -109,6 +105,11 @@
 		18FAC25515BFA143003F56B2 /* btn_bg_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FAC25415BFA143003F56B2 /* btn_bg_green.png */; };
 		18FAC25A15BFAF50003F56B2 /* navigationbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FAC25915BFAF50003F56B2 /* navigationbar_bg.png */; };
 		6A18E52816030D7B00ED2042 /* TeamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A18E52716030D7B00ED2042 /* TeamViewController.m */; };
+		6A56EF471637E5FB00370A3F /* personal.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A56EF451637E5FB00370A3F /* personal.png */; };
+		6A56EF481637E5FB00370A3F /* team.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A56EF461637E5FB00370A3F /* team.png */; };
+		6A5BA8CF1634E309008BA305 /* FillLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5BA8CC1634E309008BA305 /* FillLabel.m */; };
+		6A5BA8D01634E309008BA305 /* FillLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5BA8CE1634E309008BA305 /* FillLabelView.m */; };
+		6A5BA8D316352519008BA305 /* TaskTagsOptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5BA8D216352519008BA305 /* TaskTagsOptionViewController.m */; };
 		6A7D87B8160AAB93004C7C9C /* TeamTaskFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7D87B7160AAB93004C7C9C /* TeamTaskFilterViewController.m */; };
 		6A7D87C1160AE51B004C7C9C /* TeamTaskFilterLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7D87C0160AE51B004C7C9C /* TeamTaskFilterLabel.m */; };
 		6A7D87C4160B5536004C7C9C /* TeamTaskDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7D87C3160B5535004C7C9C /* TeamTaskDetailViewController.m */; };
@@ -119,6 +120,9 @@
 		6AA9EE811606D68D00A5B013 /* libCooperCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1891ABD915D2D59400C7E8DA /* libCooperCore.a */; };
 		6AA9EE821606D68D00A5B013 /* libCooperRepository.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1891ABDF15D2D59C00C7E8DA /* libCooperRepository.a */; };
 		6AA9EE831606D68D00A5B013 /* libCooperService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1891ABE515D2D5A800C7E8DA /* libCooperService.a */; };
+		6AD2A9A41638DB2900BDE806 /* AliConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD2A99E1638DB2900BDE806 /* AliConstant.m */; };
+		6AD2A9A51638DB2900BDE806 /* DomainLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD2A9A11638DB2900BDE806 /* DomainLabel.m */; };
+		6AD2A9A61638DB2900BDE806 /* Cooper-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6AD2A9A21638DB2900BDE806 /* Cooper-Info.plist */; };
 		6AF47A4815FE336C006D4D3F /* GTMHTTPFetcherLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AF47A4715FE336C006D4D3F /* GTMHTTPFetcherLogging.m */; };
 		8C0C2F2E15AE7AAF00283579 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8C0C2F2215AE7AAF00283579 /* LICENSE */; };
 		8C0C2F2F15AE7AAF00283579 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C2F2415AE7AAF00283579 /* NSObject+SBJSON.m */; };
@@ -252,8 +256,6 @@
 		1810151C15C04B9A00D67C06 /* PriorityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PriorityViewController.xib; path = ViewControllers/PriorityViewController.xib; sourceTree = "<group>"; };
 		1810152215C04BAF00D67C06 /* TaskDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskDetailViewController.h; path = ViewControllers/TaskDetailViewController.h; sourceTree = "<group>"; };
 		1810152315C04BAF00D67C06 /* TaskDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskDetailViewController.m; path = ViewControllers/TaskDetailViewController.m; sourceTree = "<group>"; };
-		1810152715C04BC000D67C06 /* TaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskViewController.h; path = ViewControllers/TaskViewController.h; sourceTree = "<group>"; };
-		1810152815C04BC100D67C06 /* TaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskViewController.m; path = ViewControllers/TaskViewController.m; sourceTree = "<group>"; };
 		1810152915C04BC100D67C06 /* TaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TaskViewController.xib; path = ViewControllers/TaskViewController.xib; sourceTree = "<group>"; };
 		1810152A15C04BC100D67C06 /* TaskViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskViewDelegate.h; path = ViewControllers/TaskViewDelegate.h; sourceTree = "<group>"; };
 		181DD88115C80F3300FB2ED5 /* BodyTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BodyTextView.h; path = Controls/BodyTextView.h; sourceTree = "<group>"; };
@@ -287,12 +289,6 @@
 		1872E82615C26B6000A8EA41 /* TasklistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TasklistViewController.m; path = Controls/TasklistViewController.m; sourceTree = "<group>"; };
 		1872E82815C2703500A8EA41 /* BaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseNavigationController.h; path = Controls/BaseNavigationController.h; sourceTree = "<group>"; };
 		1872E82915C2703500A8EA41 /* BaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BaseNavigationController.m; path = Controls/BaseNavigationController.m; sourceTree = "<group>"; };
-		1874878B160ECC12003110EE /* AliConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliConstant.h; sourceTree = "<group>"; };
-		1874878C160ECC12003110EE /* AliConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliConstant.m; sourceTree = "<group>"; };
-		1874878E160ECC12003110EE /* DomainLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomainLabel.h; sourceTree = "<group>"; };
-		1874878F160ECC12003110EE /* DomainLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainLabel.m; sourceTree = "<group>"; };
-		18748790160ECC12003110EE /* Cooper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cooper-Info.plist"; sourceTree = "<group>"; };
-		18748791160ECC12003110EE /* Cooper-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Cooper-Prefix.pch"; sourceTree = "<group>"; };
 		187E6DB115E310ED00A85ECF /* MoveTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoveTableView.h; path = Controls/MoveTableView.h; sourceTree = "<group>"; };
 		187E6DB215E310ED00A85ECF /* MoveTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoveTableView.m; path = Controls/MoveTableView.m; sourceTree = "<group>"; };
 		187E6DB315E310ED00A85ECF /* MoveTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoveTableViewCell.h; path = Controls/MoveTableViewCell.h; sourceTree = "<group>"; };
@@ -366,6 +362,15 @@
 		6A18E52616030D7B00ED2042 /* TeamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TeamViewController.h; path = ViewControllers/TeamViewController.h; sourceTree = "<group>"; };
 		6A18E52716030D7B00ED2042 /* TeamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TeamViewController.m; path = ViewControllers/TeamViewController.m; sourceTree = "<group>"; };
 		6A18E5291603286A00ED2042 /* TaskModelV0_2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TaskModelV0_2.xcdatamodel; sourceTree = "<group>"; };
+		6A56EF451637E5FB00370A3F /* personal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = personal.png; sourceTree = "<group>"; };
+		6A56EF461637E5FB00370A3F /* team.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = team.png; sourceTree = "<group>"; };
+		6A56EF491637F2E500370A3F /* TaskDetailEditViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TaskDetailEditViewDelegate.h; path = ViewControllers/TaskDetailEditViewDelegate.h; sourceTree = "<group>"; };
+		6A5BA8CB1634E309008BA305 /* FillLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FillLabel.h; path = Controls/FillLabel.h; sourceTree = "<group>"; };
+		6A5BA8CC1634E309008BA305 /* FillLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FillLabel.m; path = Controls/FillLabel.m; sourceTree = "<group>"; };
+		6A5BA8CD1634E309008BA305 /* FillLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FillLabelView.h; path = Controls/FillLabelView.h; sourceTree = "<group>"; };
+		6A5BA8CE1634E309008BA305 /* FillLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FillLabelView.m; path = Controls/FillLabelView.m; sourceTree = "<group>"; };
+		6A5BA8D116352518008BA305 /* TaskTagsOptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskTagsOptionViewController.h; path = ViewControllers/TaskTagsOptionViewController.h; sourceTree = "<group>"; };
+		6A5BA8D216352519008BA305 /* TaskTagsOptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskTagsOptionViewController.m; path = ViewControllers/TaskTagsOptionViewController.m; sourceTree = "<group>"; };
 		6A7D87B6160AAB93004C7C9C /* TeamTaskFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TeamTaskFilterViewController.h; path = ViewControllers/TeamTaskFilterViewController.h; sourceTree = "<group>"; };
 		6A7D87B7160AAB93004C7C9C /* TeamTaskFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TeamTaskFilterViewController.m; path = ViewControllers/TeamTaskFilterViewController.m; sourceTree = "<group>"; };
 		6A7D87BB160AAD6F004C7C9C /* TeamTaskViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TeamTaskViewDelegate.h; path = ViewControllers/TeamTaskViewDelegate.h; sourceTree = "<group>"; };
@@ -378,8 +383,15 @@
 		6A7D87C8160C6496004C7C9C /* TeamTaskDetailEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TeamTaskDetailEditViewController.h; path = ViewControllers/TeamTaskDetailEditViewController.h; sourceTree = "<group>"; };
 		6A7D87C9160C6498004C7C9C /* TeamTaskDetailEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TeamTaskDetailEditViewController.m; path = ViewControllers/TeamTaskDetailEditViewController.m; sourceTree = "<group>"; };
 		6A7D87CB160C7301004C7C9C /* TeamTaskDetailEditViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TeamTaskDetailEditViewDelegate.h; path = ViewControllers/TeamTaskDetailEditViewDelegate.h; sourceTree = "<group>"; };
+		6A8310BD162BB9A5004F1DED /* TaskModelV0_2_1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TaskModelV0_2_1.xcdatamodel; sourceTree = "<group>"; };
 		6A84F2A41607152B000B62CB /* TeamTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TeamTaskViewController.h; path = ViewControllers/TeamTaskViewController.h; sourceTree = "<group>"; };
 		6A84F2A51607152B000B62CB /* TeamTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TeamTaskViewController.m; path = ViewControllers/TeamTaskViewController.m; sourceTree = "<group>"; };
+		6AD2A99D1638DB2900BDE806 /* AliConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliConstant.h; sourceTree = "<group>"; };
+		6AD2A99E1638DB2900BDE806 /* AliConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliConstant.m; sourceTree = "<group>"; };
+		6AD2A9A01638DB2900BDE806 /* DomainLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomainLabel.h; sourceTree = "<group>"; };
+		6AD2A9A11638DB2900BDE806 /* DomainLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainLabel.m; sourceTree = "<group>"; };
+		6AD2A9A21638DB2900BDE806 /* Cooper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cooper-Info.plist"; sourceTree = "<group>"; };
+		6AD2A9A31638DB2900BDE806 /* Cooper-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Cooper-Prefix.pch"; sourceTree = "<group>"; };
 		6AF47A4615FE336C006D4D3F /* GTMHTTPFetcherLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcherLogging.h; sourceTree = "<group>"; };
 		6AF47A4715FE336C006D4D3F /* GTMHTTPFetcherLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcherLogging.m; sourceTree = "<group>"; };
 		8C0C2F2115AE7AAF00283579 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
@@ -486,27 +498,6 @@
 				1872E82615C26B6000A8EA41 /* TasklistViewController.m */,
 			);
 			name = TasklistViewController;
-			sourceTree = "<group>";
-		};
-		1874878A160ECC12003110EE /* AliExtensions */ = {
-			isa = PBXGroup;
-			children = (
-				1874878B160ECC12003110EE /* AliConstant.h */,
-				1874878C160ECC12003110EE /* AliConstant.m */,
-				1874878D160ECC12003110EE /* Controls */,
-				18748790160ECC12003110EE /* Cooper-Info.plist */,
-				18748791160ECC12003110EE /* Cooper-Prefix.pch */,
-			);
-			path = AliExtensions;
-			sourceTree = "<group>";
-		};
-		1874878D160ECC12003110EE /* Controls */ = {
-			isa = PBXGroup;
-			children = (
-				1874878E160ECC12003110EE /* DomainLabel.h */,
-				1874878F160ECC12003110EE /* DomainLabel.m */,
-			);
-			path = Controls;
 			sourceTree = "<group>";
 		};
 		187E6EA315E3532A00A85ECF /* CooperNativeUnitTest */ = {
@@ -652,6 +643,38 @@
 			name = TeamViewController;
 			sourceTree = "<group>";
 		};
+		6A5BA8C91634E292008BA305 /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				6A5BA8CB1634E309008BA305 /* FillLabel.h */,
+				6A5BA8CC1634E309008BA305 /* FillLabel.m */,
+				6A5BA8CD1634E309008BA305 /* FillLabelView.h */,
+				6A5BA8CE1634E309008BA305 /* FillLabelView.m */,
+			);
+			name = Labels;
+			sourceTree = "<group>";
+		};
+		6AD2A99C1638DB2900BDE806 /* AliExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				6AD2A99D1638DB2900BDE806 /* AliConstant.h */,
+				6AD2A99E1638DB2900BDE806 /* AliConstant.m */,
+				6AD2A99F1638DB2900BDE806 /* Controls */,
+				6AD2A9A21638DB2900BDE806 /* Cooper-Info.plist */,
+				6AD2A9A31638DB2900BDE806 /* Cooper-Prefix.pch */,
+			);
+			path = AliExtensions;
+			sourceTree = "<group>";
+		};
+		6AD2A99F1638DB2900BDE806 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				6AD2A9A01638DB2900BDE806 /* DomainLabel.h */,
+				6AD2A9A11638DB2900BDE806 /* DomainLabel.m */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
 		8C0C2F2015AE7AAF00283579 /* SBJSON */ = {
 			isa = PBXGroup;
 			children = (
@@ -675,7 +698,7 @@
 		EE396256159D34380018B9EC = {
 			isa = PBXGroup;
 			children = (
-				1874878A160ECC12003110EE /* AliExtensions */,
+				6AD2A99C1638DB2900BDE806 /* AliExtensions */,
 				1891ABD315D2D58600C7E8DA /* Dependencies */,
 				18A92D9E15D2E97400423A55 /* Images */,
 				EE87F78C15A3F50100DA8E7F /* Sources */,
@@ -767,8 +790,6 @@
 		EE396291159D34DA0018B9EC /* TaskViewController */ = {
 			isa = PBXGroup;
 			children = (
-				1810152715C04BC000D67C06 /* TaskViewController.h */,
-				1810152815C04BC100D67C06 /* TaskViewController.m */,
 				1810152915C04BC100D67C06 /* TaskViewController.xib */,
 				1810152A15C04BC100D67C06 /* TaskViewDelegate.h */,
 				18F09CB415F9D0F800088568 /* TaskController.h */,
@@ -784,6 +805,9 @@
 				1810152315C04BAF00D67C06 /* TaskDetailViewController.m */,
 				1835EFD515C0CF99004AF233 /* TaskDetailEditViewController.h */,
 				1835EFD615C0CF99004AF233 /* TaskDetailEditViewController.m */,
+				6A5BA8D116352518008BA305 /* TaskTagsOptionViewController.h */,
+				6A5BA8D216352519008BA305 /* TaskTagsOptionViewController.m */,
+				6A56EF491637F2E500370A3F /* TaskDetailEditViewDelegate.h */,
 			);
 			name = DetailViewController;
 			sourceTree = "<group>";
@@ -791,6 +815,7 @@
 		EE3962A7159D48D80018B9EC /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				6A5BA8C91634E292008BA305 /* Labels */,
 				1838AADD15C7E06E003EC484 /* TableViews */,
 				1810152D15C04C0600D67C06 /* Cells */,
 				1810149015C0489400D67C06 /* CustomButton.h */,
@@ -895,6 +920,8 @@
 		EEF30E6515A5569100506A79 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6A56EF451637E5FB00370A3F /* personal.png */,
+				6A56EF461637E5FB00370A3F /* team.png */,
 				18409FA115C196BD00639DEE /* bg-line.png */,
 				18409FA215C196BD00639DEE /* complete-small.png */,
 				18409FA315C196BD00639DEE /* incomplete-small.png */,
@@ -1131,7 +1158,9 @@
 				18A92DA715D2E97400423A55 /* icon.png in Resources */,
 				18A92DA815D2E97400423A55 /* icon@2x.png in Resources */,
 				18A92DBB15D2EA2800423A55 /* GTMOAuth2ViewTouch.xib in Resources */,
-				18748794160ECC12003110EE /* Cooper-Info.plist in Resources */,
+				6A56EF471637E5FB00370A3F /* personal.png in Resources */,
+				6A56EF481637E5FB00370A3F /* team.png in Resources */,
+				6AD2A9A61638DB2900BDE806 /* Cooper-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1205,7 +1234,6 @@
 				1810151815C04B8800D67C06 /* LoginViewController.m in Sources */,
 				1810151D15C04B9A00D67C06 /* PriorityViewController.m in Sources */,
 				1810152615C04BAF00D67C06 /* TaskDetailViewController.m in Sources */,
-				1810152B15C04BC100D67C06 /* TaskViewController.m in Sources */,
 				1886CCA515C06482002346A1 /* DateLabel.m in Sources */,
 				1886CCAB15C0733B002346A1 /* PriorityButton.m in Sources */,
 				1835EFD715C0CF99004AF233 /* TaskDetailEditViewController.m in Sources */,
@@ -1239,8 +1267,11 @@
 				6A7D87C4160B5536004C7C9C /* TeamTaskDetailViewController.m in Sources */,
 				6A7D87C7160C0AEA004C7C9C /* TeamTaskOptionViewController.m in Sources */,
 				6A7D87CA160C6499004C7C9C /* TeamTaskDetailEditViewController.m in Sources */,
-				18748792160ECC12003110EE /* AliConstant.m in Sources */,
-				18748793160ECC12003110EE /* DomainLabel.m in Sources */,
+				6A5BA8CF1634E309008BA305 /* FillLabel.m in Sources */,
+				6A5BA8D01634E309008BA305 /* FillLabelView.m in Sources */,
+				6A5BA8D316352519008BA305 /* TaskTagsOptionViewController.m in Sources */,
+				6AD2A9A41638DB2900BDE806 /* AliConstant.m in Sources */,
+				6AD2A9A51638DB2900BDE806 /* DomainLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1331,7 +1362,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Li Ping (3F9L3G335D)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1347,6 +1378,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CAED0B46-663D-4A8F-BD50-EBEDD1A26D07";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/**";
 			};
@@ -1389,7 +1421,7 @@
 				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8B6BD206-EF00-42E1-860B-4373CA962F86";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CAED0B46-663D-4A8F-BD50-EBEDD1A26D07";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR) \"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts\"";
 				WRAPPER_EXTENSION = app;
@@ -1399,7 +1431,8 @@
 		EE39628F159D343C0018B9EC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Li Ping";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AliExtensions/Cooper-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1411,7 +1444,7 @@
 				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "30243251-BAF4-475A-BAEB-C87A8BADCA07";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR) \"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts\"";
 				WRAPPER_EXTENSION = app;
@@ -1455,9 +1488,10 @@
 			isa = XCVersionGroup;
 			children = (
 				6A18E5291603286A00ED2042 /* TaskModelV0_2.xcdatamodel */,
+				6A8310BD162BB9A5004F1DED /* TaskModelV0_2_1.xcdatamodel */,
 				18A92DAB15D2E9B200423A55 /* TaskModel.xcdatamodel */,
 			);
-			currentVersion = 6A18E5291603286A00ED2042 /* TaskModelV0_2.xcdatamodel */;
+			currentVersion = 6A8310BD162BB9A5004F1DED /* TaskModelV0_2_1.xcdatamodel */;
 			path = TaskModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

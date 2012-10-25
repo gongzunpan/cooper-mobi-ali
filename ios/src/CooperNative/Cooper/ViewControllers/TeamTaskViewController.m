@@ -194,7 +194,7 @@
     TaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell)
 	{
-        cell = [[TaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[TaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"myCell"];
 	}
     Task *task = [[self.taskGroup objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     [cell setTaskInfo:task];
@@ -439,14 +439,12 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     CGRect tableViewRect = CGRectMake(0, 0, [Tools screenMaxWidth], [Tools screenMaxHeight] - 49 - 64);
-    UITableView* tempTableView = [[[UITableView alloc] initWithFrame:tableViewRect style:UITableViewStylePlain] autorelease];
-    [tempTableView setBackgroundColor:[UIColor whiteColor]];
+    taskView = [[UITableView alloc] initWithFrame:tableViewRect style:UITableViewStylePlain];
+    taskView.backgroundColor = [UIColor whiteColor];
     
     //去掉底部空白
     UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-    tempTableView.tableFooterView = footer;
-    
-    taskView = tempTableView;
+    taskView.tableFooterView = footer;
     taskView.delegate = self;
     taskView.dataSource = self;
     
@@ -619,6 +617,7 @@
 
 - (void)back:(id)sender
 {
+    RELEASE(teamTaskFilterViewController);
     [Tools layerTransition:self.navigationController.view from:@"left"];
     [self.navigationController popViewControllerAnimated:NO];
 }
