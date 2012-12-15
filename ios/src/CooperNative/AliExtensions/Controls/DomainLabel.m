@@ -75,25 +75,25 @@
 
 - (BOOL)becomeFirstResponder {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-    		CGSize pickerSize = [self.picker sizeThatFits:CGSizeZero];
-    		CGRect frame = self.picker.frame;
-    		frame.size = pickerSize;
-    		self.picker.frame = frame;
-    		popoverController.popoverContentSize = pickerSize;
-            //TODO:...
-    		[popoverController presentPopoverFromRect:CGRectMake(self.frame.origin.x - 550, self.frame.origin.y, self.frame.size.width, self.frame.size.height) inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    		// resign the current first responder
-    		for (UIView *subview in self.superview.subviews) {
-    			if ([subview isFirstResponder]) {
-    				[subview resignFirstResponder];
-    			}
-    		}
-    		return NO;
-    	} else {
-    		[self.picker setNeedsLayout];
-    	}
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        CGSize pickerSize = [self.picker sizeThatFits:CGSizeZero];
+        CGRect frame = self.picker.frame;
+        frame.size = pickerSize;
+        self.picker.frame = frame;
+        popoverController.popoverContentSize = pickerSize;
+        //TODO:...
+        [popoverController presentPopoverFromRect:CGRectMake(self.frame.origin.x - 550, self.frame.origin.y, self.frame.size.width, self.frame.size.height) inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        // resign the current first responder
+        for (UIView *subview in self.superview.subviews) {
+            if ([subview isFirstResponder]) {
+                [subview resignFirstResponder];
+            }
+        }
+        return NO;
+    } else {
+        [self.picker setNeedsLayout];
+    }
 	return [super becomeFirstResponder];
 }
 

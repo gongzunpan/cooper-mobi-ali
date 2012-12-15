@@ -12,9 +12,10 @@
 
 @implementation MainViewController
 
-@synthesize tasklistNavController;
 @synthesize loginViewNavController;
+@synthesize tasklistNavController;
 @synthesize taskOptionNavController;
+@synthesize enterpriseOptionViewController;
 
 # pragma mark - UI相关
 
@@ -61,17 +62,19 @@
     } 
 }
 
-- (void)viewDidUnload
-{
-    loginViewNavController = nil;
-    tasklistNavController = nil;
-    [super viewDidUnload];
-}
+//- (void)viewDidUnload
+//{
+//    loginViewNavController = nil;
+//    tasklistNavController = nil;
+//    [super viewDidUnload];
+//}
 
 - (void)dealloc
 {
     RELEASE(loginViewNavController);
     RELEASE(tasklistNavController);
+    RELEASE(taskOptionNavController);
+    RELEASE(enterpriseOptionViewController);
     [super dealloc];
 }
 
@@ -84,7 +87,7 @@
 
 - (void)loginFinish
 {
-    NSLog(@"登录完毕");
+    NSLog(@"【登录成功】");
  
     if([[[ConstantClass instance] loginType] isEqualToString:@"anonymous"])
     {
@@ -99,13 +102,21 @@
     }
     else
     {
-        if(taskOptionNavController == nil)
-        {
-            TaskOptionViewController *taskOptionViewController = [[TaskOptionViewController alloc] init];
-            taskOptionNavController = [[BaseNavigationController alloc] initWithRootViewController:taskOptionViewController];
-            [taskOptionViewController release];
+        if (IS_ENTVERSION) {
+            if(enterpriseOptionViewController == nil) {
+                enterpriseOptionViewController = [[EnterpriseOptionViewController alloc] init];
+            }
+            [self.navigationController presentModalViewController:enterpriseOptionViewController animated:NO];
         }
-        [self.navigationController presentModalViewController:taskOptionNavController animated:NO];
+        else {
+            if(taskOptionNavController == nil)
+            {
+                TaskOptionViewController *taskOptionViewController = [[TaskOptionViewController alloc] init];
+                taskOptionNavController = [[BaseNavigationController alloc] initWithRootViewController: taskOptionViewController];
+                [taskOptionViewController release];
+            }
+            [self.navigationController presentModalViewController:taskOptionNavController animated:NO];
+        }
     }
 }
 

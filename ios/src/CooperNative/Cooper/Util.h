@@ -27,7 +27,7 @@
 #import "NSString+SBJSON.h"
 
 #ifdef DEBUG
-#   define NSLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#   define NSLog(fmt, ...) NSLog((@"\n%s [Line %d] " fmt @"\n------------------------------------------"), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #else
 #   define NSLog(...)
 #endif
@@ -97,5 +97,9 @@
 
 #define MAXLENGTH                       8
 //#define AES_KEY                         @""
+
+#define IS_ENTVERSION                   [[[[SysConfig instance] keyValue] objectForKey:@"isENTVersion"] isEqualToString:@"1"]
+
+#define TEST_USERID                     @"6873"
 
 #endif

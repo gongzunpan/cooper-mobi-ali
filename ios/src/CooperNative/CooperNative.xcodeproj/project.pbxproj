@@ -105,6 +105,11 @@
 		18FAC25515BFA143003F56B2 /* btn_bg_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FAC25415BFA143003F56B2 /* btn_bg_green.png */; };
 		18FAC25A15BFAF50003F56B2 /* navigationbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FAC25915BFAF50003F56B2 /* navigationbar_bg.png */; };
 		6A18E52816030D7B00ED2042 /* TeamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A18E52716030D7B00ED2042 /* TeamViewController.m */; };
+		6A38EEF0167C4E2A00726BFB /* EnterpriseOptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A38EEEF167C4E2A00726BFB /* EnterpriseOptionViewController.m */; };
+		6A38EEF7167C5A0C00726BFB /* decider_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A38EEF5167C5A0C00726BFB /* decider_icon.png */; };
+		6A38EEF8167C5A0C00726BFB /* decider_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A38EEF6167C5A0C00726BFB /* decider_icon@2x.png */; };
+		6A38EF01167C650700726BFB /* AssigneeTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A38EF00167C650700726BFB /* AssigneeTaskViewController.m */; };
+		6A38EF04167C651F00726BFB /* RelatedTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A38EF03167C651F00726BFB /* RelatedTaskViewController.m */; };
 		6A56EF471637E5FB00370A3F /* personal.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A56EF451637E5FB00370A3F /* personal.png */; };
 		6A56EF481637E5FB00370A3F /* team.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A56EF461637E5FB00370A3F /* team.png */; };
 		6A5BA8CF1634E309008BA305 /* FillLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5BA8CC1634E309008BA305 /* FillLabel.m */; };
@@ -362,6 +367,14 @@
 		6A18E52616030D7B00ED2042 /* TeamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TeamViewController.h; path = ViewControllers/TeamViewController.h; sourceTree = "<group>"; };
 		6A18E52716030D7B00ED2042 /* TeamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TeamViewController.m; path = ViewControllers/TeamViewController.m; sourceTree = "<group>"; };
 		6A18E5291603286A00ED2042 /* TaskModelV0_2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TaskModelV0_2.xcdatamodel; sourceTree = "<group>"; };
+		6A38EEEE167C4E2A00726BFB /* EnterpriseOptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnterpriseOptionViewController.h; path = ViewControllers/EnterpriseOptionViewController.h; sourceTree = "<group>"; };
+		6A38EEEF167C4E2A00726BFB /* EnterpriseOptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EnterpriseOptionViewController.m; path = ViewControllers/EnterpriseOptionViewController.m; sourceTree = "<group>"; };
+		6A38EEF5167C5A0C00726BFB /* decider_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = decider_icon.png; sourceTree = "<group>"; };
+		6A38EEF6167C5A0C00726BFB /* decider_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "decider_icon@2x.png"; sourceTree = "<group>"; };
+		6A38EEFF167C650700726BFB /* AssigneeTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AssigneeTaskViewController.h; path = ViewControllers/AssigneeTaskViewController.h; sourceTree = "<group>"; };
+		6A38EF00167C650700726BFB /* AssigneeTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AssigneeTaskViewController.m; path = ViewControllers/AssigneeTaskViewController.m; sourceTree = "<group>"; };
+		6A38EF02167C651F00726BFB /* RelatedTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RelatedTaskViewController.h; path = ViewControllers/RelatedTaskViewController.h; sourceTree = "<group>"; };
+		6A38EF03167C651F00726BFB /* RelatedTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RelatedTaskViewController.m; path = ViewControllers/RelatedTaskViewController.m; sourceTree = "<group>"; };
 		6A56EF451637E5FB00370A3F /* personal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = personal.png; sourceTree = "<group>"; };
 		6A56EF461637E5FB00370A3F /* team.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = team.png; sourceTree = "<group>"; };
 		6A56EF491637F2E500370A3F /* TaskDetailEditViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TaskDetailEditViewDelegate.h; path = ViewControllers/TaskDetailEditViewDelegate.h; sourceTree = "<group>"; };
@@ -643,6 +656,19 @@
 			name = TeamViewController;
 			sourceTree = "<group>";
 		};
+		6A38EEE7167C4B4800726BFB /* EnterpriseViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6A38EEEE167C4E2A00726BFB /* EnterpriseOptionViewController.h */,
+				6A38EEEF167C4E2A00726BFB /* EnterpriseOptionViewController.m */,
+				6A38EEFF167C650700726BFB /* AssigneeTaskViewController.h */,
+				6A38EF00167C650700726BFB /* AssigneeTaskViewController.m */,
+				6A38EF02167C651F00726BFB /* RelatedTaskViewController.h */,
+				6A38EF03167C651F00726BFB /* RelatedTaskViewController.m */,
+			);
+			name = EnterpriseViewController;
+			sourceTree = "<group>";
+		};
 		6A5BA8C91634E292008BA305 /* Labels */ = {
 			isa = PBXGroup;
 			children = (
@@ -766,6 +792,7 @@
 		EE396290159D34B30018B9EC /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6A38EEE7167C4B4800726BFB /* EnterpriseViewController */,
 				6A18E52416030D5400ED2042 /* TeamViewController */,
 				18F456CF160231F40081B8BA /* OptionViewController */,
 				1872E82415C2676000A8EA41 /* TasklistViewController */,
@@ -920,6 +947,8 @@
 		EEF30E6515A5569100506A79 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6A38EEF5167C5A0C00726BFB /* decider_icon.png */,
+				6A38EEF6167C5A0C00726BFB /* decider_icon@2x.png */,
 				6A56EF451637E5FB00370A3F /* personal.png */,
 				6A56EF461637E5FB00370A3F /* team.png */,
 				18409FA115C196BD00639DEE /* bg-line.png */,
@@ -1161,6 +1190,8 @@
 				6A56EF471637E5FB00370A3F /* personal.png in Resources */,
 				6A56EF481637E5FB00370A3F /* team.png in Resources */,
 				6AD2A9A61638DB2900BDE806 /* Cooper-Info.plist in Resources */,
+				6A38EEF7167C5A0C00726BFB /* decider_icon.png in Resources */,
+				6A38EEF8167C5A0C00726BFB /* decider_icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1272,6 +1303,9 @@
 				6A5BA8D316352519008BA305 /* TaskTagsOptionViewController.m in Sources */,
 				6AD2A9A41638DB2900BDE806 /* AliConstant.m in Sources */,
 				6AD2A9A51638DB2900BDE806 /* DomainLabel.m in Sources */,
+				6A38EEF0167C4E2A00726BFB /* EnterpriseOptionViewController.m in Sources */,
+				6A38EF01167C650700726BFB /* AssigneeTaskViewController.m in Sources */,
+				6A38EF04167C651F00726BFB /* RelatedTaskViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

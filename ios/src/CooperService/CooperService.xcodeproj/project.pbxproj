@@ -41,6 +41,8 @@
 		18A16F6815E3645400E80E72 /* VersionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A16F6615E3645400E80E72 /* VersionService.m */; };
 		6A18E56816032A6A00ED2042 /* TeamService.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A18E56616032A6A00ED2042 /* TeamService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6A18E56916032A6A00ED2042 /* TeamService.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A18E56716032A6A00ED2042 /* TeamService.m */; };
+		6A38EF07167C746100726BFB /* EnterpriseService.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A38EF05167C746100726BFB /* EnterpriseService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6A38EF08167C746100726BFB /* EnterpriseService.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A38EF06167C746100726BFB /* EnterpriseService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +130,8 @@
 		18A16F6615E3645400E80E72 /* VersionService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VersionService.m; path = Sources/Services/VersionService.m; sourceTree = "<group>"; };
 		6A18E56616032A6A00ED2042 /* TeamService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TeamService.h; path = Sources/Services/TeamService.h; sourceTree = "<group>"; };
 		6A18E56716032A6A00ED2042 /* TeamService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TeamService.m; path = Sources/Services/TeamService.m; sourceTree = "<group>"; };
+		6A38EF05167C746100726BFB /* EnterpriseService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnterpriseService.h; path = Sources/Services/EnterpriseService.h; sourceTree = "<group>"; };
+		6A38EF06167C746100726BFB /* EnterpriseService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EnterpriseService.m; path = Sources/Services/EnterpriseService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +211,8 @@
 				1825346415FB71DD0035D2DA /* TaskNewService.m */,
 				6A18E56616032A6A00ED2042 /* TeamService.h */,
 				6A18E56716032A6A00ED2042 /* TeamService.m */,
+				6A38EF05167C746100726BFB /* EnterpriseService.h */,
+				6A38EF06167C746100726BFB /* EnterpriseService.m */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -296,6 +302,7 @@
 				1825346015FB3AF40035D2DA /* TasklistNewService.h in Headers */,
 				1825346515FB71DD0035D2DA /* TaskNewService.h in Headers */,
 				6A18E56816032A6A00ED2042 /* TeamService.h in Headers */,
+				6A38EF07167C746100726BFB /* EnterpriseService.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +410,7 @@
 				1825346115FB3AF40035D2DA /* TasklistNewService.m in Sources */,
 				1825346615FB71DD0035D2DA /* TaskNewService.m in Sources */,
 				6A18E56916032A6A00ED2042 /* TeamService.m in Sources */,
+				6A38EF08167C746100726BFB /* EnterpriseService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,15 +25,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSLog(@"当前版本网络地址: %@",[[ConstantClass instance] rootPath]);
-    
     //从缓存中加载数据
-    [ConstantClass loadFromCache]; 
+    [ConstantClass loadFromCache];
+
+    NSString *currentRootPath = [[ConstantClass instance] rootPath];
+    NSLog(@"【当前版本服务端根路径】%@ 【当前版本】%@"
+          , currentRootPath
+          , IS_ENTVERSION ? @"企业版" : @"非企业版");
     
     //HACK:为了能够初始化刷新数据库产生的延迟
     [self managedObjectContext];
-    
-    
+
     if([[ConstantClass instance] rootPath] == nil
        || [[ConstantClass instance] rootPath] == @"")
     {
@@ -44,15 +46,14 @@
         [ConstantClass savePathToCache];
     }
     
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
     self.mainViewController = [[MainViewController alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.mainViewController];
-
     self.window.rootViewController = navController;
-    
     [self.window makeKeyAndVisible];
+    [navController release];
     
     //[GTMHTTPFetcher setLoggingEnabled:YES];
     
@@ -87,7 +88,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    NSLog(@"应用程序进入后台运行");
+    NSLog(@"【应用程序进入后台运行】");
     
     [ConstantClass saveToCache];
 }
@@ -98,7 +99,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSLog(@"应用程序重新从后台载入");
+    NSLog(@"【应用程序重新从后台载入】");
     
     //检测版本
     //[self checkVersionForUpdate];
@@ -109,12 +110,12 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    NSLog(@"应用程序即将终止");
+    NSLog(@"【应用程序即将终止】");
     
     NSError *error = nil;
     if (managedObjectContext != nil) {
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-			NSLog(@"未处理的异常: %@, %@", error, [error userInfo]);
+			NSLog(@"【未处理的异常】%@, %@", error, [error userInfo]);
 			abort();
         } 
     }
@@ -156,7 +157,7 @@
 //本地推送通知
 - (void)localPush
 {
-    NSLog(@"开始执行本地推送通知");
+    NSLog(@"【开始执行本地推送通知】");
     
     TaskDao *taskDao = [[[TaskDao alloc] init] autorelease];
     
@@ -164,7 +165,7 @@
     
     NSString *todayString = [Tools ShortNSDateToNSString:[NSDate date]];
     NSDate *today = [Tools NSStringToShortNSDate:todayString];
-    NSLog(@"当前日期: %@", [Tools NSDateToNSString:today]);
+    NSLog(@"【当前日期】%@", [Tools NSDateToNSString:today]);
     NSLog(@"今天有 %d 个未完成的任务", tasks.count);
     
     if(tasks.count == 0)
@@ -227,13 +228,13 @@
     }
 	
     NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: STORE_DBNAME]];
-    NSLog(@"sqlite数据库存储路径: %@", [storeUrl relativeString]);
+    NSLog(@"【sqlite数据库存储路径】%@", [storeUrl relativeString]);
     //HACK:可以保持数据库自动兼容
     NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],NSMigratePersistentStoresAutomaticallyOption,[NSNumber numberWithBool:YES],NSInferMappingModelAutomaticallyOption, nil];
 	NSError *error = nil;
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error]) {
-		NSLog(@"sqlite数据库异常解析： %@, %@", error, [error userInfo]);
+		NSLog(@"【sqlite数据库异常解析】%@, %@", error, [error userInfo]);
 		abort();
     }    
     
@@ -248,7 +249,7 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"请求响应数据: %@, %d",[request responseString], [request responseStatusCode]);
+    NSLog(@"【请求响应数据】%@, %d",[request responseString], [request responseStatusCode]);
     
     NSString *key = [request.userInfo objectForKey:@"key"];
     NSString *localVersion = [request.userInfo objectForKey:@"localVersion"];
@@ -273,12 +274,12 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    NSLog(@"错误异常: %@", request.error);
+    NSLog(@"【错误异常】%@", request.error);
 }
 
 - (void)addRequstToPool:(ASIHTTPRequest *)request
 {
-    NSLog(@"发送请求URL: %@", request.url);
+    NSLog(@"【发送请求URL】%@", request.url);
 }
     
 

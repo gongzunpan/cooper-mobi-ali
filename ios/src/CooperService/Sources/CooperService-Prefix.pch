@@ -47,4 +47,9 @@ typedef Constant ConstantClass;
 //Ark登录入口
 #define ARKLOGIN_URL                    @"/Account/ArkLogin"
 
+////////////////////////////////////////////////////////////////
+//企业任务相关API接口
+#define ENTERPRISE_GETTASKSBYASSIGNEE_URL   @"/EnterpriseTask/GetTasksByAssignee"
+////////////////////////////////////////////////////////////////
+
 #define REQUEST_TYPE                    @"RequestType"
