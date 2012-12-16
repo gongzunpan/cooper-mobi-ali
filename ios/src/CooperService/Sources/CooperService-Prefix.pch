@@ -50,6 +50,13 @@ typedef Constant ConstantClass;
 ////////////////////////////////////////////////////////////////
 //企业任务相关API接口
 #define ENTERPRISE_GETTASKSBYASSIGNEE_URL   @"/EnterpriseTask/GetTasksByAssignee"
+#define ENTERPRISE_GETRELATEDTASKS_URL      @"/EnterpriseTask/GetRelatedTasks"
+#define ENTERPRISE_CHANGECOMPLETED_URL      @"/EnterpriseTask/ChangeCompleted"
+#define ENTERPRISE_CHANGEDUETIME_URL        @"/EnterpriseTask/ChangeDueTime"
+#define ENTERPRISE_CHANGEPRIORITY_URL       @"/EnterpriseTask/ChangePriority"
+#define ENTERPRISE_UPDATETASK_URL           @"/EnterpriseTask/UpdateTask"
+#define ENTERPRISE_CREATETASK_URL           @"/EnterpriseTask/CreateTask"
+#define ENTERPRISE_TASKINFO_URL             @"/EnterpriseTask/TaskInfo"
 ////////////////////////////////////////////////////////////////
 
 #define REQUEST_TYPE                    @"RequestType"

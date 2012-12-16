@@ -101,5 +101,6 @@
 #define IS_ENTVERSION                   [[[[SysConfig instance] keyValue] objectForKey:@"isENTVersion"] isEqualToString:@"1"]
 
 #define TEST_USERID                     @"6873"
+#define TEST_USERDISPLAYNAME            @"萧玄"
 
 #endif

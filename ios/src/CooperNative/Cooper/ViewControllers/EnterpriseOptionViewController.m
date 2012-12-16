@@ -7,9 +7,9 @@
 //
 
 #import "EnterpriseOptionViewController.h"
-#import "BaseNavigationController.h"
 
-#define AUDIO_OPTION    @"随口记"
+//#define AUDIO_OPTION    @"随口记"
+#define AUDIO_OPTION    @"创建任务"
 #define TASK_OPTION     @"随手派"
 #define LIST_OPTION     @"查看任务"
 
@@ -18,6 +18,7 @@
 @synthesize infoView;
 @synthesize menuScrollView;
 @synthesize taskBarController;
+@synthesize taskCreateController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,6 +52,7 @@
     [infoView release];
     [menuScrollView release];
     [taskBarController release];
+//    [taskCreateController release];
 
     [super dealloc];
 }
@@ -95,14 +97,14 @@
     //TODO:图片替换掉
     UIButton *button1 = [self getTypeButtonWithImage:[UIImage imageNamed:@"decider_icon.png"] withTitle:AUDIO_OPTION];
     [menuScrollView addSubview:button1];
-    UIButton *button2 = [self getTypeButtonWithImage:[UIImage imageNamed:@"decider_icon.png"] withTitle:TASK_OPTION];
-    [menuScrollView addSubview:button2];
-    UIButton *button3 = [self getTypeButtonWithImage:[UIImage imageNamed:@"decider_icon.png"] withTitle:LIST_OPTION];
+//    UIButton *button2 = [self getTypeButtonWithImage:[UIImage imageNamed:@"decider_icon.png"] withTitle:TASK_OPTION];
+//    [menuScrollView addSubview:button2];
+    UIButton *button3 = [self getTypeButtonWithImage:[UIImage imageNamed:@"jiangjia_icon.png"] withTitle:LIST_OPTION];
     [menuScrollView addSubview:button3];
 
-    button1.frame = CGRectMake(0, 10, button1.frame.size.width, button1.frame.size.height);
-    button2.frame = CGRectMake(110, 10, button2.frame.size.width, button2.frame.size.height);
-    button3.frame = CGRectMake(220, 10, button3.frame.size.width, button3.frame.size.height);
+    button1.frame = CGRectMake(55, 10, button1.frame.size.width, button1.frame.size.height);
+//    button2.frame = CGRectMake(110, 10, button2.frame.size.width, button2.frame.size.height);
+    button3.frame = CGRectMake(165, 10, button3.frame.size.width, button3.frame.size.height);
 
     menuScrollView.backgroundColor = [UIColor whiteColor];
     //menuScrollView.contentSize = self.view.frame.size;
@@ -143,6 +145,15 @@
 {
     if([sender.titleLabel.text isEqualToString:AUDIO_OPTION]) {
         
+        EnterpriseTaskDetailCreateViewController *taskDetailCreateViewController = [[EnterpriseTaskDetailCreateViewController alloc] init];
+        
+        taskCreateController = [[BaseNavigationController alloc] initWithRootViewController:taskDetailCreateViewController];
+        
+        
+        [self presentModalViewController:taskCreateController animated:YES];
+        
+        [taskDetailCreateViewController release];
+        [taskCreateController release];
     }
     else if([sender.titleLabel.text isEqualToString:TASK_OPTION]) {
 
@@ -172,8 +183,44 @@
             [relatedTaskViewController release];
             [assigneeNavController release];
             [relatedNavController release];
+            
+            taskBarController.delegate = self;
+            
+            for (UIView *view in taskBarController.tabBar.subviews)
+            {
+                if ([NSStringFromClass([view class]) isEqualToString:@"UITabBarButton"])
+                {
+                    for (UIView *subview in view.subviews)
+                    {
+                        if ([subview isKindOfClass:[UILabel class]])
+                        {
+                            UILabel *label = (UILabel *)subview;
+                            
+                            [label setTextColor:[UIColor whiteColor]];
+                        }
+                    }
+                }
+            }
         }
         [self presentModalViewController:taskBarController animated:YES];
+    }
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    for (UIView *view in tabBarController.tabBar.subviews)
+    {
+        if ([NSStringFromClass([view class]) isEqualToString:@"UITabBarButton"])
+        {
+            for (UIView *subview in view.subviews)
+            {
+                if ([subview isKindOfClass:[UILabel class]])
+                {
+                    UILabel *label = (UILabel *)subview;
+                    label.textColor = [UIColor whiteColor];
+                }
+            }
+        }
     }
 }
 

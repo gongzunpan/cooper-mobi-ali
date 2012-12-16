@@ -11,6 +11,8 @@
 
 @implementation BodyTextView
 
+@synthesize bodyDelegate;
+
 - (UIView *)inputAccessoryView {
     //[textField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.3];
     if (!inputAccessoryView) {
@@ -50,6 +52,8 @@
 
 - (void)doneAction:(id)sender {
     [self resignFirstResponder];
+    
+    [bodyDelegate returnData];
 }
 
 - (BOOL)becomeFirstResponder {

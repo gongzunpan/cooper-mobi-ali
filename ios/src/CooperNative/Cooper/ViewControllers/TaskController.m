@@ -528,6 +528,7 @@
 //    // Allow the proposed destination.
 //    return proposedDestinationIndexPath;
 //}
+
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Task *task = [[self.taskGroup objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];

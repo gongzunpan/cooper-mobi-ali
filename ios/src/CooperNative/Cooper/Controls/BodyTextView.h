@@ -8,12 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol BodyTextViewDelegate <NSObject>
+
+- (void)returnData;
+
+@end
+
 @interface BodyTextView : UITextView
 {
     UIView *inputAccessoryView;
     
     UITextField *textField;
 }
+
+@property (nonatomic, assign) id <BodyTextViewDelegate> bodyDelegate;
+
 //@property (nonatomic, strong) UIPickerView *picker;
 
 @end

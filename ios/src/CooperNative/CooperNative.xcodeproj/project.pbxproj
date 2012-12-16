@@ -35,6 +35,11 @@
 		1810151E15C04B9A00D67C06 /* PriorityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1810151C15C04B9A00D67C06 /* PriorityViewController.xib */; };
 		1810152615C04BAF00D67C06 /* TaskDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1810152315C04BAF00D67C06 /* TaskDetailViewController.m */; };
 		1810152C15C04BC100D67C06 /* TaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1810152915C04BC100D67C06 /* TaskViewController.xib */; };
+		1813C5B6167DA00B001841B6 /* EnterpriseTaskTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1813C5B5167DA00B001841B6 /* EnterpriseTaskTableCell.m */; };
+		1813C5B9167DD972001841B6 /* EnterpriseTaskDetailEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1813C5B8167DD971001841B6 /* EnterpriseTaskDetailEditViewController.m */; };
+		1813C5BC167E2162001841B6 /* EnterpriseTaskDetailCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1813C5BB167E2162001841B6 /* EnterpriseTaskDetailCreateViewController.m */; };
+		1813C5BF167E222B001841B6 /* jiangjia_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1813C5BD167E222B001841B6 /* jiangjia_icon.png */; };
+		1813C5C0167E222B001841B6 /* jiangjia_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1813C5BE167E222B001841B6 /* jiangjia_icon@2x.png */; };
 		181DD88315C80F3300FB2ED5 /* BodyTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 181DD88215C80F3300FB2ED5 /* BodyTextView.m */; };
 		1835EFD115C0CA59004AF233 /* incomplete.png in Resources */ = {isa = PBXBuildFile; fileRef = 1835EFCE15C0CA59004AF233 /* incomplete.png */; };
 		1835EFD215C0CA59004AF233 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 1835EFCF15C0CA59004AF233 /* refresh.png */; };
@@ -263,6 +268,14 @@
 		1810152315C04BAF00D67C06 /* TaskDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskDetailViewController.m; path = ViewControllers/TaskDetailViewController.m; sourceTree = "<group>"; };
 		1810152915C04BC100D67C06 /* TaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TaskViewController.xib; path = ViewControllers/TaskViewController.xib; sourceTree = "<group>"; };
 		1810152A15C04BC100D67C06 /* TaskViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskViewDelegate.h; path = ViewControllers/TaskViewDelegate.h; sourceTree = "<group>"; };
+		1813C5B4167DA00B001841B6 /* EnterpriseTaskTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnterpriseTaskTableCell.h; path = Controls/EnterpriseTaskTableCell.h; sourceTree = "<group>"; };
+		1813C5B5167DA00B001841B6 /* EnterpriseTaskTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EnterpriseTaskTableCell.m; path = Controls/EnterpriseTaskTableCell.m; sourceTree = "<group>"; };
+		1813C5B7167DD971001841B6 /* EnterpriseTaskDetailEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnterpriseTaskDetailEditViewController.h; path = ViewControllers/EnterpriseTaskDetailEditViewController.h; sourceTree = "<group>"; };
+		1813C5B8167DD971001841B6 /* EnterpriseTaskDetailEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EnterpriseTaskDetailEditViewController.m; path = ViewControllers/EnterpriseTaskDetailEditViewController.m; sourceTree = "<group>"; };
+		1813C5BA167E2161001841B6 /* EnterpriseTaskDetailCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnterpriseTaskDetailCreateViewController.h; path = ViewControllers/EnterpriseTaskDetailCreateViewController.h; sourceTree = "<group>"; };
+		1813C5BB167E2162001841B6 /* EnterpriseTaskDetailCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EnterpriseTaskDetailCreateViewController.m; path = ViewControllers/EnterpriseTaskDetailCreateViewController.m; sourceTree = "<group>"; };
+		1813C5BD167E222B001841B6 /* jiangjia_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jiangjia_icon.png; sourceTree = "<group>"; };
+		1813C5BE167E222B001841B6 /* jiangjia_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jiangjia_icon@2x.png"; sourceTree = "<group>"; };
 		181DD88115C80F3300FB2ED5 /* BodyTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BodyTextView.h; path = Controls/BodyTextView.h; sourceTree = "<group>"; };
 		181DD88215C80F3300FB2ED5 /* BodyTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BodyTextView.m; path = Controls/BodyTextView.m; sourceTree = "<group>"; };
 		1835EFCE15C0CA59004AF233 /* incomplete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = incomplete.png; sourceTree = "<group>"; };
@@ -487,6 +500,8 @@
 				181014A315C048AE00D67C06 /* PriorityPickerInputTableViewCell.m */,
 				181014A615C048B000D67C06 /* TaskTableViewCell.h */,
 				181014A715C048B000D67C06 /* TaskTableViewCell.m */,
+				1813C5B4167DA00B001841B6 /* EnterpriseTaskTableCell.h */,
+				1813C5B5167DA00B001841B6 /* EnterpriseTaskTableCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -665,6 +680,10 @@
 				6A38EF00167C650700726BFB /* AssigneeTaskViewController.m */,
 				6A38EF02167C651F00726BFB /* RelatedTaskViewController.h */,
 				6A38EF03167C651F00726BFB /* RelatedTaskViewController.m */,
+				1813C5B7167DD971001841B6 /* EnterpriseTaskDetailEditViewController.h */,
+				1813C5B8167DD971001841B6 /* EnterpriseTaskDetailEditViewController.m */,
+				1813C5BA167E2161001841B6 /* EnterpriseTaskDetailCreateViewController.h */,
+				1813C5BB167E2162001841B6 /* EnterpriseTaskDetailCreateViewController.m */,
 			);
 			name = EnterpriseViewController;
 			sourceTree = "<group>";
@@ -947,6 +966,8 @@
 		EEF30E6515A5569100506A79 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				1813C5BD167E222B001841B6 /* jiangjia_icon.png */,
+				1813C5BE167E222B001841B6 /* jiangjia_icon@2x.png */,
 				6A38EEF5167C5A0C00726BFB /* decider_icon.png */,
 				6A38EEF6167C5A0C00726BFB /* decider_icon@2x.png */,
 				6A56EF451637E5FB00370A3F /* personal.png */,
@@ -1192,6 +1213,8 @@
 				6AD2A9A61638DB2900BDE806 /* Cooper-Info.plist in Resources */,
 				6A38EEF7167C5A0C00726BFB /* decider_icon.png in Resources */,
 				6A38EEF8167C5A0C00726BFB /* decider_icon@2x.png in Resources */,
+				1813C5BF167E222B001841B6 /* jiangjia_icon.png in Resources */,
+				1813C5C0167E222B001841B6 /* jiangjia_icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1306,6 +1329,9 @@
 				6A38EEF0167C4E2A00726BFB /* EnterpriseOptionViewController.m in Sources */,
 				6A38EF01167C650700726BFB /* AssigneeTaskViewController.m in Sources */,
 				6A38EF04167C651F00726BFB /* RelatedTaskViewController.m in Sources */,
+				1813C5B6167DA00B001841B6 /* EnterpriseTaskTableCell.m in Sources */,
+				1813C5B9167DD972001841B6 /* EnterpriseTaskDetailEditViewController.m in Sources */,
+				1813C5BC167E2162001841B6 /* EnterpriseTaskDetailCreateViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

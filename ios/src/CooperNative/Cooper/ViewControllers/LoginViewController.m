@@ -90,9 +90,9 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     self.loginTableView.backgroundView.alpha = 0.0;
     
     [self.view addSubview:self.loginTableView];
-    
+
     //登录按钮
-    self.btnLogin = [[CustomButton alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 150 - [Tools screenMaxWidth] / 16.0, 250 + googleLoginHeight, 70, 40)
+    self.btnLogin = [[CustomButton alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 150 + (IS_ENTVERSION ? 80 : 0) - [Tools screenMaxWidth] / 16.0, 250 + googleLoginHeight, 70, 40)
                                                   image:[UIImage imageNamed:@"btn_center.png"]];
     self.btnLogin.layer.cornerRadius = 10.0f;
     self.btnLogin.layer.masksToBounds = YES;
@@ -103,19 +103,21 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
                    forState:UIControlStateNormal];
     self.btnLogin.titleLabel.font = [UIFont boldSystemFontOfSize:20];
     [self.view addSubview:self.btnLogin];
-    
-    //跳过按钮
-    self.btnSkip = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.btnSkip.frame = CGRectMake([Tools screenMaxWidth] - 70 - [Tools screenMaxWidth] / 16.0, 250 + googleLoginHeight, 70, 40);
-    self.btnSkip.layer.cornerRadius = 6.0f;
-    self.btnSkip.layer.masksToBounds = YES;
-    [self.btnSkip addTarget:self 
-                     action:@selector(skip:)
-           forControlEvents:UIControlEventTouchUpInside];
-    [self.btnSkip setTitle:skip_btn_text 
-                  forState:UIControlStateNormal];
-    self.btnSkip.titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    [self.view addSubview:self.btnSkip];
+        
+    if(!IS_ENTVERSION) {
+        //跳过按钮
+        self.btnSkip = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        self.btnSkip.frame = CGRectMake([Tools screenMaxWidth] - 70 - [Tools screenMaxWidth] / 16.0, 250 + googleLoginHeight, 70, 40);
+        self.btnSkip.layer.cornerRadius = 6.0f;
+        self.btnSkip.layer.masksToBounds = YES;
+        [self.btnSkip addTarget:self 
+                         action:@selector(skip:)
+               forControlEvents:UIControlEventTouchUpInside];
+        [self.btnSkip setTitle:skip_btn_text 
+                      forState:UIControlStateNormal];
+        self.btnSkip.titleLabel.font = [UIFont boldSystemFontOfSize:20];
+        [self.view addSubview:self.btnSkip];
+    }
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(([Tools screenMaxWidth] - 170) / 2.0, 30, 170, 50)];
     UIImage *imgLogo = [UIImage imageNamed:@"logo.png"];

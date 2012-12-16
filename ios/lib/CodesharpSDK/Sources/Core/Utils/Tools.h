@@ -36,6 +36,8 @@
 
 + (void)failed:(MBProgressHUD*)HUD;
 
++ (void)failed:(MBProgressHUD*)HUD msg:(NSString*)msg;
+
 + (NSString*)stringWithUUID;
 
 + (BOOL)isPad;
