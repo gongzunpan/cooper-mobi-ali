@@ -41,13 +41,6 @@
     self.tabBarController.navigationItem.leftBarButtonItem = nil;
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
     
-//    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [backBtn setFrame:CGRectMake(5, 5, 25, 25)];
-//    [backBtn setBackgroundImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
-//    [backBtn addTarget: self action: @selector(goBack:) forControlEvents: UIControlEventTouchUpInside];
-//    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-//    self.navigationItem.leftBarButtonItem = backButtonItem;
-//    [backButtonItem release];
     [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]];
     self.tabBarController.title = @"系统设置";
 }
@@ -55,6 +48,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    if(IS_ENTVERSION) {
+        self.title = APP_TITLE;
+    }
 }
 
 - (void)viewDidUnload

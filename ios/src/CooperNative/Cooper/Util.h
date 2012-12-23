@@ -26,6 +26,11 @@
 #import "NSObject+SBJSON.h"
 #import "NSString+SBJSON.h"
 
+#import "JASidePanelController.h"
+#import "UIViewController+JASidePanel.h"
+
+#import "UIImageView+WebCache.h"
+
 #ifdef DEBUG
 #   define NSLog(fmt, ...) NSLog((@"\n%s [Line %d] " fmt @"\n------------------------------------------"), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #else
@@ -74,6 +79,8 @@
 #define SETTING_IMAGE                   @"setting.png"
 //后退按钮图片
 #define BACK_IMAGE                      @"back.png"
+//列表图片
+#define LIST_IMAGE                      @"list.png"
 
 #define PRIORITY_TITLE_1                @"尽快完成"
 #define PRIORITY_TITLE_2                @"稍后完成"

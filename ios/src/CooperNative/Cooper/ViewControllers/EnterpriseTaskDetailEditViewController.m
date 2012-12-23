@@ -36,6 +36,9 @@
     enterpriseService = [[EnterpriseService alloc] init];
 
     [self initContentView];
+
+    taskDetailDict = [[NSMutableDictionary alloc] init];
+    [self getTaskDetail];
 }
 
 - (void)viewDidUnload
@@ -46,10 +49,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    taskDetailDict = [[NSMutableDictionary alloc] init];
-    
-    [self getTaskDetail];
     
     viewCenter = self.view.center;
     
@@ -197,7 +196,8 @@
                 {
                     cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"PriorityCell"] autorelease];
                     cell.textLabel.text = @"优先级:";
-                    [cell.textLabel setTextColor:[UIColor grayColor]];[cell.textLabel setFont:[UIFont boldSystemFontOfSize:16]];
+                    [cell.textLabel setTextColor:[UIColor grayColor]];
+                    [cell.textLabel setFont:[UIFont boldSystemFontOfSize:16]];
                     
                     priorityButton = [[PriorityButton alloc] initWithFrame:CGRectZero];
                     
@@ -217,9 +217,9 @@
                     [priorityButton setTitle:[NSString stringWithFormat:@"%@    >",PRIORITY_TITLE_1] forState:UIControlStateNormal];
                 }
                 
-                NSString *priority = [taskDetailDict objectForKey:@"priority"];
-                if(priority != nil) {
-                    [priorityButton setTitle: [NSString stringWithFormat:@"%@    >", [self getPriorityValue:priority]] forState:UIControlStateNormal];
+                NSNumber *priority = [taskDetailDict objectForKey:@"priority"];
+                if(![priority isEqualToNumber:[NSNumber numberWithInt:-1]]) {
+                    [priorityButton setTitle: [NSString stringWithFormat:@"%@    >", [self getPriorityValue:[priority stringValue]]] forState:UIControlStateNormal];
                     //oldPriority = [task.priority copy];
                     
                     CGSize size = CGSizeMake([Tools screenMaxWidth],10000);
@@ -370,6 +370,18 @@
                 //            }
                 [cell setFrame:CGRectMake(0, 0, [Tools screenMaxWidth], totalheight + 200)];
             }
+//            else if(indexPath.row == 6) {
+//                
+//                cell = [tableView dequeueReusableCellWithIdentifier:@"ImageCell"];
+//                if (!cell)
+//                {
+//                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ImageCell"] autorelease];
+//                }
+//
+//                cell.textLabel.text = [NSString stringWithFormat:@"Image #%d", indexPath.row];
+//           
+//                [cell.imageView setImageWithURL:[NSURL URLWithString:@"http://static2.dmcdn.net/static/video/434/992/38299434:jpeg_preview_small.jpg?20120503193356"]];
+//            }
         }
     }
     
@@ -390,11 +402,11 @@
     [taskDetailDict setObject:dueTime forKey:@"dueTime"];
 
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
-    [context setObject:@"ChangeDueTime" forKey:REQUEST_TYPE];
-    [enterpriseService changeDueTime:currentTaskId
-                             dueTime:dueTime
-                             context:context
-                            delegate:self];
+    [context setObject:@"ChangeTaskDueTime" forKey:REQUEST_TYPE];
+    [enterpriseService changeTaskDueTime:currentTaskId
+                                 dueTime:dueTime
+                                 context:context
+                                delegate:self];
     
     CGSize size = CGSizeMake(320,10000);
     CGSize labelsize = [dueDateLabel.titleLabel.text sizeWithFont:dueDateLabel.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
@@ -411,11 +423,11 @@
     [taskDetailDict setObject:priority forKey:@"priority"];
     
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
-    [context setObject:@"ChangePriority" forKey:REQUEST_TYPE];
-    [enterpriseService changePriority:currentTaskId
-                             priority:priority
-                              context:context
-                             delegate:self];
+    [context setObject:@"ChangeTaskPriority" forKey:REQUEST_TYPE];
+    [enterpriseService changeTaskPriority:currentTaskId
+                                 priority:priority
+                                  context:context
+                                 delegate:self];
 
     CGSize size = CGSizeMake(320,10000);
     CGSize labelsize = [priorityButton.titleLabel.text sizeWithFont:priorityButton.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
@@ -516,11 +528,11 @@
     NSNumber *isCompleted = [NSNumber numberWithInt: isfinish ? 1 : 0];
     [taskDetailDict setObject:isCompleted forKey:@"isCompleted"];
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
-    [context setObject:@"ChangeCompleted" forKey:REQUEST_TYPE];
-    [enterpriseService changeCompleted:currentTaskId
-                           isCompleted:isCompleted
-                               context:context
-                              delegate:self];
+    [context setObject:@"ChangeTaskCompleted" forKey:REQUEST_TYPE];
+    [enterpriseService changeTaskCompleted:currentTaskId
+                               isCompleted:isCompleted
+                                   context:context
+                                  delegate:self];
     
     CGSize size = CGSizeMake(320,10000);
     CGSize labelsize = [statusButton.titleLabel.text sizeWithFont:statusButton.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
@@ -647,7 +659,7 @@
     NSDictionary *userInfo = request.userInfo;
     NSString *requestType = [userInfo objectForKey:REQUEST_TYPE];
     
-    if([requestType isEqualToString:@"TaskInfo"])
+    if([requestType isEqualToString:@"TaskDetail"])
     {
         if(request.responseStatusCode == 200)
         {
@@ -667,11 +679,11 @@
                     NSString *body = [data objectForKey:@"body"];
 //                    NSMutableDictionary *creatorDict = [data objectForKey:@"creator"];
                     NSMutableDictionary *assigneeDict = [data objectForKey:@"assignee"];
-                    NSString *assigneeName = [assigneeDict objectForKey:@"displayname"];
-                    NSString *assigneeUserId = [assigneeDict objectForKey:@"id"];
+                    NSString *assigneeName = [assigneeDict objectForKey:@"displayName"];
+                    NSString *assigneeWorkId = [assigneeDict objectForKey:@"workId"];
 //                    NSMutableDictionary *related = [data objectForKey:@"related"];
-                    NSString *dueTime = [data objectForKey:@"duetime"] == [NSNull null] ? @"" : [data objectForKey:@"duetime"];
-                    NSString *priority = [data objectForKey:@"priority"] == [NSNull null] ? @"" : [data objectForKey:@"priority"];
+                    NSString *dueTime = [data objectForKey:@"dueTime"] == [NSNull null] ? @"" : [data objectForKey:@"dueTime"];
+                    NSNumber *priority = [data objectForKey:@"priority"] == [NSNull null] ? [NSNumber numberWithInt:-1] : [data objectForKey:@"priority"];
                     NSNumber *isCompleted = [data objectForKey:@"isCompleted"];
                     
                     [taskDetailDict setObject:taskId forKey:@"taskId"];
@@ -681,7 +693,7 @@
                     [taskDetailDict setObject:priority forKey:@"priority"];
                     [taskDetailDict setObject:isCompleted forKey:@"isCompleted"];
                     [taskDetailDict setObject:assigneeName forKey:@"assigneeName"];
-                    [taskDetailDict setObject:assigneeUserId forKey:@"assigneeUserId"];
+                    [taskDetailDict setObject:assigneeWorkId forKey:@"assigneeWorkId"];
                     
                     [detailView reloadData];
                 }
@@ -696,7 +708,7 @@
             [Tools failed:self.HUD];
         }
     }
-    else if([requestType isEqualToString:@"ChangeCompleted"]) {
+    else if([requestType isEqualToString:@"ChangeTaskCompleted"]) {
         if(request.responseStatusCode == 200) {
 //            [detailView reloadData];
         }
@@ -705,7 +717,7 @@
             [Tools failed:self.HUD];
         }
     }
-    else if([requestType isEqualToString:@"ChangeDueTime"]) {
+    else if([requestType isEqualToString:@"ChangeTaskDueTime"]) {
         if(request.responseStatusCode == 200) {
 //            [detailView reloadData];
         }
@@ -714,7 +726,7 @@
             [Tools failed:self.HUD];
         }
     }
-    else if([requestType isEqualToString:@"ChangePriority"]) {
+    else if([requestType isEqualToString:@"ChangeTaskPriority"]) {
         if(request.responseStatusCode == 200) {
 //            [detailView reloadData];
         }
@@ -778,7 +790,7 @@
     self.HUD = [Tools process:LOADING_TITLE view:self.view];
     
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
-    [context setObject:@"TaskInfo" forKey:REQUEST_TYPE];
+    [context setObject:@"TaskDetail" forKey:REQUEST_TYPE];
     [enterpriseService getTaskDetail:currentTaskId context:context delegate:self];
 }
 

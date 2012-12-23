@@ -287,6 +287,7 @@
         {
             [[ConstantClass instance] setLoginType:@""];
             [[ConstantClass instance] setUsername:@""];
+            [[ConstantClass instance] setWorkId:@""];
             [[ConstantClass instance] setRecentlyIds:nil];
             [[ConstantClass instance] setRecentlyTeamIds:nil];
             

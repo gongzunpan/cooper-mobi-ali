@@ -10,12 +10,17 @@
 #import "CustomButton.h"
 #import "EnterpriseTaskTableCell.h"
 #import "EnterpriseTaskDetailEditViewController.h"
+#import "EnterpriseTaskDetailCreateViewController.h"
 #import "CooperService/EnterpriseService.h"
 
-@interface AssigneeTaskViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate, EnterpriseTaskTableCellDelegate>
+@interface TodoTasksViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EnterpriseTaskTableCellDelegate>
 {
     UIView *emptyView;
     UITableView *taskView;
+    UIView *tabbarView;
+    
+    UIActionSheet *photoActionSheet;
+    UIActionSheet *audioActionSheet;
 
     EnterpriseService *enterpriseService;
 }

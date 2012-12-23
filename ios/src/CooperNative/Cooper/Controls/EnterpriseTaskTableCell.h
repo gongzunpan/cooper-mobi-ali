@@ -19,16 +19,17 @@
 {
     EnterpriseService *enterpriseService;
 }
+
 - (void) setTaskInfo:(NSMutableDictionary*)taskInfo;
 
 @property (nonatomic, retain) NSMutableDictionary* taskInfoDict;
 
 @property (nonatomic, retain) UILabel *subjectLabel;
-@property (nonatomic, retain) UILabel *bodyLabel;
 @property (nonatomic, retain) UILabel *dueTimeLabel;
 @property (nonatomic, retain) UILabel *creatorLabel;
 
-@property (nonatomic, retain) UIButton *statusButton;
+@property (nonatomic, retain) UIView *iconsView;
+
 @property (nonatomic, retain) UIView *leftView;
 
 @property (nonatomic, assign) id<EnterpriseTaskTableCellDelegate> delegate;

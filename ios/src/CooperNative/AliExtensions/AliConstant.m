@@ -14,6 +14,7 @@
 @synthesize domain;
 @synthesize username;
 @synthesize password;
+@synthesize workId;
 @synthesize token;
 @synthesize loginType;
 @synthesize rootPath;
@@ -35,6 +36,7 @@
         domain = @"";
         username = @"";
         password = @"";
+        workId = @"";
         token = @"";
         loginType = @"";
         isLocalPush = NO;
@@ -48,8 +50,9 @@
 + (void)loadFromCache {
     [[ConstantClass instance] setLoginType:[Cache getCacheByKey:@"loginType"]];
     [[ConstantClass instance] setIsLocalPush:[[Cache getCacheByKey:@"isLocalPush"] intValue]];
-    [[ConstantClass instance] setLoginType:[Cache getCacheByKey:@"domain"]];
+    [[ConstantClass instance] setDomain:[Cache getCacheByKey:@"domain"]];
     [[ConstantClass instance] setUsername:[Cache getCacheByKey:@"username"]];
+    [[ConstantClass instance] setWorkId:[Cache getCacheByKey:@"workId"]];
     [[ConstantClass instance] setRootPath:[Cache getCacheByKey:@"rootPath"]];
     
     id recentlyIds = [Cache getCacheByKey:@"recentlyIds"];
@@ -62,8 +65,9 @@
 + (void)saveToCache {
     [Cache clean];
     [Cache setCacheObject:[[ConstantClass instance] loginType] ForKey:@"loginType"];
-    [Cache setCacheObject:[[ConstantClass instance] loginType] ForKey:@"domain"];
+    [Cache setCacheObject:[[ConstantClass instance] domain] ForKey:@"domain"];
     [Cache setCacheObject:[[ConstantClass instance] username] ForKey:@"username"];
+    [Cache setCacheObject:[[ConstantClass instance] workId] ForKey:@"workId"];
     //[Cache setCacheObject:[[ConstantClass instance] rootPath] ForKey:@"rootPath"];
     [Cache setCacheObject:[[ConstantClass instance] recentlyIds] ForKey:@"recentlyIds"];
     [Cache setCacheObject:[NSNumber numberWithFloat:[[ConstantClass instance] isLocalPush]] ForKey:@"isLocalPush"];

@@ -9,13 +9,14 @@
 #import "MainViewController.h"
 #import "TaskViewController.h"
 #import "TasklistViewController.h"
+#import "TodoTasksViewController.h"
 
 @implementation MainViewController
 
 @synthesize loginViewNavController;
 @synthesize tasklistNavController;
 @synthesize taskOptionNavController;
-@synthesize enterpriseOptionViewController;
+@synthesize panelController;
 
 # pragma mark - UI相关
 
@@ -73,8 +74,7 @@
 {
     RELEASE(loginViewNavController);
     RELEASE(tasklistNavController);
-    RELEASE(taskOptionNavController);
-    RELEASE(enterpriseOptionViewController);
+    RELEASE(panelController);
     [super dealloc];
 }
 
@@ -103,10 +103,21 @@
     else
     {
         if (IS_ENTVERSION) {
-            if(enterpriseOptionViewController == nil) {
-                enterpriseOptionViewController = [[EnterpriseOptionViewController alloc] init];
+            if(panelController == nil) {
+
+                EnterpriseOptionViewController *optionViewController = [[EnterpriseOptionViewController alloc] init];
+                BaseNavigationController *optionNavController = [[BaseNavigationController alloc] initWithRootViewController:optionViewController];
+                TodoTasksViewController *taskViewController = [[TodoTasksViewController alloc] init];
+                BaseNavigationController *taskNavController = [[BaseNavigationController alloc] initWithRootViewController:taskViewController];
+                panelController = [[JASidePanelController alloc] init];
+                panelController.leftPanel = optionNavController;
+                panelController.centerPanel = taskNavController;
+
+                [taskViewController release];
+                [optionViewController release];
             }
-            [self.navigationController presentModalViewController:enterpriseOptionViewController animated:NO];
+
+            [self.navigationController presentModalViewController:panelController animated:NO];
         }
         else {
             if(taskOptionNavController == nil)

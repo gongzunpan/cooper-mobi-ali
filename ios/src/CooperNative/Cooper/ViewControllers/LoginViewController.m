@@ -283,7 +283,8 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     if([requestType isEqualToString:@"LOGIN"])
     {
 #ifdef __ALI_VERSION__
-    if(request.responseStatusCode == 200 && [request.responseString rangeOfString: @"window.opener.loginSuccess"].length > 0)
+    if((!IS_ENTVERSION && (request.responseStatusCode == 200 && [request.responseString rangeOfString: @"window.opener.loginSuccess"].length > 0))
+       || (IS_ENTVERSION && request.responseStatusCode == 200))
 #else
         if(request.responseStatusCode == 200)
 #endif
@@ -303,6 +304,12 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
 #endif
             [[ConstantClass instance] setUsername:self.textUsername.text];
             [[ConstantClass instance] setLoginType:@"normal"];
+            if(IS_ENTVERSION) {
+                NSString* workId = request.responseString;
+                workId = [workId stringByReplacingOccurrencesOfString:@"\""
+                                                     withString:@""];
+                [[ConstantClass instance] setWorkId:workId];
+            }
             [ConstantClass saveToCache];
             
             [self dismissModalViewControllerAnimated:NO];

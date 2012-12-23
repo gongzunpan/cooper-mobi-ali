@@ -104,9 +104,10 @@
     [request setValidatesSecureCertificate:NO];
     return request;
 }
-
 - (void)postAsync:(NSString *)url
            params:(NSMutableDictionary *)params
+         fileData:(NSData*)fileData
+          fileKey:(NSString*)fileKey
           headers:(NSMutableDictionary *)headers
           context:(NSMutableDictionary *)context
          delegate:(id)myDelegate
@@ -138,6 +139,9 @@
             [request setPostValue:[params objectForKey:key] forKey:key];
         }
     }
+    if(fileData) {
+        [request setData:fileData forKey:fileKey];
+    }
     
     //cookies设置
     NSHTTPCookieStorage *sharedHTTPCookie = [NSHTTPCookieStorage sharedHTTPCookieStorage];
@@ -146,12 +150,20 @@
     
     [request setTimeOutSeconds:SYSTEM_REQUEST_TIMEOUT];
 	[request setCachePolicy:ASIAskServerIfModifiedCachePolicy];
-
+    
     [request setValidatesSecureCertificate:NO];
     [request setDelegate:self.delegate];
 	[request startAsynchronous];
     
     [self.delegate addRequstToPool:request];
+}
+- (void)postAsync:(NSString *)url
+           params:(NSMutableDictionary *)params
+          headers:(NSMutableDictionary *)headers
+          context:(NSMutableDictionary *)context
+         delegate:(id)myDelegate
+{
+    [self postAsync:url params:params fileData:nil fileKey:nil headers:headers context:context delegate:myDelegate];
 }
 
 - (void)getAsync:(NSString *)url

@@ -37,24 +37,20 @@
 {
     [super viewDidLoad];
     
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBtn setFrame:CGRectMake(5, 5, 25, 25)];
-    [backBtn setBackgroundImage:[UIImage imageNamed:BACK_IMAGE] forState:UIControlStateNormal];
-    [backBtn addTarget: self action: @selector(goBack:) forControlEvents: UIControlEventTouchUpInside];
-    UIBarButtonItem *backButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:backBtn] autorelease];
-    self.navigationItem.leftBarButtonItem = backButtonItem;
-    
     taskInfos = [[NSMutableArray alloc] init];
     
     enterpriseService = [[EnterpriseService alloc] init];
     
     [self initContentView];
+
+    //TODO:兼容iOS4无法触发问题
+    [self loadTaskData];
+    [self getRelatedTasks];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [self loadTaskData];
-    
     [self getRelatedTasks];
 }
 
@@ -63,11 +59,13 @@
     //    self.HUD = [Tools process:LOADING_TITLE view:self.view];
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.HUD];
-    
+
+    self.title = @"Loading...";
+    NSString *workId = [[ConstantClass instance] workId];
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"GetRelatedTasks" forKey:REQUEST_TYPE];
     
-    [enterpriseService getRelatedTasks:TEST_USERID
+    [enterpriseService getRelatedTasks:workId
                            isCompleted:NO
                              isCreator:@""
                                    key:@""
@@ -85,6 +83,7 @@
 {
     [emptyView release];
     [taskView release];
+    [tabbarView release];
     [enterpriseService release];
     [taskInfos release];
     [super dealloc];
@@ -169,7 +168,7 @@
     taskDetailEditViewController = [[EnterpriseTaskDetailEditViewController alloc] init];
     
     NSMutableDictionary *taskInfoDict = [self.taskInfos objectAtIndex:indexPath.row];
-    NSString *taskId = [taskInfoDict objectForKey:@"taskId"];
+    NSString *taskId = [taskInfoDict objectForKey:@"id"];
     taskDetailEditViewController.currentTaskId = taskId;
     
     taskDetailEditViewController.hidesBottomBarWhenPushed = YES;
@@ -198,6 +197,49 @@
     taskView.dataSource = self;
     
     [self.view addSubview: taskView];
+
+    tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 49 - 62, [Tools screenMaxWidth], 49)];
+    tabbarView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tabbar_bg.png"]];
+    [self.view addSubview:tabbarView];
+
+    //添加音频按钮
+    UIView *audioBtn = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
+    UIImageView *audioImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 27, 27)];
+    UIImage *audioImage = [UIImage imageNamed:@"edit.png"];
+    audioImageView.image = audioImage;
+    [audioBtn addSubview:audioImageView];
+    UITapGestureRecognizer *audioRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAudio:)];
+    [audioBtn addGestureRecognizer:audioRecognizer];
+    [audioRecognizer release];
+    [tabbarView addSubview:audioBtn];
+    [audioImageView release];
+    [audioBtn release];
+
+    //添加添加任务按钮
+    UIView *addBtn = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
+    UIImageView *addImageView = [[UIImageView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] / 2.0 - 13, 10, 25, 25)];
+    UIImage *addImage = [UIImage imageNamed:@"add.png"];
+    addImageView.image = addImage;
+    [addBtn addSubview:addImageView];
+    UITapGestureRecognizer *addRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAdd:)];
+    [addBtn addGestureRecognizer:addRecognizer];
+    [addRecognizer release];
+    [tabbarView addSubview:addBtn];
+    [addImageView release];
+    [addBtn release];
+
+    //添加拍照按钮
+    UIView *photoBtn = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
+    UIImageView *photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 10 - 27, 10, 27, 27)];
+    UIImage *photoImage = [UIImage imageNamed:@"setting.png"];
+    photoImageView.image = photoImage;
+    [photoBtn addSubview:photoImageView];
+    UITapGestureRecognizer *photoRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
+    [photoBtn addGestureRecognizer:photoRecognizer];
+    [photoRecognizer release];
+    [tabbarView addSubview:photoBtn];
+    [photoImageView release];
+    [photoBtn release];
 }
 
 - (void)loadTaskData
@@ -252,6 +294,7 @@
     {
         if(request.responseStatusCode == 200)
         {
+            self.title = @"相关任务";
             NSDictionary *dict = [[request responseString] JSONValue];
             if(dict)
             {
@@ -270,7 +313,7 @@
                         NSNumber *taskId = [taskDict objectForKey:@"id"];
                         NSString* subject = [taskDict objectForKey:@"subject"] == [NSNull null] ? @"" : [taskDict objectForKey:@"subject"];
                         NSString *body = [taskDict objectForKey:@"body"] == [NSNull null] ? @"" : [taskDict objectForKey:@"body"];
-                        NSString *creator = [taskDict objectForKey:@"creator"];
+                        NSString *assignee = [taskDict objectForKey:@"assignee"];
                         NSString *source = [taskDict objectForKey:@"source"];
                         NSNumber *isEditable = [taskDict objectForKey:@"isEditable"];
                         NSString *createTime = [taskDict objectForKey:@"createTime"];
@@ -280,10 +323,10 @@
                         NSString *relatedUrl = [taskDict objectForKey:@"relatedUrl"];
                         
                         NSMutableDictionary *taskInfoDict = [NSMutableDictionary dictionary];
-                        [taskInfoDict setObject:taskId forKey:@"taskId"];
+                        [taskInfoDict setObject:taskId forKey:@"id"];
                         [taskInfoDict setObject:subject forKey:@"subject"];
                         [taskInfoDict setObject:body forKey:@"body"];
-                        [taskInfoDict setObject:creator forKey:@"creator"];
+                        [taskInfoDict setObject:assignee forKey:@"creatorDisplayName"];
                         [taskInfoDict setObject:source forKey:@"source"];
                         [taskInfoDict setObject:isEditable forKey:@"isEditable"];
                         [taskInfoDict setObject:createTime forKey:@"createTime"];

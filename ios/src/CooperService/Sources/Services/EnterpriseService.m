@@ -9,36 +9,21 @@
 #import "EnterpriseService.h"
 
 @implementation EnterpriseService
-
-- (void)getTasksByAssignee:(NSString*)userId
-                 isCreator:(BOOL)isCreator
-       isOtherAssignedToMe:(BOOL)isOtherAssignedToMe
-               isCompleted:(BOOL)isCompleted
-                       key:(NSString*)key
-    externalTaskSourceJson:(NSString*)externalTaskSourceJson
-               displayMode:(int)displayMode
-          syncExternalTask:(NSString*)syncExternalTask
-                   context:(NSMutableDictionary*)context
-                  delegate:(id)delegate
+- (void)getTodoTasks:(NSString*)workId
+             context:(NSMutableDictionary*)context
+            delegate:(id)delegate
 {
-    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_GETTASKSBYASSIGNEE_URL];
-    NSLog(@"【GetTasksByAssignee服务接口路径】%@", url);
+    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_GETTODOTASKS_URL];
+    NSLog(@"【GetTodoTasks服务接口路径】%@", url);
 
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:userId forKey:@"userId"];
-    [params setObject:isCreator ? @"True" : @"False" forKey:@"isCreator"];
-    [params setObject:isOtherAssignedToMe ? @"True" : @"False" forKey:@"isOtherAssignedToMe"];
-    [params setObject:isCompleted ? @"True" : @"False" forKey:@"isCompleted"];
-    [params setObject:key forKey:@"key"];
-    [params setObject:externalTaskSourceJson forKey:@"externalTaskSourceJson"];
-    [params setObject:[NSNumber numberWithInt:displayMode] forKey:@"displayMode"];
-    [params setObject:syncExternalTask forKey:@"syncExternalTask"];
+    [params setObject:workId forKey:@"workId"];
 
     HttpWebRequest *request = [[HttpWebRequest alloc] init];
     [request postAsync:url params:params headers:nil context:context delegate:delegate];
     [request release];
 }
-- (void)getRelatedTasks:(NSString*)userId
+- (void)getRelatedTasks:(NSString*)workId
             isCompleted:(BOOL)isCompleted
               isCreator:(NSString*)isCreator
                     key:(NSString*)key
@@ -50,7 +35,7 @@
     NSLog(@"【GetRelatedTasks服务接口路径】%@", url);
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:userId forKey:@"userId"];
+    [params setObject:workId forKey:@"workId"];
     [params setObject:isCompleted ? @"True" : @"False" forKey:@"isCompleted"];
     [params setObject:isCreator forKey:@"isCreator"];
     [params setObject:key forKey:@"key"];
@@ -64,8 +49,8 @@
               context:(NSMutableDictionary*)context
              delegate:(id)delegate
 {
-    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_TASKINFO_URL];
-    NSLog(@"【TaskInfo服务接口路径】%@", url);
+    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_TASKDETAIL_URL];
+    NSLog(@"【TaskDetail服务接口路径】%@", url);
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:taskId forKey:@"id"];
@@ -74,13 +59,13 @@
     [request postAsync:url params:params headers:nil context:context delegate:delegate];
     [request release];
 }
-- (void)changeCompleted:(NSString*)taskId
-            isCompleted:(NSNumber*)isCompleted
-                context:(NSMutableDictionary*)context
-               delegate:(id)delegate
+- (void)changeTaskCompleted:(NSString*)taskId
+                isCompleted:(NSNumber*)isCompleted
+                    context:(NSMutableDictionary*)context
+                   delegate:(id)delegate
 {
-    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_CHANGECOMPLETED_URL];
-    NSLog(@"【ChangeCompleted服务接口路径】%@", url);
+    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_CHANGETASKCOMPLETED_URL];
+    NSLog(@"【ChangeTaskCompleted服务接口路径】%@", url);
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:taskId forKey:@"id"];
@@ -90,13 +75,13 @@
     [request postAsync:url params:params headers:nil context:context delegate:delegate];
     [request release];
 }
-- (void)changeDueTime:(NSString*)taskId
-              dueTime:(NSString*)dueTime
-              context:(NSMutableDictionary*)context
-             delegate:(id)delegate
+- (void)changeTaskDueTime:(NSString*)taskId
+                  dueTime:(NSString*)dueTime
+                  context:(NSMutableDictionary*)context
+                 delegate:(id)delegate
 {
-    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_CHANGEDUETIME_URL];
-    NSLog(@"【ChangeDueTime服务接口路径】%@", url);
+    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_CHANGETASKDUETIME_URL];
+    NSLog(@"【ChangeTaskDueTime服务接口路径】%@", url);
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:taskId forKey:@"id"];
@@ -106,13 +91,13 @@
     [request postAsync:url params:params headers:nil context:context delegate:delegate];
     [request release];
 }
-- (void)changePriority:(NSString*)taskId
-              priority:(NSNumber*)priority
-               context:(NSMutableDictionary*)context
-              delegate:(id)delegate
+- (void)changeTaskPriority:(NSString*)taskId
+                  priority:(NSNumber*)priority
+                   context:(NSMutableDictionary*)context
+                  delegate:(id)delegate
 {
-    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_CHANGEPRIORITY_URL];
-    NSLog(@"【ChangePriority服务接口路径】%@", url);
+    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_CHANGETASKPRIORITY_URL];
+    NSLog(@"【ChangeTaskPriority服务接口路径】%@", url);
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:taskId forKey:@"id"];
@@ -174,6 +159,23 @@
     
     HttpWebRequest *request = [[HttpWebRequest alloc] init];
     [request postAsync:url params:params headers:nil context:context delegate:delegate];
+    [request release];
+}
+- (void)createTaskAttach:(NSData*)attachmentData
+                fileName:(NSString*)fileName
+                    type:(NSString*)type
+                 context:(NSMutableDictionary*)context
+                delegate:(id)delegate
+{
+    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_CREATETASKATTACH_URL];
+    NSLog(@"【CreateTaskAttach服务接口路径】%@", url);
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:fileName forKey:@"fileName"];
+    [params setObject:type forKey:@"type"];
+    
+    HttpWebRequest *request = [[HttpWebRequest alloc] init];
+    [request postAsync:url params:params fileData:attachmentData fileKey:@"attachment" headers:nil context:context delegate:delegate];
     [request release];
 }
 

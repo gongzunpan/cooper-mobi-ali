@@ -22,8 +22,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //初始化背景和尺寸
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]]; 
+//    if(!IS_ENTVERSION) {
+        //初始化背景和尺寸
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]];
+//    }
 }
 
 - (void)viewDidUnload

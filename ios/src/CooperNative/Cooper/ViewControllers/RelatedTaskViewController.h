@@ -16,6 +16,7 @@
 {
     UIView *emptyView;
     UITableView *taskView;
+    UIView *tabbarView;
     
     EnterpriseService *enterpriseService;
 }

@@ -13,12 +13,14 @@
 #import "TaskListViewController.h"
 #import "TaskOptionViewController.h"
 #import "EnterpriseOptionViewController.h"
+#import "EnterpriseTaskViewController.h"
+#import "JASidePanelController.h"
 
 @interface MainViewController : BaseViewController<LoginViewDelegate,UITabBarControllerDelegate>
 
 @property (nonatomic, retain) BaseNavigationController *loginViewNavController;
 @property (nonatomic, retain) BaseNavigationController *tasklistNavController;
 @property (nonatomic, retain) BaseNavigationController *taskOptionNavController;
-@property (nonatomic, retain) EnterpriseOptionViewController *enterpriseOptionViewController;
+@property (nonatomic, retain) JASidePanelController *panelController;
 
 @end

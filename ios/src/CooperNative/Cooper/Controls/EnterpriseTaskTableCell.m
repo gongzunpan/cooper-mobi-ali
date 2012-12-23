@@ -18,11 +18,10 @@
 
 @synthesize taskInfoDict;
 @synthesize subjectLabel;
-@synthesize bodyLabel;
 @synthesize dueTimeLabel;
 @synthesize creatorLabel;
+@synthesize iconsView;
 
-@synthesize statusButton;
 @synthesize leftView;
 @synthesize delegate;
 
@@ -38,11 +37,10 @@
 - (void)dealloc
 {
     [subjectLabel release];
-    [bodyLabel release];
     [dueTimeLabel release];
     [creatorLabel release];
+    [iconsView release];
     [leftView release];
-    [statusButton release];
     [enterpriseService release];
     [super dealloc];
 }
@@ -54,29 +52,27 @@
 
 - (void)setCompletedAction:(id)sender
 {
-    NSNumber *isEditable = [taskInfoDict objectForKey:@"isEditable"];
+    NSNumber *isExternal = [taskInfoDict objectForKey:@"isExternal"];
     NSNumber *isCompleted = [taskInfoDict objectForKey:@"isCompleted"];
-    NSString *taskId = [taskInfoDict objectForKey:@"taskId"];
-    if([isEditable isEqualToNumber: [NSNumber numberWithInt:0]]) {
+    NSString *taskId = [taskInfoDict objectForKey:@"id"];
+    if([isExternal isEqualToNumber: [NSNumber numberWithInt:1]]) {
         return;
     }
     if([isCompleted isEqualToNumber: [NSNumber numberWithInt:1]]) {
-        UIButton *button = statusButton;
-        [button setBackgroundImage:[UIImage imageNamed:@"incomplete-small.png"] forState:UIControlStateNormal];
+        self.imageView.image = [UIImage imageNamed:@"notcompleted.png"];
         isCompleted = [NSNumber numberWithInt:0];
         [taskInfoDict setObject:isCompleted forKey:@"isCompleted"];
     }
     else {
-        UIButton *button = statusButton;
-        [button setBackgroundImage:[UIImage imageNamed:@"complete-small.png"] forState:UIControlStateNormal];
+        self.imageView.image = [UIImage imageNamed:@"completed.png"];
         isCompleted = [NSNumber numberWithInt:1];
         [taskInfoDict setObject:isCompleted forKey:@"isCompleted"];
     }
     
     //更新完成状态
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
-    [context setObject:@"ChangeCompleted" forKey:REQUEST_TYPE];
-    [enterpriseService changeCompleted:taskId isCompleted:isCompleted context:context delegate:delegate];
+    [context setObject:@"ChangeTaskCompleted" forKey:REQUEST_TYPE];
+    [enterpriseService changeTaskCompleted:taskId isCompleted:isCompleted context:context delegate:delegate];
 }
 
 # pragma 私有方法
@@ -87,56 +83,66 @@
     [subjectLabel setLineBreakMode:UILineBreakModeWordWrap];
     [subjectLabel setFont:[UIFont boldSystemFontOfSize:16]];
     
-    bodyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [bodyLabel setLineBreakMode:UILineBreakModeWordWrap];
-    [bodyLabel setFont:[UIFont systemFontOfSize:14]];
-    [bodyLabel setTextColor:[UIColor lightGrayColor]];
-    
     dueTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [dueTimeLabel setLineBreakMode:UILineBreakModeWordWrap];
     [dueTimeLabel setFont:[UIFont systemFontOfSize:14]];
-    [dueTimeLabel setTextColor:APP_BACKGROUNDCOLOR];
+    dueTimeLabel.textColor = [UIColor grayColor];
     
     creatorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [creatorLabel setLineBreakMode:UILineBreakModeWordWrap];
     creatorLabel.font = [UIFont systemFontOfSize:12];
-    creatorLabel.textColor = APP_BACKGROUNDCOLOR;
-    
+    creatorLabel.textColor = [UIColor grayColor];
+
     [self.contentView addSubview:subjectLabel];
-    [self.contentView addSubview:bodyLabel];
     [self.contentView addSubview:dueTimeLabel];
     [self.contentView addSubview:creatorLabel];
     
-    self.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 30)];
-    
-    statusButton = [[UIButton alloc] initWithFrame:CGRectMake(10, PADDING, 28, 17)];
-    UIImage* image = [UIImage imageNamed:@"incomplete-small.png"];
-    [statusButton setBackgroundImage:image forState:UIControlStateNormal];
-    [self.leftView addSubview:statusButton];
-    
-    self.leftView.userInteractionEnabled = YES;
-    
     UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setCompletedAction:)];
     tapped.numberOfTapsRequired = 1;
-    [self.leftView addGestureRecognizer:tapped];
-    [tapped release];
-    [self.contentView addSubview:self.leftView];
+    [self.imageView addGestureRecognizer:tapped];
 }
 
 - (void) setTaskInfo:(NSMutableDictionary*)taskInfo
 {
     self.taskInfoDict = taskInfo;
-    
-    enterpriseService = [[EnterpriseService alloc] init];
-    
-    NSNumber *isCompleted = [taskInfoDict objectForKey:@"isCompleted"];
-    
-    if([isCompleted isEqualToNumber: [NSNumber numberWithInt:1]])
-    {
-        [statusButton setBackgroundImage:[UIImage imageNamed:@"complete-small.png"] forState:UIControlStateNormal];
+
+    NSString *statusImageStr = @"";
+    NSNumber *isExternal = [taskInfoDict objectForKey:@"isExternal"];
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:1]]) {
+        statusImageStr = @"external.png";
     }
     else {
-        [statusButton setBackgroundImage:[UIImage imageNamed:@"incomplete-small.png"] forState:UIControlStateNormal];
+        statusImageStr = @"notcompleted.png";
+    }
+    UIImage* image = [UIImage imageNamed:statusImageStr];
+
+    self.imageView.image = image;
+    self.imageView.userInteractionEnabled = YES;
+    
+    enterpriseService = [[EnterpriseService alloc] init];
+
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:1]]) {
+        self.imageView.image = [UIImage imageNamed:@"external.png"];
+    }
+    else {
+        NSNumber *isCompleted = [taskInfoDict objectForKey:@"isCompleted"];
+        
+        if([isCompleted isEqualToNumber: [NSNumber numberWithInt:1]])
+        {
+            self.imageView.image = [UIImage imageNamed:@"completed.png"];
+        }
+        else {
+            self.imageView.image = [UIImage imageNamed:@"notcompleted.png"];
+        }
+    }
+
+    NSNumber *attachmentCount = [taskInfoDict objectForKey:@"attachmentCount"];
+    NSNumber *picCount = [taskInfoDict objectForKey:@"picCount"];
+    CGFloat textWidth = self.bounds.size.width - 70;
+    CGFloat textLeft = 40;
+    if([attachmentCount intValue] + [picCount intValue] > 0) {
+        textWidth -= 25;
+        textLeft += 25;
     }
 
     CGFloat totalHeight = 0;
@@ -144,36 +150,13 @@
     NSString *subject = [taskInfoDict objectForKey:@"subject"];
     subjectLabel.text = subject;
     CGSize subjectLabelSize = [subjectLabel.text sizeWithFont:subjectLabel.font
-                                            constrainedToSize:CGSizeMake(self.bounds.size.width - 100, MAX_HEIGHT)
+                                            constrainedToSize:CGSizeMake(textWidth, MAX_HEIGHT)
                                                 lineBreakMode:UILineBreakModeWordWrap];
     CGFloat subjectLabelHeight = subjectLabelSize.height;
     int subjectlines = subjectLabelHeight / 16;
-    subjectLabel.frame = CGRectMake(50, PADDING, self.bounds.size.width - 100, subjectLabelHeight);
+    subjectLabel.frame = CGRectMake(textLeft, PADDING, textWidth, subjectLabelHeight);
     subjectLabel.numberOfLines = subjectlines;
     totalHeight += subjectLabelHeight + PADDING;
-    
-    NSString *body = [taskInfoDict objectForKey:@"body"];
-    bodyLabel.text = body;
-    CGSize bodyLabelSize = [bodyLabel.text sizeWithFont:bodyLabel.font
-                                      constrainedToSize:CGSizeMake(self.bounds.size.width - 50, MAX_HEIGHT)
-                                          lineBreakMode:UILineBreakModeWordWrap];
-    CGFloat bodyLabelHeight = bodyLabelSize.height;
-    if(bodyLabelHeight == 0.0f){
-        
-    }
-    else
-    {
-        int bodylines = bodyLabelHeight / 14;
-        
-        if(bodylines > 3)
-        {
-            bodylines = 3;
-        }
-        bodyLabel.frame = CGRectMake(50, totalHeight + PADDING, self.bounds.size.width - 100, bodylines * 14);
-        bodyLabel.numberOfLines = bodylines;
-        
-        totalHeight += bodylines * 14 + PADDING;
-    }
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"M-dd"];
@@ -183,19 +166,21 @@
     {
         NSDate *dueDate = [Tools NSStringToShortNSDate:dueTime];
         dueTimeLabel.text = [formatter stringFromDate:dueDate];
-        [dueTimeLabel setFrame:CGRectMake(270  + [Tools screenMaxWidth] - 320, PADDING, 80, 20)];
+        [dueTimeLabel setFrame:CGRectMake(textLeft, totalHeight + PADDING, textWidth, 20)];
+
+        totalHeight += 20 + PADDING;
     }
     
     CGFloat tagHeight = totalHeight;
     
-    NSString *creator = [taskInfoDict objectForKey:@"creator"];
+    NSString *creatorDisplayName = [taskInfoDict objectForKey:@"creatorDisplayName"];
     
-    if(![creator isEqualToString:@""]) {
+    if(![creatorDisplayName isEqualToString:@""]) {
 
-        creatorLabel.text = creator;
+        creatorLabel.text = creatorDisplayName;
         
         CGSize creatorLabelSize = [creatorLabel.text sizeWithFont:creatorLabel.font
-                                                      constrainedToSize:CGSizeMake(self.bounds.size.width - 50, MAX_HEIGHT)
+                                                      constrainedToSize:CGSizeMake(textWidth, MAX_HEIGHT)
                                                           lineBreakMode:UILineBreakModeWordWrap];
         CGFloat creatorLabelHeight = creatorLabelSize.height;
         if(creatorLabelHeight == 0.0f)
@@ -206,31 +191,38 @@
         {
             int creatorlines = creatorLabelHeight / 12;
             
-            creatorLabel.frame = CGRectMake(50, totalHeight + PADDING, self.bounds.size.width - 50, creatorLabelHeight);
+            creatorLabel.frame = CGRectMake(textLeft, totalHeight + PADDING, textWidth, creatorLabelHeight);
             creatorLabel.numberOfLines = creatorlines;
             tagHeight = totalHeight + PADDING;
             totalHeight += creatorLabelHeight + PADDING;
-            
         }
     }
-    
-    //TODO:替代方案
-    NSMutableArray *tags = [NSMutableArray array];
-    [tags addObject:@"语音"];
-    [tags addObject:@"图片"];
-    CGFloat tagsWidth = tags.count * 40.0f;
-    FillLabelView *fillLabelView = [[FillLabelView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - tagsWidth, tagHeight, tagsWidth, 0)];
-//    fillLabelView.layer.borderWidth = 1.0f;
-//    fillLabelView.layer.borderColor = [[UIColor blueColor] CGColor];
-    [fillLabelView bindTags:tags];
-    [self.contentView addSubview:fillLabelView];
-    [fillLabelView release];
 
     if(totalHeight < 50)
         totalHeight = 50;
-    
-    [self setFrame:CGRectMake(0, 0, self.bounds.size.width, totalHeight + PADDING)];
-    [leftView setFrame:CGRectMake(0, 0, 40, totalHeight + PADDING)];
+
+    totalHeight += PADDING;
+    [self setFrame:CGRectMake(0, 0, self.bounds.size.width, totalHeight)];
+    [leftView setFrame:CGRectMake(0, 0, 40, totalHeight)];
+
+    if([attachmentCount intValue] + [picCount intValue] > 0) {
+        iconsView = [[UIView alloc] initWithFrame:CGRectMake(40, 0, 20, totalHeight)];
+
+        CGFloat iconHeight = 0;
+        if([picCount intValue] > 0) {
+            UIImageView *picImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photo.png"]];
+            picImageView.frame = CGRectMake(0,iconHeight + 2 * PADDING,16,16);
+            [iconsView addSubview:picImageView];
+            iconHeight += 20;
+        }
+        if([attachmentCount intValue] > 0) {
+            UIImageView *audioImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audio.png"]];
+            audioImageView.frame = CGRectMake(0, iconHeight + 2 * PADDING, 16, 16);
+            [iconsView addSubview:audioImageView];
+            iconHeight += 20;
+        }
+        [self.contentView addSubview:iconsView];
+    }
 }
 
 @end

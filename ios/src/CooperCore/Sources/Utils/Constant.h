@@ -14,6 +14,7 @@
 @property (nonatomic,retain) NSString *domain;
 @property (nonatomic,retain) NSString *username;
 @property (nonatomic,retain) NSString *password;
+@property (nonatomic,retain) NSString *workId;
 @property (nonatomic,retain) NSString *token;
 @property (nonatomic,assign) NSString *loginType;
 @property (nonatomic,retain) NSString *rootPath;
