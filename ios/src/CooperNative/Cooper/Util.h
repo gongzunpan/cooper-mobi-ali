@@ -67,6 +67,8 @@
 #define APP_BACKGROUNDIMAGE             @"bg-line.png"
 //背景主色调
 #define APP_BACKGROUNDCOLOR             [UIColor colorWithRed:47.0/255 green:157.0/255 blue:216.0/255 alpha:1]
+//背景主色调2
+#define APP_BACKGROUNDCOLOR_2           [UIColor colorWithRed:247.0/255 green:247.0/255 blue:247.0/255 alpha:1]
 //导航背景图片
 #define NAVIGATIONBAR_BG_IMAGE          @"navigationbar_bg.png"
 //底部栏背景图片

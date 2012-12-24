@@ -77,7 +77,6 @@
 - (void)dealloc
 {
     [emptyView release];
-    [tabbarView release];
     [taskView release];
     [enterpriseService release];
     [taskInfos release];
@@ -180,11 +179,11 @@
 - (void)initContentView
 {
     NSLog(@"【初始化任务列表UI】");
-    self.view.backgroundColor = [UIColor whiteColor];
+//    self.view.backgroundColor = [UIColor whiteColor];
 
     CGRect tableViewRect = CGRectMake(0, 0, [Tools screenMaxWidth], [Tools screenMaxHeight] - 49 - 64);
     taskView = [[UITableView alloc] initWithFrame:tableViewRect style:UITableViewStylePlain];
-    taskView.backgroundColor = [UIColor whiteColor];
+    taskView.backgroundColor = [UIColor clearColor];
 
     //去掉底部空白
     UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
@@ -194,14 +193,19 @@
 
     [self.view addSubview: taskView];
 
-    tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 49 - 62, [Tools screenMaxWidth], 49)];
-    tabbarView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tabbar_bg.png"]];
+    TabbarLineView *tabbarLineView = [[TabbarLineView alloc] init];
+    tabbarLineView.frame = CGRectMake(0, [Tools screenMaxHeight] - 49 - 64, self.view.bounds.size.width, 1);
+    [self.view addSubview:tabbarLineView];
+    [tabbarLineView release];
+    
+    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 49 - 63, [Tools screenMaxWidth], 49)];
+    tabbarView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:tabbarView];
 
     //添加音频按钮
     UIView *audioBtn = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
-    UIImageView *audioImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 27, 27)];
-    UIImage *audioImage = [UIImage imageNamed:@"edit.png"];
+    UIImageView *audioImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 32, 32)];
+    UIImage *audioImage = [UIImage imageNamed:@"audio.png"];
     audioImageView.image = audioImage;
     [audioBtn addSubview:audioImageView];
     audioBtn.userInteractionEnabled = YES;
@@ -213,9 +217,9 @@
     [audioBtn release];
 
     //添加添加任务按钮
-    UIView *addBtn = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] / 2.0 - 13, 0, 38, 45)];
-    UIImageView *addImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 25, 25)];
-    UIImage *addImage = [UIImage imageNamed:@"add.png"];
+    UIView *addBtn = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] / 2.0 - 23, 0, 38, 45)];
+    UIImageView *addImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 35, 32)];
+    UIImage *addImage = [UIImage imageNamed:@"word.png"];
     addImageView.image = addImage;
     [addBtn addSubview:addImageView];
     addBtn.userInteractionEnabled = YES;
@@ -227,9 +231,9 @@
     [addBtn release];
 
     //添加拍照按钮
-    UIView *photoBtn = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 10 - 37, 0, 38, 45)];
-    UIImageView *photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 27, 27)];
-    UIImage *photoImage = [UIImage imageNamed:@"setting.png"];
+    UIView *photoBtn = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 10 - 42, 0, 38, 45)];
+    UIImageView *photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 35, 32)];
+    UIImage *photoImage = [UIImage imageNamed:@"photo.png"];
     photoImageView.image = photoImage;
     [photoBtn addSubview:photoImageView];
     photoBtn.userInteractionEnabled = YES;
@@ -445,6 +449,16 @@
                 break;
         }
     }
+    else if(actionSheet == audioActionSheet) {
+        switch (buttonIndex) {
+            case 0:
+                //录音
+                [self takeAudio];
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 - (void)takePhoto
@@ -476,6 +490,13 @@
     picker.allowsEditing = YES;
     [self presentModalViewController:picker animated:YES];
     [picker release];
+}
+
+- (void)takeAudio
+{
+    AudioViewController *audioViewController = [[AudioViewController alloc] init];
+    [self presentModalViewController:audioViewController animated:YES];
+    [audioViewController release];
 }
 
 #pragma Delegate method UIImagePickerControllerDelegate

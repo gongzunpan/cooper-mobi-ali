@@ -82,7 +82,12 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     float googleLoginHeight = 0;
 #endif
     self.loginTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 90 + googleLoginHeight, [Tools screenMaxWidth], [Tools isPad] ? loginIpadHeight : loginIphoneHeight) style:UITableViewStyleGrouped];
-    self.loginTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]];
+    if(!IS_ENTVERSION) {
+        self.loginTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]];
+    }
+    else {
+        self.loginTableView.backgroundColor = [UIColor clearColor];
+    }
     self.loginTableView.allowsSelection = NO;
     self.loginTableView.delegate = self;
     self.loginTableView.dataSource = self;
@@ -238,14 +243,29 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
             self.HUD = [Tools process:@"登录中" view:self.view];
 
             NSMutableDictionary *context = [NSMutableDictionary dictionary];
-            [context setObject:@"LOGIN" forKey:REQUEST_TYPE];
+            if(IS_ENTVERSION) {
+                [context setObject:@"WORKBENCHLOGIN" forKey:REQUEST_TYPE];
+                
+            }
+            else {
+                [context setObject:@"LOGIN" forKey:REQUEST_TYPE];
+            }
             
 #ifdef __ALI_VERSION__
-            [AccountService login:self.domainLabel.text 
-                         username:self.textUsername.text 
-                         password:self.textPassword.text 
-                          context:context
-                         delegate:self];
+            if(IS_ENTVERSION) {
+                [AccountService workbenchLogin:self.domainLabel.text
+                                      username:self.textUsername.text
+                                      password:self.textPassword.text
+                                       context:context
+                                      delegate:self];
+            }
+            else {
+                [AccountService login:self.domainLabel.text
+                             username:self.textUsername.text
+                             password:self.textPassword.text
+                              context:context
+                             delegate:self];
+            }
 #else
             [AccountService login:self.textUsername.text
                          password:self.textPassword.text
@@ -283,8 +303,7 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     if([requestType isEqualToString:@"LOGIN"])
     {
 #ifdef __ALI_VERSION__
-    if((!IS_ENTVERSION && (request.responseStatusCode == 200 && [request.responseString rangeOfString: @"window.opener.loginSuccess"].length > 0))
-       || (IS_ENTVERSION && request.responseStatusCode == 200))
+        if(request.responseStatusCode == 200 && [request.responseString rangeOfString: @"window.opener.loginSuccess"].length > 0)
 #else
         if(request.responseStatusCode == 200)
 #endif
@@ -325,8 +344,40 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
             [Tools alert:@"用户名和密码不正确"];
         }
     }
-    else if([requestType isEqualToString:@"GOOGLELOGIN"])
-    {
+    else if([requestType isEqualToString:@"WORKBENCHLOGIN"]) {
+        if(request.responseStatusCode == 200) {
+            NSArray* array = request.responseCookies;
+            NSLog(@"【Cookies的数组个数】%d",  array.count);
+            
+            NSDictionary *dict = [NSHTTPCookie requestHeaderFieldsWithCookies:array];
+            NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:dict];
+            NSHTTPCookieStorage *sharedHTTPCookie = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+            
+            [sharedHTTPCookie setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+            [sharedHTTPCookie setCookie:cookie];
+            
+            [[ConstantClass instance] setDomain:self.domainLabel.text];
+            [[ConstantClass instance] setUsername:self.textUsername.text];
+            [[ConstantClass instance] setLoginType:@"normal"];
+
+            NSMutableDictionary *result = [request.responseString JSONValue];
+            NSMutableDictionary *data = [result objectForKey:@"data"];
+            NSString *workId = [data objectForKey:@"workId"];
+                [[ConstantClass instance] setWorkId:workId];
+
+            [ConstantClass saveToCache];
+            
+            [self dismissModalViewControllerAnimated:NO];
+            
+            [delegate loginFinish];
+        }
+        else {
+            [Tools alert:[NSString stringWithFormat:@"返回验证码错误:%d,返回错误信息:%@"
+                          , request.responseStatusCode
+                          , request.responseString]];
+        }
+    }
+    else if([requestType isEqualToString:@"GOOGLELOGIN"]) {
         if(request.responseStatusCode == 200)
         {
             NSArray* array = request.responseCookies;

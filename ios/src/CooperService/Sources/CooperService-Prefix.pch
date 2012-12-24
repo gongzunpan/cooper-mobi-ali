@@ -46,6 +46,8 @@ typedef Constant ConstantClass;
 #define GOOGLE_LOGIN_URL                @"/Account/GoogleLogin"
 //Ark登录入口
 #define ARKLOGIN_URL                    @"/Account/ArkLogin"
+//Workbench登录入口
+#define WORKBENCHLOGIN_URL              @"/Account/WorkbenchLogin"
 
 ////////////////////////////////////////////////////////////////
 //企业任务相关API接口

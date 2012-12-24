@@ -6,18 +6,20 @@
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 #import "CustomButton.h"
+#import "CooperService/EnterpriseService.h"
 #import "EnterpriseTaskTableCell.h"
 #import "EnterpriseTaskDetailEditViewController.h"
 #import "EnterpriseTaskDetailCreateViewController.h"
-#import "CooperService/EnterpriseService.h"
+#import "AudioViewController.h"
+#import "TabbarLineView.h"
 
 @interface TodoTasksViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EnterpriseTaskTableCellDelegate>
 {
     UIView *emptyView;
     UITableView *taskView;
-    UIView *tabbarView;
     
     UIActionSheet *photoActionSheet;
     UIActionSheet *audioActionSheet;

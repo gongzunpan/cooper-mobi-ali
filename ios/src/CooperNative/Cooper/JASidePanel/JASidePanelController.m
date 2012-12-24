@@ -79,24 +79,25 @@
 
 + (UIImage *)defaultImage {
 	static UIImage *defaultImage = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		UIGraphicsBeginImageContextWithOptions(CGSizeMake(20.f, 13.f), NO, 0.0f);
-		
-		[[UIColor blackColor] setFill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 1)] fill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 5, 20, 1)] fill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 10, 20, 1)] fill];
-		
-		[[UIColor whiteColor] setFill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 1, 20, 2)] fill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 6,  20, 2)] fill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 11, 20, 2)] fill];   
-		
-		defaultImage = UIGraphicsGetImageFromCurrentImageContext();
-		UIGraphicsEndImageContext();
-
-	});
+    defaultImage = [UIImage imageNamed:@"couti.png"];
+//	static dispatch_once_t onceToken;
+//	dispatch_once(&onceToken, ^{
+//		UIGraphicsBeginImageContextWithOptions(CGSizeMake(20.f, 13.f), NO, 0.0f);
+//		
+//		[[UIColor blackColor] setFill];
+//		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 1)] fill];
+//		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 5, 20, 1)] fill];
+//		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 10, 20, 1)] fill];
+//		
+//		[[UIColor whiteColor] setFill];
+//		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 1, 20, 2)] fill];
+//		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 6,  20, 2)] fill];
+//		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 11, 20, 2)] fill];   
+//		
+//		defaultImage = UIGraphicsGetImageFromCurrentImageContext();
+//		UIGraphicsEndImageContext();
+//
+//	});
     return defaultImage;
 }
 
@@ -252,7 +253,7 @@
 }
 
 - (void)stylePanel:(UIView *)panel {
-    panel.layer.cornerRadius = 6.0f;
+    //panel.layer.cornerRadius = 6.0f;
     panel.clipsToBounds = YES;
 }
 
@@ -821,7 +822,24 @@
 #pragma mark - Public Methods
 
 - (UIBarButtonItem *)leftButtonForCenterPanel {
-    return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+    //return [[UIBarButtonItem alloc] initWithTitle:@"11" style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+    
+    UIView *coutiView = [[UIView alloc] init];
+    coutiView.frame = CGRectMake(0, 0, 38, 45);
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleLeftPanel:)];
+    [coutiView addGestureRecognizer:recognizer];
+    [recognizer release];
+    
+    UIImageView *coutiImageView = [[UIImageView alloc] initWithImage:[[self class] defaultImage]];
+    coutiImageView.frame = CGRectMake(5, 10, 26, 26);
+    [coutiView addSubview:coutiImageView];
+    UIBarButtonItem *barButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:coutiView] autorelease];
+    
+    [coutiImageView release];
+    [coutiView release];
+    
+    return barButtonItem;
+    //return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
 }
 
 - (void)showLeftPanel:(BOOL)animated {

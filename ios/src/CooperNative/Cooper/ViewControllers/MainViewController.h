@@ -13,7 +13,6 @@
 #import "TaskListViewController.h"
 #import "TaskOptionViewController.h"
 #import "EnterpriseOptionViewController.h"
-#import "EnterpriseTaskViewController.h"
 #import "JASidePanelController.h"
 
 @interface MainViewController : BaseViewController<LoginViewDelegate,UITabBarControllerDelegate>

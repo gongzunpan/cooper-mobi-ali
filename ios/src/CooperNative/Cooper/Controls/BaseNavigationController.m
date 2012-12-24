@@ -13,17 +13,19 @@
 - (void)loadView
 {
     [super loadView];
+    self.navigationBar.tintColor = APP_BACKGROUNDCOLOR_2;
     
-    if(MODEL_VERSION >= 5.0)
-    {
-        [self.navigationBar setBackgroundImage:[UIImage imageNamed:NAVIGATIONBAR_BG_IMAGE] forBarMetrics:UIBarMetricsDefault];
-    }
-    else {
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:NAVIGATIONBAR_BG_IMAGE]];
-        [imageView setFrame:CGRectMake(0, 0, [Tools screenMaxWidth], 44)];
-        [self.navigationBar addSubview:imageView];
-        [imageView release];
-    }
+//    self.navigationBar.backgroundColor = [UIColor clearColor];
+//    if(MODEL_VERSION >= 5.0)
+//    {
+//        [self.navigationBar setBackgroundImage:[UIImage imageNamed:NAVIGATIONBAR_BG_IMAGE] forBarMetrics:UIBarMetricsDefault];
+//    }
+//    else {
+//        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:NAVIGATIONBAR_BG_IMAGE]];
+//        [imageView setFrame:CGRectMake(0, 0, [Tools screenMaxWidth], 44)];
+//        [self.navigationBar addSubview:imageView];
+//        [imageView release];
+//    }
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

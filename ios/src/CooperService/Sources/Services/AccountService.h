@@ -12,7 +12,11 @@
      password:(NSString*)password 
       context:(NSMutableDictionary*)context
      delegate:(id)delegate;
-
++ (void)workbenchLogin:(NSString *)domain
+              username:(NSString *)username
+              password:(NSString *)password
+               context:(NSMutableDictionary*)context
+              delegate:(id)delegate;
 + (void)login:(NSString *)domain 
      username:(NSString *)username 
      password:(NSString *)password 

@@ -25,7 +25,9 @@
 {
     [super viewDidLoad];
     //初始化背景和尺寸
-    self.view.backgroundColor = [UIColor whiteColor];
+    
+    self.view.backgroundColor = APP_BACKGROUNDCOLOR_2;
+//    self.view.backgroundColor = [UIColor whiteColor];
 //    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]];
 }
 
