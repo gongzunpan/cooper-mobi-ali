@@ -19,6 +19,8 @@
     UIView *tabbarView;
     
     EnterpriseService *enterpriseService;
+    
+    UILabel *textTitleLabel;
 }
 
 @property (nonatomic, retain) NSMutableArray *taskInfos;

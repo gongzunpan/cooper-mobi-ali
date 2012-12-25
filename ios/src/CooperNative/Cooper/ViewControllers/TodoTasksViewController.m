@@ -121,16 +121,18 @@
     [cell setTaskInfo:taskInfoDict];
     cell.delegate = self;
 
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-    cell.showsReorderControl = YES;
+//    cell.showsReorderControl = YES;
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
     UIView *selectedView = [[UIView alloc] initWithFrame:cell.frame];
-    selectedView.backgroundColor = [UIColor colorWithRed:220/255.0f green:220/255.0f blue:220/255.0f alpha:1.0];
-    cell.backgroundColor = [UIColor whiteColor];
+    selectedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_selected.png"]];
+    //selectedView.backgroundColor = [UIColor colorWithRed:220/255.0f green:220/255.0f blue:220/255.0f alpha:1.0];
+    //cell.backgroundColor = [UIColor whiteColor];
 
     //设置选中后cell的背景颜色
     cell.selectedBackgroundView = selectedView;
+    [selectedView release];
 
     return cell;
 }
@@ -190,7 +192,8 @@
 
     //任务列表
     taskView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [Tools screenMaxWidth], [Tools screenMaxHeight] - 49 - 64) style:UITableViewStylePlain];
-    taskView.backgroundColor = [UIColor clearColor];
+    taskView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    taskView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_background.png"]];
     //去掉底部空白
     UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
     taskView.tableFooterView = footer;
@@ -293,6 +296,8 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    textTitleLabel.text = @"我的任务";
+    
     NSLog(@"【请求任务响应数据】%@\n【返回状态码】%d", request.responseString, request.responseStatusCode);
 
     NSDictionary *userInfo = request.userInfo;
@@ -301,8 +306,7 @@
     if([requestType isEqualToString:@"GetTodoTasks"])
     {
         if(request.responseStatusCode == 200)
-        {
-            textTitleLabel.text = @"我的任务";
+        {  
             NSDictionary *dict = [[request responseString] JSONValue];
             if(dict)
             {
@@ -310,14 +314,12 @@
 
                 if(state == [NSNumber numberWithInt:0]) {
 
-                    textTitleLabel.text = @"我的任务";
                     taskInfos = [[NSMutableArray alloc] init];
                     
                     NSMutableArray *tasks = [dict objectForKey:@"data"];
 
                     for(NSMutableDictionary *taskDict in tasks)
                     {
-                        //TODO:排序相关
                         NSNumber *taskId = [taskDict objectForKey:@"id"];
                         NSString* subject = [taskDict objectForKey:@"subject"] == [NSNull null] ? @"" : [taskDict objectForKey:@"subject"];
                         NSString *body = [taskDict objectForKey:@"body"] == [NSNull null] ? @"" : [taskDict objectForKey:@"body"];

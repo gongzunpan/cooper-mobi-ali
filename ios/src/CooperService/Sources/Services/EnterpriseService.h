@@ -14,13 +14,9 @@
              context:(NSMutableDictionary*)context
             delegate:(id)delegate;
 //获取相关任务
-- (void)getRelatedTasks:(NSString*)workId
-            isCompleted:(BOOL)isCompleted
-              isCreator:(NSString*)isCreator
-                    key:(NSString*)key
- externalTaskSourceJson:(NSString*)externalTaskSourceJson
-                context:(NSMutableDictionary*)context
-               delegate:(id)delegate;
+- (void)getRelevantTasks:(NSString*)workId
+                 context:(NSMutableDictionary*)context
+                delegate:(id)delegate;
 //获取任务详情信息
 - (void)getTaskDetail:(NSString*)taskId
               context:(NSMutableDictionary*)context

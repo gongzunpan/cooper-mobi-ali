@@ -23,23 +23,15 @@
     [request postAsync:url params:params headers:nil context:context delegate:delegate];
     [request release];
 }
-- (void)getRelatedTasks:(NSString*)workId
-            isCompleted:(BOOL)isCompleted
-              isCreator:(NSString*)isCreator
-                    key:(NSString*)key
- externalTaskSourceJson:(NSString*)externalTaskSourceJson
-                context:(NSMutableDictionary*)context
-               delegate:(id)delegate
+- (void)getRelevantTasks:(NSString*)workId
+                 context:(NSMutableDictionary*)context
+                delegate:(id)delegate
 {
-    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_GETRELATEDTASKS_URL];
-    NSLog(@"【GetRelatedTasks服务接口路径】%@", url);
+    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_GETRELEVANTTASKS_URL];
+    NSLog(@"【GetRelevantTasks服务接口路径】%@", url);
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:workId forKey:@"workId"];
-    [params setObject:isCompleted ? @"True" : @"False" forKey:@"isCompleted"];
-    [params setObject:isCreator forKey:@"isCreator"];
-    [params setObject:key forKey:@"key"];
-    [params setObject:externalTaskSourceJson forKey:@"externalTaskSourceJson"];
     
     HttpWebRequest *request = [[HttpWebRequest alloc] init];
     [request postAsync:url params:params headers:nil context:context delegate:delegate];

@@ -80,18 +80,24 @@
 - (void)initContentView
 {
     subjectLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    subjectLabel.textColor = [UIColor colorWithRed:107.0/255 green:107.0/255 blue:107.0/255 alpha:1];
+    subjectLabel.backgroundColor = [UIColor clearColor];
     [subjectLabel setLineBreakMode:UILineBreakModeWordWrap];
     [subjectLabel setFont:[UIFont boldSystemFontOfSize:16]];
     
     dueTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    dueTimeLabel.textColor = [UIColor colorWithRed:189.0/255 green:189.0/255 blue:189.0/255 alpha:1];
     [dueTimeLabel setLineBreakMode:UILineBreakModeWordWrap];
     [dueTimeLabel setFont:[UIFont systemFontOfSize:14]];
     dueTimeLabel.textColor = [UIColor grayColor];
+    dueTimeLabel.backgroundColor = [UIColor clearColor];
     
     creatorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    creatorLabel.textColor = [UIColor colorWithRed:189.0/255 green:189.0/255 blue:189.0/255 alpha:1];
     [creatorLabel setLineBreakMode:UILineBreakModeWordWrap];
     creatorLabel.font = [UIFont systemFontOfSize:12];
     creatorLabel.textColor = [UIColor grayColor];
+    creatorLabel.backgroundColor = [UIColor clearColor];
 
     [self.contentView addSubview:subjectLabel];
     [self.contentView addSubview:dueTimeLabel];
@@ -138,8 +144,8 @@
 
     NSNumber *attachmentCount = [taskInfoDict objectForKey:@"attachmentCount"];
     NSNumber *picCount = [taskInfoDict objectForKey:@"picCount"];
-    CGFloat textWidth = self.bounds.size.width - 70;
-    CGFloat textLeft = 40;
+    CGFloat textWidth = self.bounds.size.width - 120;
+    CGFloat textLeft = 60;
     if([attachmentCount intValue] + [picCount intValue] > 0) {
         textWidth -= 25;
         textLeft += 25;
@@ -202,25 +208,44 @@
         totalHeight = 50;
 
     totalHeight += PADDING;
+    
+    UIView *seperatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
+    seperatorView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_separator.png"]];
+    [self.contentView addSubview:seperatorView];
+    [seperatorView release];
+    
+    totalHeight += 1;
+    
     [self setFrame:CGRectMake(0, 0, self.bounds.size.width, totalHeight)];
     [leftView setFrame:CGRectMake(0, 0, 40, totalHeight)];
 
     if([attachmentCount intValue] + [picCount intValue] > 0) {
-        iconsView = [[UIView alloc] initWithFrame:CGRectMake(40, 0, 20, totalHeight)];
-
-        CGFloat iconHeight = 0;
-        if([picCount intValue] > 0) {
-            UIImageView *picImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photo.png"]];
-            picImageView.frame = CGRectMake(0,iconHeight + 2 * PADDING,16,16);
-            [iconsView addSubview:picImageView];
-            iconHeight += 20;
-        }
+        
+        CGFloat iconLeft = [Tools screenMaxWidth] - 8;
         if([attachmentCount intValue] > 0) {
-            UIImageView *audioImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audio.png"]];
-            audioImageView.frame = CGRectMake(0, iconHeight + 2 * PADDING, 16, 16);
-            [iconsView addSubview:audioImageView];
-            iconHeight += 20;
+            iconLeft -= 20;
         }
+        if([picCount intValue] > 0) {
+            iconLeft -= 20;
+        }
+        
+        iconsView = [[UIView alloc] initWithFrame:CGRectMake(iconLeft, PADDING, [Tools screenMaxWidth] - iconLeft, 15)];
+                     
+        CGFloat tempFlagLeft = 0;
+        if([attachmentCount intValue] > 0) {
+            UIImageView *audioImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audioflag.png"]];
+            audioImageView.frame = CGRectMake(tempFlagLeft, PADDING, 13, 13);
+            [iconsView addSubview:audioImageView]; 
+            tempFlagLeft += 20;
+        }
+        
+        if([picCount intValue] > 0) {
+            UIImageView *picImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photoflag.png"]];
+            picImageView.frame = CGRectMake(tempFlagLeft, PADDING, 12, 12);
+            [iconsView addSubview:picImageView];
+            tempFlagLeft += 20;
+        }
+        
         [self.contentView addSubview:iconsView];
     }
 }

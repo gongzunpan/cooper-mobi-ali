@@ -831,7 +831,7 @@
     [recognizer release];
     
     UIImageView *coutiImageView = [[UIImageView alloc] initWithImage:[[self class] defaultImage]];
-    coutiImageView.frame = CGRectMake(5, 10, 26, 26);
+    coutiImageView.frame = CGRectMake(12, 15, 13, 13);
     [coutiView addSubview:coutiImageView];
     UIBarButtonItem *barButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:coutiView] autorelease];
     
