@@ -50,10 +50,13 @@
 #define MODEL_NAME                      [[UIDevice currentDevice] model]
 #define MODEL_VERSION                   [[[UIDevice currentDevice] systemVersion] floatValue]
 
+//app下载地址
+#define APP_DOWNLOAD_URL                @"http://xyj.im"
+
 //获取任务列表路径
 #define GETTASKLISTS_URL                @"/Personal/GetTaskFolders"
 //同步任务列表路径
-#define CREATETASKLIST_URL               @"/Personal/CreateTaskFolder"
+#define CREATETASKLIST_URL              @"/Personal/CreateTaskFolder"
 //优先级获取路径
 #define TASK_GETBYPRIORITY_URL          @"/Personal/GetByPriority"
 //同步路径

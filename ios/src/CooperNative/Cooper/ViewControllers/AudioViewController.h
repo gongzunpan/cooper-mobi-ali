@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #include "lame.h"
 #import "TabbarLineView.h"
 #import "CooperService/EnterpriseService.h"
 
-@interface AudioViewController : UIViewController<AVAudioPlayerDelegate>
+@interface AudioViewController : BaseViewController<AVAudioPlayerDelegate>
 {
     NSURL *recordedFile;
     NSTimer *timer;

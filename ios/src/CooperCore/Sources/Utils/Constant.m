@@ -23,6 +23,7 @@
 @synthesize isLocalPush;
 @synthesize tempCreateTasklistId;
 @synthesize tempCreateTasklistName;
+@synthesize rememberVersion;
 
 + (id)instance {
 	static id obj = nil;
@@ -45,6 +46,7 @@
         rootPath = @"";
         recentlyIds = nil;
         recentlyTeamIds = nil;
+        rememberVersion = @"";
         return self;
 	}
 	return nil;
@@ -58,6 +60,7 @@
     [[ConstantClass instance] setUsername:[Cache getCacheByKey:@"username"]];
     [[ConstantClass instance] setWorkId:[Cache getCacheByKey:@"workId"]];
     [[ConstantClass instance] setRootPath:[Cache getCacheByKey:@"rootPath"]];
+    [[ConstantClass instance] setRememberVersion:[Cache getCacheByKey:@"rememberVersion"]];
     
     id recentlyIds = [Cache getCacheByKey:@"recentlyIds"];
     if([Cache getCacheByKey:@"recentlyIds"] != nil)
@@ -79,6 +82,7 @@
     [Cache setCacheObject:[[ConstantClass instance] username] ForKey:@"username"];
     [Cache setCacheObject:[[ConstantClass instance] workId] ForKey:@"workId"];
     [Cache setCacheObject:[[ConstantClass instance] rootPath] ForKey:@"rootPath"];
+    [Cache setCacheObject:[[ConstantClass instance] rememberVersion] ForKey:@"rememberVersion"];
     [Cache setCacheObject:[[ConstantClass instance] recentlyIds] ForKey:@"recentlyIds"];
     [Cache setCacheObject:[[ConstantClass instance] recentlyTeamIds] ForKey:@"recentlyTeamIds"];
     [Cache setCacheObject:[NSNumber numberWithFloat:[[ConstantClass instance] isLocalPush]] ForKey:@"isLocalPush"];

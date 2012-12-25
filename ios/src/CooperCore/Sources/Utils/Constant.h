@@ -23,6 +23,7 @@
 @property (nonatomic,assign) bool isLocalPush;
 @property (nonatomic,retain) NSString *tempCreateTasklistId;
 @property (nonatomic,retain) NSString *tempCreateTasklistName;
+@property (nonatomic,retain) NSString *rememberVersion;
 
 + (id)instance;
 

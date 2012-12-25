@@ -61,6 +61,8 @@
 {
     //任务列表View
     optionView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    optionView.backgroundColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
+    optionView.separatorColor = [UIColor colorWithRed:89.0/255 green:76.0/255 blue:70.0/255 alpha:1];
     optionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     optionView.dataSource = self;
     optionView.delegate = self;
@@ -87,12 +89,12 @@
      if(!cell) {
          cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
          cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
+         cell.textLabel.textColor = [UIColor colorWithRed:152.0/255 green:145.0/255 blue:137.0/255 alpha:1];
          cell.showsReorderControl = YES;
          cell.selectionStyle = UITableViewCellSelectionStyleGray;
          UIView *selectedView = [[UIView alloc] initWithFrame:cell.frame];
-         selectedView.backgroundColor = [UIColor colorWithRed:220/255.0f green:220/255.0f blue:220/255.0f alpha:1.0];
-         cell.backgroundColor = [UIColor whiteColor];
+         selectedView.backgroundColor = [UIColor colorWithRed:105.0/255.0f green:105.0/255.0f blue:220/255.0f alpha:1.0];
+         //cell.backgroundColor = [UIColor clearColor]; 
 
          //设置选中后cell的背景颜色
          cell.selectedBackgroundView = selectedView;

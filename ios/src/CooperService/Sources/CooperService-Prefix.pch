@@ -22,6 +22,8 @@ typedef Constant ConstantClass;
 #import "CodesharpSDK/NetworkManager.h"
 #import "CodesharpSDK/HttpWebRequest.h"
 
+//获取版本配置路径
+#define GETVERSION_URL                  @"http://sc.alibaba-inc.com/Taobao.Facades.ISysConfigTableService/GetSysConfigs?key=CooperConfig&flag=Test&source=CooperWeb&authkey=196F36349C6520E69CEAB9F0B9A23B43";
 //获取任务列表路径
 #define GETTASKLISTS_URL                @"/Personal/GetTaskFolders"
 //同步任务列表路径

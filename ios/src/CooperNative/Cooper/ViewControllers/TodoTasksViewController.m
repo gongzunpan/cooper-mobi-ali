@@ -60,7 +60,14 @@
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.HUD];
 
-    self.title = @"Loading...";
+    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    textTitleLabel.backgroundColor = [UIColor clearColor];
+    textTitleLabel.textAlignment = UITextAlignmentCenter;
+    textTitleLabel.textColor = [UIColor colorWithRed:49.0/255 green:156.0/255 blue:222.0/255 alpha:1];
+    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    
+    self.navigationItem.titleView = textTitleLabel;
+    textTitleLabel.text = @"Loading...";
     NSString *workId = [[ConstantClass instance] workId];
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"GetTodoTasks" forKey:REQUEST_TYPE];
@@ -76,6 +83,7 @@
 
 - (void)dealloc
 {
+    [textTitleLabel release];
     [emptyView release];
     [taskView release];
     [enterpriseService release];
@@ -178,71 +186,68 @@
 
 - (void)initContentView
 {
-    NSLog(@"【初始化任务列表UI】");
-//    self.view.backgroundColor = [UIColor whiteColor];
+    NSLog(@"【初始化待办任务列表】");
 
-    CGRect tableViewRect = CGRectMake(0, 0, [Tools screenMaxWidth], [Tools screenMaxHeight] - 49 - 64);
-    taskView = [[UITableView alloc] initWithFrame:tableViewRect style:UITableViewStylePlain];
+    //任务列表
+    taskView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [Tools screenMaxWidth], [Tools screenMaxHeight] - 49 - 64) style:UITableViewStylePlain];
     taskView.backgroundColor = [UIColor clearColor];
-
     //去掉底部空白
     UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
     taskView.tableFooterView = footer;
     taskView.delegate = self;
     taskView.dataSource = self;
-
     [self.view addSubview: taskView];
 
-    TabbarLineView *tabbarLineView = [[TabbarLineView alloc] init];
-    tabbarLineView.frame = CGRectMake(0, [Tools screenMaxHeight] - 49 - 64, self.view.bounds.size.width, 1);
-    [self.view addSubview:tabbarLineView];
-    [tabbarLineView release];
-    
-    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 49 - 63, [Tools screenMaxWidth], 49)];
-    tabbarView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:tabbarView];
+//    //底部分割线
+//    TabbarLineView *tabbarLineView = [[TabbarLineView alloc] init];
+//    tabbarLineView.frame = CGRectMake(0, [Tools screenMaxHeight] - 49 - 64, self.view.bounds.size.width, 1);
+//    [self.view addSubview:tabbarLineView];
+//    [tabbarLineView release];
 
-    //添加音频按钮
-    UIView *audioBtn = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
-    UIImageView *audioImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 32, 32)];
+    //底部
+    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 49 - 63, [Tools screenMaxWidth], 49)];
+    tabbarView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tabbar_background.png"]];
+    [self.view addSubview:tabbarView];
+    //底部添加音频按钮
+    UIView *audioView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
+  
+    UIImageView *audioImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 12, 19)];
     UIImage *audioImage = [UIImage imageNamed:@"audio.png"];
     audioImageView.image = audioImage;
-    [audioBtn addSubview:audioImageView];
-    audioBtn.userInteractionEnabled = YES;
+    [audioView addSubview:audioImageView];
+    audioView.userInteractionEnabled = YES;
     UITapGestureRecognizer *audioRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAudio:)];
-    [audioBtn addGestureRecognizer:audioRecognizer];
+    [audioView addGestureRecognizer:audioRecognizer];
     [audioRecognizer release];
-    [tabbarView addSubview:audioBtn];
+    [tabbarView addSubview:audioView];
     [audioImageView release];
-    [audioBtn release];
-
-    //添加添加任务按钮
-    UIView *addBtn = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] / 2.0 - 23, 0, 38, 45)];
-    UIImageView *addImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 35, 32)];
-    UIImage *addImage = [UIImage imageNamed:@"word.png"];
+    [audioView release];
+    //底部添加文本按钮
+    UIView *addView = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] / 2.0 - 23, 0, 38, 45)];
+    UIImageView *addImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 15, 19, 19)];
+    UIImage *addImage = [UIImage imageNamed:@"text.png"];
     addImageView.image = addImage;
-    [addBtn addSubview:addImageView];
-    addBtn.userInteractionEnabled = YES;
+    [addView addSubview:addImageView];
+    addView.userInteractionEnabled = YES;
     UITapGestureRecognizer *addRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAdd:)];
-    [addBtn addGestureRecognizer:addRecognizer];
+    [addView addGestureRecognizer:addRecognizer];
     [addRecognizer release];
-    [tabbarView addSubview:addBtn];
+    [tabbarView addSubview:addView];
     [addImageView release];
-    [addBtn release];
-
+    [addView release];
     //添加拍照按钮
-    UIView *photoBtn = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 10 - 42, 0, 38, 45)];
-    UIImageView *photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 35, 32)];
+    UIView *photoView = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 10 - 42, 0, 38, 45)];
+    UIImageView *photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 15, 19, 17)];
     UIImage *photoImage = [UIImage imageNamed:@"photo.png"];
     photoImageView.image = photoImage;
-    [photoBtn addSubview:photoImageView];
-    photoBtn.userInteractionEnabled = YES;
+    [photoView addSubview:photoImageView];
+    photoView.userInteractionEnabled = YES;
     UITapGestureRecognizer *photoRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
-    [photoBtn addGestureRecognizer:photoRecognizer];
+    [photoView addGestureRecognizer:photoRecognizer];
     [photoRecognizer release];
-    [tabbarView addSubview:photoBtn];
+    [tabbarView addSubview:photoView];
     [photoImageView release];
-    [photoBtn release];
+    [photoView release];
 }
 
 - (void)loadTaskData
@@ -297,14 +302,15 @@
     {
         if(request.responseStatusCode == 200)
         {
-            self.title = @"我的任务";
+            textTitleLabel.text = @"我的任务";
             NSDictionary *dict = [[request responseString] JSONValue];
             if(dict)
             {
                 NSNumber *state = [dict objectForKey:@"state"];
 
                 if(state == [NSNumber numberWithInt:0]) {
-                    
+
+                    textTitleLabel.text = @"我的任务";
                     taskInfos = [[NSMutableArray alloc] init];
                     
                     NSMutableArray *tasks = [dict objectForKey:@"data"];

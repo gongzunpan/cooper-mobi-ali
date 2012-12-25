@@ -45,7 +45,7 @@
         //保存路径
         [ConstantClass savePathToCache];
     }
-    
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
@@ -100,9 +100,11 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@"【应用程序重新从后台载入】");
-    
-    //检测版本
-    //[self checkVersionForUpdate];
+
+    if(![[[ConstantClass instance] rememberVersion] isEqualToString:@"true"]) {
+        //检测版本
+        [self checkVersionForUpdate];
+    }
     
 //    if([[ConstantClass instance] isLocalPush])
 //        [self localPush];
@@ -146,11 +148,12 @@
     VersionObject *versionObject = [VersionObject getVersionObject:[[NSBundle mainBundle] infoDictionary]];
     
     //[AssertHelper isTrue:[versionObject.version isEqualToString:@"0.1"]: @"版本不对"];
+    NSString *version = versionObject.version;
     
     //TODO:请求服务端的当前版本比较version
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
-    [context setObject:@"getCurrentAppVersion" forKey:@"key"];
-    [context setObject:versionObject.version forKey:@"localVersion"];
+    [context setObject:@"GetCurrentAppVersion" forKey:@"key"];
+    [context setObject:version forKey:@"localVersion"];
     [VersionService getCurrentAppVersion:context delegate:self];
 }
 
@@ -249,25 +252,42 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"【请求响应数据】%@, %d",[request responseString], [request responseStatusCode]);
+    NSLog(@"【请求任务响应数据】%@\n【返回状态码】%d", request.responseString, request.responseStatusCode);
     
     NSString *key = [request.userInfo objectForKey:@"key"];
     NSString *localVersion = [request.userInfo objectForKey:@"localVersion"];
-    if([key isEqualToString:@"getCurrentAppVersion"])
+    
+    if([key isEqualToString:@"GetCurrentAppVersion"])
     {
         if([request responseStatusCode] == 200) 
         {
-            //TODO:“0.2”为request返回值
-            if(![localVersion isEqualToString:@"0.2"])
-            {
-                [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"发现新版本 %@",@"0.2"]
-                                            message:@"修改Bug"  
-                                           delegate:self 
-                                  cancelButtonTitle:@"稍后再说" 
-                                  otherButtonTitles:@"马上更新",nil]
-                 show];
-            }
+            NSString *requestString = request.responseString;
+            
+            NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"<ios_lastversion[^>]*>(.+?)<\\\\/ios_lastversion>" options:NSRegularExpressionCaseInsensitive error:nil];
+            NSTextCheckingResult *match = [regex firstMatchInString:requestString
+                                              options:0
+                                                range:NSMakeRange(0, [requestString length])];
 
+
+            if(match) {
+                NSRange resultRange = [match rangeAtIndex:1];
+
+                //从urlString当中截取数据
+                NSString *result = [requestString substringWithRange:resultRange];
+                
+                if(![localVersion isEqualToString:result])
+                {
+                    [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"发现新版本 V%@",result]
+                                                message:@""  
+                                               delegate:self 
+                                      cancelButtonTitle:@"稍后再说" 
+                                      otherButtonTitles:@"不再提醒",@"马上更新",nil]
+                     show];
+                }
+            }
+            else {
+                NSLog(@"版本匹配错误，请检查服务中心配置");
+            }
         }
     }
 }
@@ -281,6 +301,23 @@
 {
     NSLog(@"【发送请求URL】%@", request.url);
 }
-    
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 1:
+            [[ConstantClass instance] setRememberVersion:@"true"];
+            [ConstantClass saveToCache];
+            break;
+        case 2:
+            [[ConstantClass instance] setRememberVersion:@""];
+            [ConstantClass saveToCache];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APP_DOWNLOAD_URL]];
+            break;
+
+        default:
+            break;
+    }
+}
 
 @end

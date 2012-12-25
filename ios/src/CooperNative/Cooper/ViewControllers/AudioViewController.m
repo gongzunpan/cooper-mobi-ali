@@ -259,91 +259,135 @@
 
 - (void)sendFile:(id)sender
 {
-    NSString *cafFilePath =[NSTemporaryDirectory() stringByAppendingString:@"RecordedFile"];
-    
-    NSString *mp3FileName = @"Mp3File";
+    NSLog(@"sendFile");
+
+    ASIHTTPRequest *request=[[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:@"http://10.232.101.129/sysDownload.do?app=cooper&c=2043c21fc83cf3a20f8054a72d6a357c&f_time=1356405137&key=2233949"]];
+
+    NSString *mp3FileName = @"Mp3File2";
     mp3FileName = [mp3FileName stringByAppendingString:@".mp3"];
     NSString *mp3FilePath = [[NSHomeDirectory() stringByAppendingFormat:@"/Documents/"] stringByAppendingPathComponent:mp3FileName];
+    request.delegate = self;
+    [request setDownloadDestinationPath:mp3FilePath];
+
+    [request startAsynchronous];
+
+//    if (mp3Player == nil)
+//    {
+//
+//        NSError *playerError;
+//        mp3Player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:@"http://10.232.101.129/sysDownload.do?app=cooper&c=2043c21fc83cf3a20f8054a72d6a357c&f_time=1356405137&key=2233949"]
+//                                                            error:&playerError];
+//        mp3Player.meteringEnabled = YES;
+//        if (mp3Player == nil)
+//        {
+//            NSLog(@"ERror creating player: %@", [playerError description]);
+//        }
+//        mp3Player.delegate = self;
+//    }
+//    [mp3Player play];
+//    timer = [NSTimer scheduledTimerWithTimeInterval:.1
+//                                              target:self
+//                                           selector:@selector(timerUpdate3:)
+//                                            userInfo:nil
+//                                             repeats:YES];
+
     
-    @try {
-        int read, write;
-        
-        FILE *pcm = fopen([cafFilePath cStringUsingEncoding:1], "rb");  //source
-        fseek(pcm, 4*1024, SEEK_CUR);                                   //skip file header
-        FILE *mp3 = fopen([mp3FilePath cStringUsingEncoding:1], "wb");  //output
-        
-        const int PCM_SIZE = 8192;
-        const int MP3_SIZE = 8192;
-        short int pcm_buffer[PCM_SIZE*2];
-        unsigned char mp3_buffer[MP3_SIZE];
-        
-        lame_t lame = lame_init();
-        lame_set_in_samplerate(lame, 44100);
-        lame_set_VBR(lame, vbr_default);
-        lame_init_params(lame);
-        
-        do {
-            read = fread(pcm_buffer, 2*sizeof(short int), PCM_SIZE, pcm);
-            if (read == 0)
-                write = lame_encode_flush(lame, mp3_buffer, MP3_SIZE);
-            else
-                write = lame_encode_buffer_interleaved(lame, pcm_buffer, read, mp3_buffer, MP3_SIZE);
-            
-            fwrite(mp3_buffer, write, 1, mp3);
-            
-        } while (read != 0);
-        
-        lame_close(lame);
-        fclose(mp3);
-        fclose(pcm);
-    }
-    @catch (NSException *exception) {
-        NSLog(@"%@",[exception description]);
-    }
-    @finally {
-        [self performSelectorOnMainThread:@selector(convertMp3Finish)
-                               withObject:nil
-                            waitUntilDone:YES];
-    }
+//    NSString *cafFilePath =[NSTemporaryDirectory() stringByAppendingString:@"RecordedFile"];
+//    
+//    NSString *mp3FileName = @"Mp3File";
+//    mp3FileName = [mp3FileName stringByAppendingString:@".mp3"];
+//    NSString *mp3FilePath = [[NSHomeDirectory() stringByAppendingFormat:@"/Documents/"] stringByAppendingPathComponent:mp3FileName];
+//
+//    NSLog(@"mp3FilePath:%@", mp3FilePath);
+//    
+//    @try {
+//        int read, write;
+//        
+//        FILE *pcm = fopen([cafFilePath cStringUsingEncoding:1], "rb");  //source
+//        fseek(pcm, 4*1024, SEEK_CUR);                                   //skip file header
+//        FILE *mp3 = fopen([mp3FilePath cStringUsingEncoding:1], "wb");  //output
+//        
+//        const int PCM_SIZE = 8192;
+//        const int MP3_SIZE = 8192;
+//        short int pcm_buffer[PCM_SIZE*2];
+//        unsigned char mp3_buffer[MP3_SIZE];
+//        
+//        lame_t lame = lame_init();
+//        lame_set_in_samplerate(lame, 44100);
+//        lame_set_VBR(lame, vbr_default);
+//        lame_init_params(lame);
+//        
+//        do {
+//            read = fread(pcm_buffer, 2*sizeof(short int), PCM_SIZE, pcm);
+//            if (read == 0)
+//                write = lame_encode_flush(lame, mp3_buffer, MP3_SIZE);
+//            else
+//                write = lame_encode_buffer_interleaved(lame, pcm_buffer, read, mp3_buffer, MP3_SIZE);
+//            
+//            fwrite(mp3_buffer, write, 1, mp3);
+//            
+//        } while (read != 0);
+//        
+//        lame_close(lame);
+//        fclose(mp3);
+//        fclose(pcm);
+//    }
+//    @catch (NSException *exception) {
+//        NSLog(@"%@",[exception description]);
+//    }
+//    @finally {
+//        [self performSelectorOnMainThread:@selector(convertMp3Finish)
+//                               withObject:nil
+//                            waitUntilDone:YES];
+//    }
 }
 
 - (void) convertMp3Finish
 {
     NSLog(@"convertMp3Finish");
     
-    if (mp3Player == nil)
-    {
-        
-        NSError *playerError;
-        mp3Player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", @"Mp3File.mp3"]]
-                                                            error:&playerError];
-        mp3Player.meteringEnabled = YES;
-        if (mp3Player == nil)
-        {
-            NSLog(@"ERror creating player: %@", [playerError description]);
-        }
-        mp3Player.delegate = self;
-    }
-    [mp3Player play];
-    timer = [NSTimer scheduledTimerWithTimeInterval:.1
-                                              target:self
-                                           selector:@selector(timerUpdate3:)
-                                            userInfo:nil
-                                             repeats:YES];
-    
-    NSData *data = mp3Player.data;
-    
-    EnterpriseService *enterpriseService = [[EnterpriseService alloc] init];
-    
-    NSString *fileName = [NSString stringWithFormat:@"%@.%@", [Tools stringWithUUID], @"mp3"];
-    
-    NSMutableDictionary *context = [NSMutableDictionary dictionary];
-    [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
-    [enterpriseService createTaskAttach:data
-                               fileName:fileName
-                                   type:@"attachment"
-                                context:context
-                               delegate:self];
+//    if (mp3Player == nil)
+//    {
+//        
+//        NSError *playerError;
+//        mp3Player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", @"Mp3File.mp3"]]
+//                                                            error:&playerError];
+//        mp3Player.meteringEnabled = YES;
+//        if (mp3Player == nil)
+//        {
+//            NSLog(@"ERror creating player: %@", [playerError description]);
+//        }
+//        mp3Player.delegate = self;
+//    }
+//    [mp3Player play];
+//    timer = [NSTimer scheduledTimerWithTimeInterval:.1
+//                                              target:self
+//                                           selector:@selector(timerUpdate3:)
+//                                            userInfo:nil
+//                                             repeats:YES];
+
+//    NSData *data = mp3Player.data;
+
+//    NSString *mp3FileName = @"Mp3File";
+//    mp3FileName = [mp3FileName stringByAppendingString:@".mp3"];
+//    NSString *mp3FilePath = [[NSHomeDirectory() stringByAppendingFormat:@"/Documents/"] stringByAppendingPathComponent:mp3FileName];
+//
+//    NSLog(@"mp3FilePath:%@", mp3FilePath);
+//
+//    NSData *data = [NSData dataWithContentsOfFile:mp3FilePath];
+//    //NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:mp3FilePath]];
+//    
+//    EnterpriseService *enterpriseService = [[EnterpriseService alloc] init];
+//
+//    NSString *fileName = [NSString stringWithFormat:@"%@.%@", [Tools stringWithUUID], @"mp3"];
+//    
+//    NSMutableDictionary *context = [NSMutableDictionary dictionary];
+//    [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
+//    [enterpriseService createTaskAttach:data
+//                               fileName:fileName
+//                                   type:@"attachment"
+//                                context:context
+//                               delegate:self];
 
     
 //    [_alert dismissWithClickedButtonIndex:0 animated:YES];
@@ -365,17 +409,48 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"【请求任务响应数据】%@\n【返回状态码】%d", request.responseString, request.responseStatusCode);
-    
-    NSDictionary *userInfo = request.userInfo;
-    NSString *requestType = [userInfo objectForKey:REQUEST_TYPE];
-    
-    if([requestType isEqualToString:@"CreateTaskAttach"])
+    NSLog(@"requestFinished");
+
+    if (mp3Player == nil)
     {
-        if(request.responseStatusCode == 200)
+
+        NSString *mp3FileName = @"Mp3File2";
+        mp3FileName = [mp3FileName stringByAppendingString:@".mp3"];
+        NSString *mp3FilePath = [[NSHomeDirectory() stringByAppendingFormat:@"/Documents/"] stringByAppendingPathComponent:mp3FileName];
+        
+        NSError *playerError;
+        mp3Player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:mp3FilePath]
+                                                            error:&playerError];
+        mp3Player.meteringEnabled = YES;
+        if (mp3Player == nil)
         {
+            NSLog(@"ERror creating player: %@", [playerError description]);
         }
+        mp3Player.delegate = self;
     }
+    [mp3Player play];
+    timer = [NSTimer scheduledTimerWithTimeInterval:.1
+                                              target:self
+                                           selector:@selector(timerUpdate3:)
+                                            userInfo:nil
+                                             repeats:YES];
+
+//    NSLog(@"【请求任务响应数据】%@\n【返回状态码】%d", request.responseString, request.responseStatusCode);
+//    
+//    NSDictionary *userInfo = request.userInfo;
+//    NSString *requestType = [userInfo objectForKey:REQUEST_TYPE];
+//    
+//    if([requestType isEqualToString:@"CreateTaskAttach"])
+//    {
+//        if(request.responseStatusCode == 200)
+//        {
+//        }
+//    }
+}
+-(void)requestFailed:(ASIHTTPRequest *)request
+{
+    NSError *error=[request error];
+    NSLog(@"ASIHttpRequest出错了!%@",error);
 }
 
 @end

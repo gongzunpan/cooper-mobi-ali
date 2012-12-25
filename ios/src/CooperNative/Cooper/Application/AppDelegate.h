@@ -8,7 +8,7 @@
 
 #import "MainViewController.h"
 
-@interface AppDelegate : NSObject<UIApplicationDelegate, UITabBarControllerDelegate>
+@interface AppDelegate : NSObject<UIApplicationDelegate, UITabBarControllerDelegate, UIAlertViewDelegate>
 {  
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;	    

@@ -79,7 +79,7 @@
 
 + (UIImage *)defaultImage {
 	static UIImage *defaultImage = nil;
-    defaultImage = [UIImage imageNamed:@"couti.png"];
+    defaultImage = [UIImage imageNamed:@"navBtn.png"];
 //	static dispatch_once_t onceToken;
 //	dispatch_once(&onceToken, ^{
 //		UIGraphicsBeginImageContextWithOptions(CGSizeMake(20.f, 13.f), NO, 0.0f);

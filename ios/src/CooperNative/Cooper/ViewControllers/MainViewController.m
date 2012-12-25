@@ -106,11 +106,10 @@
             if(panelController == nil) {
 
                 EnterpriseOptionViewController *optionViewController = [[EnterpriseOptionViewController alloc] init];
-                BaseNavigationController *optionNavController = [[BaseNavigationController alloc] initWithRootViewController:optionViewController];
                 TodoTasksViewController *taskViewController = [[TodoTasksViewController alloc] init];
                 BaseNavigationController *taskNavController = [[BaseNavigationController alloc] initWithRootViewController:taskViewController];
                 panelController = [[JASidePanelController alloc] init];
-                panelController.leftPanel = optionNavController;
+                panelController.leftPanel = optionViewController;
                 panelController.centerPanel = taskNavController;
 
                 [taskViewController release];
