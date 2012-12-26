@@ -108,6 +108,10 @@
 
 - (void)initContentView
 {
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewClick:)];
+    [self.view addGestureRecognizer:recognizer];
+    [recognizer release];
+    
     textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
     textTitleLabel.backgroundColor = [UIColor clearColor];
     textTitleLabel.textAlignment = UITextAlignmentCenter;
@@ -161,7 +165,7 @@
         subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
         [detailInfoView addSubview:subjectTextView];
 
-        //[subjectTextView becomeFirstResponder];
+        [subjectTextView becomeFirstResponder];
     }
     else if(createType == 1) {
         NSString *attachmentId = [taskDetailDict objectForKey:@"attachmentId"];
@@ -180,7 +184,7 @@
             subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
             [detailInfoView addSubview:subjectTextView];
 
-//            [subjectTextView becomeFirstResponder];
+            [subjectTextView becomeFirstResponder];
         }
     }
     else if(createType == 2) {
@@ -207,7 +211,7 @@
             subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
             [detailInfoView addSubview:subjectTextView];
 
-//            [subjectTextView becomeFirstResponder];
+            [subjectTextView becomeFirstResponder];
         }
     }
 
@@ -253,9 +257,19 @@
     UIView *moreView = [[UIView alloc] initWithFrame:CGRectMake(10, 206, 300, 154)];
     moreView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_duetime.png"]];
 
+    priorityOptionView = [[PriorityOptionView alloc] initWithFrame:CGRectMake(11, 27, 278, 23)];
+    [moreView addSubview:priorityOptionView];
+    
+    UILabel *dueTimeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(11, 105, 120, 24)];
+    dueTimeTitleLabel.backgroundColor = [UIColor clearColor];
+    dueTimeTitleLabel.textColor = [UIColor colorWithRed:158.0/255 green:154.0/255 blue:150.0/255 alpha:1];
+    dueTimeTitleLabel.text = @"期望完成时间";
+    [moreView addSubview:dueTimeTitleLabel];
+    
     [self.view addSubview:moreView];
-
     [moreView release];
+    
+    
 //    detailView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [Tools screenMaxWidth], 180) style:UITableViewStyleGrouped];
 //    detailView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 //    detailView.backgroundColor = [UIColor whiteColor];
@@ -326,6 +340,11 @@
 //    dueTimeTextField.borderStyle = UITextBorderStyleRoundedRect;
 //    dueTimeTextField.placeholder = @"期待完成时间";
 //    [dueTimeView addSubview:dueTimeTextField];
+}
+
+- (void)viewClick:(id)sender
+{ 
+    [subjectTextView resignFirstResponder];
 }
 
 - (void)goBack:(id)sender

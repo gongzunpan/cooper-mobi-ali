@@ -18,22 +18,13 @@
 //#import "BodyTextView.h"
 #import "CooperService/EnterpriseService.h"
 #import "SEFilterControl.h"
+#import "PriorityOptionView.h"
 //#import "CodesharpSDK/JSCoreTextView.h"
 
 @interface EnterpriseTaskDetailCreateViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DateTextFieldDelegate>
 {
-//    UITableView *detailView;
-
     GCPlaceholderTextView *subjectTextView;
-    
-//    UIView *assigneeView;
-//    UITextField *assigneeTextField;
-
-//    UIView *priorityView;
-//    SEFilterControl *priorityControl;
-
-//    UIView *dueTimeView;
-//    UITextField *dueTimeTextField;
+    PriorityOptionView *priorityOptionView;
 
     UILabel *textTitleLabel;
     
