@@ -703,7 +703,7 @@
 }
 
 - (CGFloat)leftVisibleWidth {
-    return self.leftFixedWidth ? self.leftFixedWidth : floorf(self.view.bounds.size.width * self.leftGapPercentage);
+    return self.leftFixedWidth ? self.leftFixedWidth : floorf(self.view.bounds.size.width - 43.0f);
 }
 
 - (CGFloat)rightVisibleWidth {
@@ -830,7 +830,8 @@
     [coutiView addGestureRecognizer:recognizer];
     [recognizer release];
     
-    UIImageView *coutiImageView = [[UIImageView alloc] initWithImage:[[self class] defaultImage]];
+    UIButton *coutiImageView = [[UIButton alloc] init];
+    [coutiImageView setBackgroundImage:[[self class] defaultImage] forState:UIControlStateNormal];
     coutiImageView.frame = CGRectMake(12, 15, 13, 13);
     [coutiView addSubview:coutiImageView];
     UIBarButtonItem *barButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:coutiView] autorelease];

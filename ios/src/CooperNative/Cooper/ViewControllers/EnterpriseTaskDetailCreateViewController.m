@@ -19,6 +19,8 @@
 //@synthesize bodyScrollView;
 //@synthesize bodyCell;
 @synthesize taskDetailDict;
+@synthesize prevViewController;
+@synthesize createType;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,16 +33,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.navigationController.navigationBarHidden = NO;
     
     if(taskDetailDict == nil) {
         taskDetailDict = [[NSMutableDictionary alloc] init];
     }
-//    [taskDetailDict setObject:@"" forKey:@"subject"];
-//    [taskDetailDict setObject:@"" forKey:@"body"];
-//    [taskDetailDict setObject:@"" forKey:@"dueTime"];
-//    [taskDetailDict setObject:TEST_USERID forKey:@"assigneeUserId"];
-//    [taskDetailDict setObject:[NSNumber numberWithInt:0] forKey:@"priority"];
-//
+    [taskDetailDict setObject:@"" forKey:@"subject"];
+    [taskDetailDict setObject:@"" forKey:@"body"];
+    [taskDetailDict setObject:@"" forKey:@"dueTime"];
+    NSString *workId = [[ConstantClass instance] workId];
+    [taskDetailDict setObject:workId forKey:@"creatorWorkId"];
+    [taskDetailDict setObject:workId forKey:@"assigneeWorkId"];
+    [taskDetailDict setObject:[NSNumber numberWithInt:0] forKey:@"priority"];
+
     enterpriseService = [[EnterpriseService alloc] init];
     
     [self initContentView];
@@ -102,105 +108,264 @@
 
 - (void)initContentView
 {
-    self.title = @"任务创建";
-    
+    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    textTitleLabel.backgroundColor = [UIColor clearColor];
+    textTitleLabel.textAlignment = UITextAlignmentCenter;
+    textTitleLabel.textColor = APP_TITLECOLOR;
+    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    self.navigationItem.titleView = textTitleLabel;
+    textTitleLabel.text = @"编辑";
+
+    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBtn setFrame:CGRectMake(5, 5, 25, 25)];
-    [backBtn setBackgroundImage:[UIImage imageNamed:BACK_IMAGE] forState:UIControlStateNormal];
-    [backBtn addTarget: self action: @selector(goBack:) forControlEvents: UIControlEventTouchUpInside];
-    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
+    [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+    [backView addSubview:backBtn];
+    backView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *backRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack:)];
+    [backView addGestureRecognizer:backRecognizer];
+    [backRecognizer release];
+    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backView];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     [backButtonItem release];
-    
-    CustomButton *saveTaskBtn = [[CustomButton alloc] initWithFrame:CGRectMake(5,5,50,30) image:[UIImage imageNamed:@"btn_center.png"]];
-    saveTaskBtn.layer.cornerRadius = 6.0f;
-    [saveTaskBtn.layer setMasksToBounds:YES];
-    [saveTaskBtn addTarget:self action:@selector(newTask:) forControlEvents:UIControlEventTouchUpInside];
+    [backView release];
+
+    UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];
+    UIView *splitView = [[UIView alloc] initWithFrame:CGRectMake(0, 9, 1, 26)];
+    splitView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"split.png"]];
+    [rightView addSubview:splitView];
+    UIButton *saveTaskBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [saveTaskBtn setTitleColor:APP_TITLECOLOR forState:UIControlStateNormal];
+    saveTaskBtn.frame = CGRectMake(1, 6, 54, 30);
+//    [saveTaskBtn addTarget:self action:@selector(newTask:) forControlEvents:UIControlEventTouchUpInside];
+    saveTaskBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     [saveTaskBtn setTitle:@"确认" forState:UIControlStateNormal];
-    UIBarButtonItem *saveButtonItem = [[UIBarButtonItem alloc] initWithCustomView:saveTaskBtn];
+    [rightView addSubview:saveTaskBtn];
+    UIBarButtonItem *saveButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightView];
     self.navigationItem.rightBarButtonItem = saveButtonItem;
     [saveButtonItem release];
-    [saveTaskBtn release];
+    [splitView release];
+    [rightView release];
+
+    UIView *detailInfoView = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 106)];
+    detailInfoView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_panel.png"]];
+    [self.view addSubview:detailInfoView];
+
+    if(createType == 0) {
+        subjectTextView = [[GCPlaceholderTextView alloc] init];
+        subjectTextView.frame = CGRectMake(10, 10, 279, 85);
+        subjectTextView.font = [UIFont systemFontOfSize:16.0f];
+        subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
+        subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
+        subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+        subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        [detailInfoView addSubview:subjectTextView];
+
+        //[subjectTextView becomeFirstResponder];
+    }
+    else if(createType == 1) {
+        NSString *attachmentId = [taskDetailDict objectForKey:@"attachmentId"];
+        if(attachmentId != nil) {
+            UIButton *attachmentBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 85, 85)];
+            [attachmentBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_audioflag.png"] forState:UIControlStateNormal];
+            [attachmentBtn addTarget:self action:@selector(startPhoto:) forControlEvents:UIControlEventTouchUpInside];
+            [detailInfoView addSubview:attachmentBtn];
+
+            subjectTextView = [[GCPlaceholderTextView alloc] init];
+            subjectTextView.frame = CGRectMake(105, 10, 185, 85);
+            subjectTextView.font = [UIFont systemFontOfSize:16.0f];
+            subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
+            subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
+            subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+            subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+            [detailInfoView addSubview:subjectTextView];
+
+//            [subjectTextView becomeFirstResponder];
+        }
+    }
+    else if(createType == 2) {
+        NSString *pictureId = [taskDetailDict objectForKey:@"pictureId"];
+        if(pictureId != nil) {
+            NSString *pictureThumbUrl = [taskDetailDict objectForKey:@"pictureThumbUrl"];
+            //cell.textLabel.text = attachmentFileName;
+            UIImageView *imageView = [[UIImageView alloc] init];
+            imageView.frame = CGRectMake(10, 10, 85, 85);
+            imageView.userInteractionEnabled = YES;
+            UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
+            [imageView addGestureRecognizer:recognizer];
+            [recognizer release];
+            [imageView setImageWithURL:[NSURL URLWithString:pictureThumbUrl]];
+            [detailInfoView addSubview:imageView];
+            [imageView release];
+
+            subjectTextView = [[GCPlaceholderTextView alloc] init];
+            subjectTextView.frame = CGRectMake(105, 10, 185, 85);
+            subjectTextView.font = [UIFont systemFontOfSize:16.0f];
+            subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
+            subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
+            subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+            subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+            [detailInfoView addSubview:subjectTextView];
+
+//            [subjectTextView becomeFirstResponder];
+        }
+    }
+
+    UIView *assigneePanelView = [[UIView alloc] initWithFrame:CGRectMake(10, 126, 300, 70)];
+
+    UILabel *assigneeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 20)];
+    assigneeTitleLabel.textColor = [UIColor colorWithRed:158.0/255 green:154.0/255 blue:150.0/255 alpha:1];
+    assigneeTitleLabel.backgroundColor = [UIColor clearColor];
+    assigneeTitleLabel.text = @"任务分配";
+    assigneeTitleLabel.font = [UIFont boldSystemFontOfSize:20.0f];
+    [assigneePanelView addSubview:assigneeTitleLabel];
     
-    detailView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [Tools screenMaxWidth], 150) style:UITableViewStyleGrouped];
-    detailView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    detailView.backgroundColor = [UIColor whiteColor];
-    detailView.scrollEnabled = NO;
-   
-    detailView.dataSource = self;
-    detailView.delegate = self;
-    [self.view addSubview:detailView];
+    UIView *assigneeView = [[UIView alloc] initWithFrame:CGRectMake(0, 26, 270, 44)];
+    assigneeView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_assignee.png"]];
+
+    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(242, 12, 18, 18)];
+    [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
+
+    [assigneeView addSubview:assigneeChooseBtn];
+
+    [assigneePanelView addSubview:assigneeView];
+
+    UIView *assigneeMoreView = [[UIView alloc] initWithFrame:CGRectMake(284, 24, 14, 44)];
+    assigneeMoreView.userInteractionEnabled = YES;
+    UIButton *assigneeMoreBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 21, 14, 3)];
+    [assigneeMoreBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_more.png"] forState:UIControlStateNormal];
     
-    assigneeView = [[UIView alloc] initWithFrame:CGRectMake(0, 105, [Tools screenMaxWidth], 40)];
-    assigneeView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:assigneeView];
-    assigneeTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 270, 30)];
-    assigneeTextField.placeholder = @"指派人";
-    assigneeTextField.borderStyle = UITextBorderStyleRoundedRect;
-    UIImageView *chooseUserImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chooseuser.png"]];
-    chooseUserImageView.frame = CGRectMake(0, 0, 16, 16);
-    assigneeTextField.rightView = chooseUserImageView;
-    assigneeTextField.rightViewMode = UITextFieldViewModeAlways; 
-    chooseUserImageView.userInteractionEnabled = YES;
-    [assigneeTextField addSubview:chooseUserImageView];
-    [assigneeView addSubview:assigneeTextField];
-    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
-    [assigneeTextField addGestureRecognizer:recognizer];
-    [recognizer release];
+    UITapGestureRecognizer *moreRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(more:)];
+    [assigneeMoreView addGestureRecognizer:moreRecognizer];
+    [moreRecognizer release];
+    [assigneeMoreView addSubview:assigneeMoreBtn];
     
-    UIImageView *moreImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"down.png"]];
-    moreImageView.frame = CGRectMake(285, 10, 26, 26);
-    moreImageView.userInteractionEnabled = YES;
-    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(more:)];
-    [moreImageView addGestureRecognizer:recognizer];
-    [recognizer release];
-    [assigneeView addSubview:moreImageView];
-    
-    [moreImageView release];
-    [chooseUserImageView release];
-    [assigneeTextField release];
+    [assigneePanelView addSubview:assigneeMoreView];
+
+    [self.view addSubview:assigneePanelView];
+
+    [assigneeMoreView release];
+    [assigneeMoreBtn release];
     [assigneeView release];
-    
-    priorityView = [[UIView alloc] initWithFrame:CGRectMake(0, 165, [Tools screenMaxWidth], 90)];
-    [self.view addSubview:priorityView];
-    
-    UILabel *priorityLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, [Tools screenMaxWidth], 20)];
-    priorityLabel.text = @"优先级";
-    [priorityView addSubview:priorityLabel];
-    [priorityLabel release];
-    
-    priorityControl = [[SEFilterControl alloc]initWithFrame:CGRectMake(10, 30, 300, 60)
-                                                     Titles:[NSArray arrayWithObjects:@"尽快完成", @"稍后完成", @"迟些再说", nil]];
-    [priorityControl setProgressColor:[UIColor lightGrayColor]];
-    [priorityControl setHandlerColor:[UIColor darkGrayColor]];
-    [priorityControl setTitlesColor:[UIColor blackColor]];
-    priorityControl.SelectedIndex = 1;
-    //[priorityControl setTitlesFont:[UIFont fontWithName:@"Didot" size:14]];
-    //[priorityControl addTarget:self action:@selector(filterValueChanged:) forControlEvents:UIControlEventValueChanged];
-    [priorityView addSubview:priorityControl];
-                       
-    dueTimeView = [[UIView alloc] initWithFrame:CGRectMake(0, 265, [Tools screenMaxWidth], 100)];
-    [self.view addSubview:dueTimeView];
-    
-    UILabel *dueTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, [Tools screenMaxWidth], 20)];
-    dueTimeLabel.text = @"期待完成时间";
-    [dueTimeView addSubview:dueTimeLabel];
-    [dueTimeLabel release];
-    
-    dueTimeTextField = [[DateTextField alloc] initWithFrame:CGRectMake(10, 30, [Tools screenMaxWidth] - 20, 35)];
-    dueTimeTextField.borderStyle = UITextBorderStyleRoundedRect;
-    dueTimeTextField.placeholder = @"期待完成时间";
-    [dueTimeView addSubview:dueTimeTextField];
+    [assigneeTitleLabel release];
+    [assigneePanelView release];
+
+    UIView *moreView = [[UIView alloc] initWithFrame:CGRectMake(10, 206, 300, 154)];
+    moreView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_duetime.png"]];
+
+    [self.view addSubview:moreView];
+
+    [moreView release];
+//    detailView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [Tools screenMaxWidth], 180) style:UITableViewStyleGrouped];
+//    detailView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    detailView.backgroundColor = [UIColor whiteColor];
+//    detailView.scrollEnabled = NO;
+//    detailView.dataSource = self;
+//    detailView.delegate = self;
+//    detailView.hidden = YES;
+//    [self.view addSubview:detailView];
+
+//    assigneeView = [[UIView alloc] initWithFrame:CGRectMake(0, 125, [Tools screenMaxWidth], 40)];
+//    assigneeView.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:assigneeView];
+//    assigneeTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 270, 30)];
+//    assigneeTextField.placeholder = @"指派人";
+//    assigneeTextField.borderStyle = UITextBorderStyleRoundedRect;
+//    UIImageView *chooseUserImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chooseuser.png"]];
+//    chooseUserImageView.frame = CGRectMake(0, 0, 16, 16);
+//    assigneeTextField.rightView = chooseUserImageView;
+//    assigneeTextField.rightViewMode = UITextFieldViewModeAlways; 
+//    chooseUserImageView.userInteractionEnabled = YES;
+//    [assigneeTextField addSubview:chooseUserImageView];
+//    [assigneeView addSubview:assigneeTextField];
+//    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
+//    [assigneeTextField addGestureRecognizer:recognizer];
+//    [recognizer release];
+//    
+//    UIImageView *moreImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"down.png"]];
+//    moreImageView.frame = CGRectMake(285, 10, 26, 26);
+//    moreImageView.userInteractionEnabled = YES;
+//    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(more:)];
+//    [moreImageView addGestureRecognizer:recognizer];
+//    [recognizer release];
+//    [assigneeView addSubview:moreImageView];
+//    assigneeView.hidden = YES;
+//    
+//    [moreImageView release];
+//    [chooseUserImageView release];
+//    [assigneeTextField release];
+//    [assigneeView release];
+
+//    priorityView = [[UIView alloc] initWithFrame:CGRectMake(0, 165, [Tools screenMaxWidth], 90)];
+//    [self.view addSubview:priorityView];
+//    
+//    UILabel *priorityLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, [Tools screenMaxWidth], 20)];
+//    priorityLabel.text = @"优先级";
+//    [priorityView addSubview:priorityLabel];
+//    [priorityLabel release];
+//    
+//    priorityControl = [[SEFilterControl alloc]initWithFrame:CGRectMake(10, 30, 300, 60)
+//                                                     Titles:[NSArray arrayWithObjects:@"尽快完成", @"稍后完成", @"迟些再说", nil]];
+//    [priorityControl setProgressColor:[UIColor lightGrayColor]];
+//    [priorityControl setHandlerColor:[UIColor darkGrayColor]];
+//    [priorityControl setTitlesColor:[UIColor blackColor]];
+//    priorityControl.selectedIndex = 0;
+//    //[priorityControl setTitlesFont:[UIFont fontWithName:@"Didot" size:14]];
+//    //[priorityControl addTarget:self action:@selector(filterValueChanged:) forControlEvents:UIControlEventValueChanged];
+//    [priorityView addSubview:priorityControl];
+//                       
+//    dueTimeView = [[UIView alloc] initWithFrame:CGRectMake(0, 265, [Tools screenMaxWidth], 100)];
+//    [self.view addSubview:dueTimeView];
+//    
+//    UILabel *dueTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, [Tools screenMaxWidth], 20)];
+//    dueTimeLabel.text = @"期待完成时间";
+//    [dueTimeView addSubview:dueTimeLabel];
+//    [dueTimeLabel release];
+//    
+//    dueTimeTextField = [[DateTextField alloc] initWithFrame:CGRectMake(10, 30, [Tools screenMaxWidth] - 20, 35)];
+//    dueTimeTextField.borderStyle = UITextBorderStyleRoundedRect;
+//    dueTimeTextField.placeholder = @"期待完成时间";
+//    [dueTimeView addSubview:dueTimeTextField];
 }
 
 - (void)goBack:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToViewController:prevViewController animated:YES];
+    //[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)newTask:(id)sender
 {
-    
+//    NSString *creatorWorkId = [taskDetailDict objectForKey:@"creatorWorkId"];
+//    NSString *subject = subjectTextView.text;
+//    NSString *dueTime = dueTimeTextField.text;
+//    NSString *assigneeWorkId = [taskDetailDict objectForKey:@"assigneeWorkId"];
+//    NSNumber *priority = [NSNumber numberWithInt: priorityControl.selectedIndex];
+//    NSString *attachmentIds = @"";
+//    if(createType == 1) {
+//         attachmentIds = [taskDetailDict objectForKey:@"attachmentId"];
+//        if (subject == nil && [subject isEqualToString:@""]) {
+//            subject = [NSString stringWithFormat:@"%@%@", @"语音任务", [Tools ShortNSDateToNSString:[NSDate date]]];
+//        }
+//    }
+//    else if(createType == 2) {
+//        attachmentIds = [taskDetailDict objectForKey:@"pictureId"];
+//        if (subject == nil && [subject isEqualToString:@""]) {
+//            subject = [NSString stringWithFormat:@"%@%@", @"图片任务", [Tools ShortNSDateToNSString:[NSDate date]]];
+//        }
+//    }
+//
+//    self.HUD = [Tools process:@"正在提交" view:self.view];
+//    NSMutableDictionary *context = [NSMutableDictionary dictionary];
+//    [context setObject:@"NewTask" forKey:REQUEST_TYPE];
+//    [enterpriseService newTask:creatorWorkId
+//                       subject:subject
+//                       dueTime:dueTime
+//                assigneeWorkId:assigneeWorkId
+//                      priority:priority
+//                 attachmentIds:attachmentIds
+//                       context:context
+//                      delegate:self];
 }
 
 - (void)chooseUser:(id)sender
@@ -276,70 +441,101 @@
 
 #pragma mark - TableView 事件源
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    if(tableView == detailView) return 1;
-    else if(tableView == assigneeView) return 1;
-    return 1;
-}
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if(tableView == detailView) return 1;
-    else if(tableView == assigneeView) return 1;
-    return 1;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 2.0f;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(tableView == detailView) {
-        if(indexPath.section == 0 && indexPath.row == 0) {
-            return 100.0f;
-        }
-    }
-    return 35.0f;
-}
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell;
-    if(tableView == detailView) {
-        if(indexPath.section == 0) {
-            if(indexPath.row == 0) {
-                cell = [tableView dequeueReusableCellWithIdentifier:@"InfoCell"];
-                if(!cell) {
-                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InfoCell"] autorelease];
-                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                }
-                NSString *attachmentId = [taskDetailDict objectForKey:@"attachmentId"];
-                if(attachmentId != nil) {
-                    NSString *attachmentFileName = [taskDetailDict objectForKey:@"attachmentFileName"];
-                    NSString *attachmentThumbUrl = [taskDetailDict objectForKey:@"attachmentThumbUrl"];
-                    //cell.textLabel.text = attachmentFileName;
-                    UIImageView *imageView = [[UIImageView alloc] init];
-                    imageView.frame = CGRectMake(10, 10, 80, 80);
-                    imageView.userInteractionEnabled = YES;
-                    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
-                    [imageView addGestureRecognizer:recognizer];
-                    [recognizer release];
-                    [imageView setImageWithURL:[NSURL URLWithString:attachmentThumbUrl]];
-                    [cell.contentView addSubview:imageView];
-                    [imageView release];
-                    
-                    subjectTextView = [[GCPlaceholderTextView alloc] init];
-                    subjectTextView.placeholder = @"补充点什么";
-                    subjectTextView.frame = CGRectMake(95, 10, cell.frame.size.width - 125, 80);
-                    [cell.contentView addSubview:subjectTextView];
-                    
-                    [subjectTextView becomeFirstResponder];
-                    
-                }
-            }
-        }
-    }
-    return cell;
-}
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//{
+//    if(tableView == detailView) return 1;
+////    else if(tableView == assigneeView) return 1;
+//    return 1;
+//}
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{
+//    if(tableView == detailView) return 1;
+////    else if(tableView == assigneeView) return 1;
+//    return 1;
+//}
+////- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+////{
+////    return 2.0f;
+////}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if(tableView == detailView) {
+//        if(indexPath.section == 0 && indexPath.row == 0) {
+//            return 100.0f;
+//        }
+//    }
+//    return 35.0f;
+//}
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    UITableViewCell *cell;
+//    if(tableView == detailView) {
+//        if(indexPath.section == 0) {
+//            if(indexPath.row == 0) {
+//                cell = [tableView dequeueReusableCellWithIdentifier:@"InfoCell"];
+//                if(!cell) {
+//                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InfoCell"] autorelease];
+//                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//                }
+//                if(createType == 0) {
+//                    subjectTextView = [[GCPlaceholderTextView alloc] init];
+//                    subjectTextView.placeholder = @"写点什么";
+//                    subjectTextView.frame = CGRectMake(10, 10, cell.frame.size.width - 40, 80);
+//                    [cell.contentView addSubview:subjectTextView];
+//
+//                    [subjectTextView becomeFirstResponder];
+//                }
+//                else if(createType == 1) {
+//                    NSString *attachmentId = [taskDetailDict objectForKey:@"attachmentId"];
+//                    if(attachmentId != nil) {
+//                        NSString *attachmentThumbUrl = [taskDetailDict objectForKey:@"attachmentThumbUrl"];
+//                        //cell.textLabel.text = attachmentFileName;
+//                        UIImageView *imageView = [[UIImageView alloc] init];
+//                        imageView.frame = CGRectMake(10, 10, 80, 80);
+//                        imageView.userInteractionEnabled = YES;
+//                        UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
+//                        [imageView addGestureRecognizer:recognizer];
+//                        [recognizer release];
+//                        [imageView setImageWithURL:[NSURL URLWithString:attachmentThumbUrl]];
+//                        [cell.contentView addSubview:imageView];
+//                        [imageView release];
+//
+//                        subjectTextView = [[GCPlaceholderTextView alloc] init];
+//                        subjectTextView.placeholder = @"补充点什么";
+//                        subjectTextView.frame = CGRectMake(95, 10, cell.frame.size.width - 125, 80);
+//                        [cell.contentView addSubview:subjectTextView];
+//
+//                        [subjectTextView becomeFirstResponder];
+//                    }
+//                }
+//                else if(createType == 2) {
+//                    NSString *pictureId = [taskDetailDict objectForKey:@"pictureId"];
+//                    if(pictureId != nil) {
+//                        NSString *pictureThumbUrl = [taskDetailDict objectForKey:@"pictureThumbUrl"];
+//                        //cell.textLabel.text = attachmentFileName;
+//                        UIImageView *imageView = [[UIImageView alloc] init];
+//                        imageView.frame = CGRectMake(10, 10, 80, 80);
+//                        imageView.userInteractionEnabled = YES;
+//                        UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
+//                        [imageView addGestureRecognizer:recognizer];
+//                        [recognizer release];
+//                        [imageView setImageWithURL:[NSURL URLWithString:pictureThumbUrl]];
+//                        [cell.contentView addSubview:imageView];
+//                        [imageView release];
+//
+//                        subjectTextView = [[GCPlaceholderTextView alloc] init];
+//                        subjectTextView.placeholder = @"补充点什么";
+//                        subjectTextView.frame = CGRectMake(95, 10, cell.frame.size.width - 125, 80);
+//                        [cell.contentView addSubview:subjectTextView];
+//
+//                        [subjectTextView becomeFirstResponder];
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    return cell;
+//}
 
 ////填充单元格
 //- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -785,7 +981,7 @@
     {
         if(request.responseStatusCode == 200)
         {
-            self.title = @"创建任务";
+            textTitleLabel.text = @"创建任务";
             
             NSDictionary *dict = [[request responseString] JSONValue];
             if(dict)
@@ -804,9 +1000,19 @@
                     [taskDetailDict setObject:attachmentUrl forKey:@"attachmentUrl"];
                     [taskDetailDict setObject:attachmentThumbUrl forKey:@"attachmentThumbUrl"];
                 
-                    [detailView reloadData];
+//                    [detailView reloadData];
                 }
             }
+        }
+        else
+        {
+            [Tools failed:self.HUD];
+        }
+    }
+    else if([requestType isEqualToString:@"NewTask"]) {
+        [Tools close:self.HUD];
+        if(request.responseStatusCode == 200) {
+            [self goBack:nil];
         }
         else
         {

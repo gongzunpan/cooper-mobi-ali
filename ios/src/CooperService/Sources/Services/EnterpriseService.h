@@ -57,6 +57,15 @@
           priority:(NSNumber*)priority
            context:(NSMutableDictionary*)context
           delegate:(id)delegate;
+//创建任务
+- (void)newTask:(NSString*)creatorWorkId
+        subject:(NSString*)subject
+        dueTime:(NSString*)dueTime
+ assigneeWorkId:(NSString*)assigneeWorkId
+       priority:(NSNumber*)priority
+  attachmentIds:(NSString*)attachmentIds
+        context:(NSMutableDictionary*)context
+       delegate:(id)delegate;
 //创建附件
 - (void)createTaskAttach:(NSData*)attachmentData
                 fileName:(NSString*)fileName

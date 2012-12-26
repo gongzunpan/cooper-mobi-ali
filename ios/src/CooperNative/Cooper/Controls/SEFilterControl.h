@@ -25,5 +25,5 @@
 -(void) setHandlerColor:(UIColor *)color;
 
 @property(nonatomic, retain) UIColor *progressColor;
-@property(nonatomic, readonly) int SelectedIndex;
+@property(nonatomic, readonly) int selectedIndex;
 @end

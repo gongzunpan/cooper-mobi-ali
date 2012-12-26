@@ -76,6 +76,18 @@
     return [NSString stringWithFormat:@"%d", value];
 }
 
++ (NSString*) NSDateToNSFileString:(NSDate*)input
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
+
+    NSString *date = [dateFormatter stringFromDate:input];
+
+    [dateFormatter release];
+
+    return date;
+}
+
 + (void)alert:(NSString *)title 
 {
     [[[[UIAlertView alloc] initWithTitle:title

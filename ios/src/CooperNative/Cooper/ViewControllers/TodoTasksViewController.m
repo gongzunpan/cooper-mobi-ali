@@ -50,6 +50,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.navigationController.navigationBarHidden = NO;
+    
     [self loadTaskData];
     [self getTodoTasks];
 }
@@ -63,10 +65,10 @@
     textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
     textTitleLabel.backgroundColor = [UIColor clearColor];
     textTitleLabel.textAlignment = UITextAlignmentCenter;
-    textTitleLabel.textColor = [UIColor colorWithRed:49.0/255 green:156.0/255 blue:222.0/255 alpha:1];
+    textTitleLabel.textColor = APP_TITLECOLOR;
     textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    
     self.navigationItem.titleView = textTitleLabel;
+    
     textTitleLabel.text = @"Loading...";
     NSString *workId = [[ConstantClass instance] workId];
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
@@ -212,11 +214,9 @@
     tabbarView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tabbar_background.png"]];
     [self.view addSubview:tabbarView];
     //底部添加音频按钮
-    UIView *audioView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
-  
-    UIImageView *audioImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 12, 19)];
-    UIImage *audioImage = [UIImage imageNamed:@"audio.png"];
-    audioImageView.image = audioImage;
+    UIView *audioView = [[UIView alloc] initWithFrame:CGRectMake(39, 0, 38, 49)];
+    UIButton *audioImageView = [[UIButton alloc] initWithFrame:CGRectMake(0, 15, 12, 19)];
+    [audioImageView setBackgroundImage:[UIImage imageNamed:@"audio.png"] forState:UIControlStateNormal];
     [audioView addSubview:audioImageView];
     audioView.userInteractionEnabled = YES;
     UITapGestureRecognizer *audioRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAudio:)];
@@ -226,10 +226,11 @@
     [audioImageView release];
     [audioView release];
     //底部添加文本按钮
-    UIView *addView = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] / 2.0 - 23, 0, 38, 45)];
-    UIImageView *addImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 15, 19, 19)];
-    UIImage *addImage = [UIImage imageNamed:@"text.png"];
-    addImageView.image = addImage;
+    UIView *addView = [[UIView alloc] initWithFrame:CGRectMake(145, 0, 38, 49)];
+    UIButton *addImageView = [[UIButton alloc] init];
+    addImageView.frame = CGRectMake(0, 15, 19, 19);
+    [addImageView setBackgroundImage:[UIImage imageNamed:@"text.png"] forState:UIControlStateNormal];
+    //[addImageView setBackgroundImage:[UIImage imageNamed:@"text_selected.png"] forState:UIControlStateSelected];
     [addView addSubview:addImageView];
     addView.userInteractionEnabled = YES;
     UITapGestureRecognizer *addRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAdd:)];
@@ -239,10 +240,9 @@
     [addImageView release];
     [addView release];
     //添加拍照按钮
-    UIView *photoView = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 10 - 42, 0, 38, 45)];
-    UIImageView *photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 15, 19, 17)];
-    UIImage *photoImage = [UIImage imageNamed:@"photo.png"];
-    photoImageView.image = photoImage;
+    UIView *photoView = [[UIView alloc] initWithFrame:CGRectMake(251, 0, 38, 45)];
+    UIButton *photoImageView = [[UIButton alloc] initWithFrame:CGRectMake(0, 15, 19, 17)];
+    [photoImageView setBackgroundImage:[UIImage imageNamed:@"photo.png"] forState:UIControlStateNormal];
     [photoView addSubview:photoImageView];
     photoView.userInteractionEnabled = YES;
     UITapGestureRecognizer *photoRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
@@ -378,19 +378,21 @@
                 
                 if(state == [NSNumber numberWithInt:0]) {
                     NSMutableDictionary *data = [dict objectForKey:@"data"];
-                    NSString *attachmentId = [data objectForKey:@"attachmentId"];
-                    NSString *attachmentFileName = [data objectForKey:@"fileName"];
-                    NSString *attachmentUrl = [data objectForKey:@"url"];
-                    NSString *attachmentThumbUrl = [data objectForKey:@"thumbUrl"];
+                    NSString *pictureId = [data objectForKey:@"attachmentId"];
+                    NSString *pictureFileName = [data objectForKey:@"fileName"];
+                    NSString *pictureUrl = [data objectForKey:@"url"];
+                    NSString *pictureThumbUrl = [data objectForKey:@"thumbUrl"];
                     NSMutableDictionary *taskDetailDict = [NSMutableDictionary dictionary];
-                    [taskDetailDict setObject:attachmentId forKey:@"attachmentId"];
-                    [taskDetailDict setObject:attachmentFileName forKey:@"attachmentFileName"];
-                    [taskDetailDict setObject:attachmentUrl forKey:@"attachmentUrl"];
-                    [taskDetailDict setObject:attachmentThumbUrl forKey:@"attachmentThumbUrl"];
+                    [taskDetailDict setObject:pictureId forKey:@"pictureId"];
+                    [taskDetailDict setObject:pictureFileName forKey:@"pictureFileName"];
+                    [taskDetailDict setObject:pictureUrl forKey:@"pictureUrl"];
+                    [taskDetailDict setObject:pictureThumbUrl forKey:@"pictureThumbUrl"];
                     
                     EnterpriseTaskDetailCreateViewController *taskDetailCreateViewController = [[EnterpriseTaskDetailCreateViewController alloc] init];
                     
                     taskDetailCreateViewController.taskDetailDict = taskDetailDict;
+                    taskDetailCreateViewController.prevViewController = self;
+                    taskDetailCreateViewController.createType = 2;
                     
                     [Tools layerTransition:self.navigationController.view from:@"right"];
                     [self.navigationController pushViewController:taskDetailCreateViewController animated:NO];
@@ -427,6 +429,19 @@
                         destructiveButtonTitle:nil
                         otherButtonTitles: @"开始录音",nil];
     [audioActionSheet showInView:self.view];
+}
+
+- (void)startAdd:(id)sender
+{
+    EnterpriseTaskDetailCreateViewController *taskDetailCreateViewController = [[EnterpriseTaskDetailCreateViewController alloc] init];
+
+    taskDetailCreateViewController.prevViewController = self;
+    taskDetailCreateViewController.createType = 0;
+
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:taskDetailCreateViewController animated:NO];
+
+    [taskDetailCreateViewController release];
 }
 
 - (void)startPhoto:(id)sender
@@ -503,7 +518,10 @@
 - (void)takeAudio
 {
     AudioViewController *audioViewController = [[AudioViewController alloc] init];
-    [self presentModalViewController:audioViewController animated:YES];
+    audioViewController.prevViewController = self;
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:audioViewController animated:NO];
+
     [audioViewController release];
 }
 
@@ -524,12 +542,12 @@
         if (UIImagePNGRepresentation(image)) {
             //返回为png图像
             data = UIImagePNGRepresentation(image);
-            fileName = [NSString stringWithFormat:@"%@.%@", [Tools stringWithUUID], @"png"];
+            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"png"];
         }
         else {
             //返回为JPEG图像
             data = UIImageJPEGRepresentation(image, 1.0);
-            fileName = [NSString stringWithFormat:@"%@.%@", [Tools stringWithUUID], @"jpg"];
+            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"jpg"];
         }
         //保存到阿里云盘
         self.title = @"图片上传中...";

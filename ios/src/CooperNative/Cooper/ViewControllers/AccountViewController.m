@@ -30,9 +30,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.title = NSLocalizedString(@"帐号设置", @"帐号设置");
-        
+    if (self) {   
     }
     return self;
 }
@@ -63,7 +61,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"viewDidLoad");
+
+    UILabel *textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    textTitleLabel.backgroundColor = [UIColor clearColor];
+    textTitleLabel.textAlignment = UITextAlignmentCenter;
+    textTitleLabel.textColor = APP_TITLECOLOR;
+    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    textTitleLabel.text = @"账号设置";
+    self.navigationItem.titleView = textTitleLabel;
+    [textTitleLabel release];
     
     taskDao = [[TaskDao alloc] init];
     taskIdxDao = [[TaskIdxDao alloc] init];
@@ -72,8 +78,8 @@
     
     //后退按钮
     btnBack = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnBack setFrame:CGRectMake(5, 5, 25, 25)];
-    [btnBack setBackgroundImage:[UIImage imageNamed:BACK_IMAGE] forState:UIControlStateNormal];
+    [btnBack setFrame:CGRectMake(5, 5, 15, 10)];
+    [btnBack setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [btnBack addTarget: self action: @selector(goBack:) forControlEvents: UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     self.navigationItem.leftBarButtonItem = backButtonItem;

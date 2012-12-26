@@ -20,6 +20,8 @@
 
 + (NSDate*) NSStringToNSDate:(NSString*)input;
 
++ (NSString*) NSDateToNSFileString:(NSDate*)input;
+
 + (NSDate*) NSStringToShortNSDate:(NSString*)input;
 
 + (NSString*) BOOLToNSString:(BOOL)value;

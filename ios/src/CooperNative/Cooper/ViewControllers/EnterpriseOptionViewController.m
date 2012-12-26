@@ -59,10 +59,11 @@
 
 - (void)initContentView
 {
+    self.navigationController.navigationBarHidden = YES;
     //任务列表View
     optionView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     optionView.backgroundColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
-    optionView.separatorColor = [UIColor colorWithRed:89.0/255 green:76.0/255 blue:70.0/255 alpha:1];
+    optionView.separatorColor = [UIColor colorWithRed:90.0/255 green:77.0/255 blue:69.0/255 alpha:1];
     optionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     optionView.dataSource = self;
     optionView.delegate = self;
@@ -78,7 +79,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -91,11 +92,11 @@
          //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
          cell.textLabel.textColor = [UIColor colorWithRed:152.0/255 green:145.0/255 blue:137.0/255 alpha:1];
          UIView *selectedView = [[UIView alloc] initWithFrame:cell.frame];
-         selectedView.backgroundColor = [UIColor colorWithRed:105.0/255.0f green:105.0/255.0f blue:105.0/255.0f alpha:1.0];
+         selectedView.backgroundColor = [UIColor colorWithRed:90.0/255.0f green:77.0/255.0f blue:69.0/255.0f alpha:1.0];
          cell.selectedBackgroundView = selectedView;
          
          UIImageView *arrowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow.png"]];
-         arrowView.frame = CGRectMake(240, 15, 11, 17);
+         arrowView.frame = CGRectMake(253, 15, 11, 17);
          [cell.contentView addSubview:arrowView];
          [arrowView release];
          [selectedView release];

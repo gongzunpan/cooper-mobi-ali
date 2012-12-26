@@ -21,8 +21,19 @@
     AVAudioRecorder *recorder;
     AVAudioPlayer *player;
     AVAudioPlayer *mp3Player;
-    
+
+    UIView *recordingView;
+    UIView *playingView;
+
     UILabel *durationLabel;
-    UILabel *fileSizeLabel;
+
+    UIView *stopView;
+    UIView *submitView;
+    UIProgressView *playProgressView;
+    
+    //UILabel *fileSizeLabel;
 }
+
+@property (retain, nonatomic) UIViewController *prevViewController;
+
 @end

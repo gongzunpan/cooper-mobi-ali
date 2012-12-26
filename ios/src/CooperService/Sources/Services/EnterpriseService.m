@@ -153,6 +153,30 @@
     [request postAsync:url params:params headers:nil context:context delegate:delegate];
     [request release];
 }
+- (void)newTask:(NSString*)creatorWorkId
+        subject:(NSString*)subject
+        dueTime:(NSString*)dueTime
+ assigneeWorkId:(NSString*)assigneeWorkId
+       priority:(NSNumber*)priority
+  attachmentIds:(NSString*)attachmentIds
+        context:(NSMutableDictionary*)context
+       delegate:(id)delegate
+{
+    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_NEWTASK_URL];
+    NSLog(@"【NewTask服务接口路径】%@", url);
+
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:creatorWorkId forKey:@"creatorWorkId"];
+    [params setObject:subject forKey:@"subject"];
+    [params setObject:dueTime forKey:@"dueTime"];
+    [params setObject:assigneeWorkId forKey:@"assigneeWorkId"];
+    [params setObject:priority forKey:@"priority"];
+    [params setObject:attachmentIds forKey:@"attachmentIds"];
+
+    HttpWebRequest *request = [[HttpWebRequest alloc] init];
+    [request postAsync:url params:params headers:nil context:context delegate:delegate];
+    [request release];
+}
 - (void)createTaskAttach:(NSData*)attachmentData
                 fileName:(NSString*)fileName
                     type:(NSString*)type

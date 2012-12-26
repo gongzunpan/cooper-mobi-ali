@@ -80,20 +80,20 @@
 - (void)initContentView
 {
     subjectLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    subjectLabel.textColor = [UIColor colorWithRed:107.0/255 green:107.0/255 blue:107.0/255 alpha:1];
+    subjectLabel.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:1];
     subjectLabel.backgroundColor = [UIColor clearColor];
     [subjectLabel setLineBreakMode:UILineBreakModeWordWrap];
     [subjectLabel setFont:[UIFont boldSystemFontOfSize:16]];
     
     dueTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    dueTimeLabel.textColor = [UIColor colorWithRed:189.0/255 green:189.0/255 blue:189.0/255 alpha:1];
+    dueTimeLabel.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
     [dueTimeLabel setLineBreakMode:UILineBreakModeWordWrap];
     [dueTimeLabel setFont:[UIFont systemFontOfSize:14]];
     dueTimeLabel.textColor = [UIColor grayColor];
     dueTimeLabel.backgroundColor = [UIColor clearColor];
     
     creatorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    creatorLabel.textColor = [UIColor colorWithRed:189.0/255 green:189.0/255 blue:189.0/255 alpha:1];
+    creatorLabel.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
     [creatorLabel setLineBreakMode:UILineBreakModeWordWrap];
     creatorLabel.font = [UIFont systemFontOfSize:12];
     creatorLabel.textColor = [UIColor grayColor];
@@ -106,6 +106,13 @@
     UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setCompletedAction:)];
     tapped.numberOfTapsRequired = 1;
     [self.imageView addGestureRecognizer:tapped];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+  
+    CGRect frame = self.imageView.frame;
+    self.imageView.frame = CGRectMake(16, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (void) setTaskInfo:(NSMutableDictionary*)taskInfo
@@ -141,15 +148,10 @@
             self.imageView.image = [UIImage imageNamed:@"notcompleted.png"];
         }
     }
-
     NSNumber *attachmentCount = [taskInfoDict objectForKey:@"attachmentCount"];
     NSNumber *picCount = [taskInfoDict objectForKey:@"picCount"];
     CGFloat textWidth = self.bounds.size.width - 120;
     CGFloat textLeft = 60;
-    if([attachmentCount intValue] + [picCount intValue] > 0) {
-        textWidth -= 25;
-        textLeft += 25;
-    }
 
     CGFloat totalHeight = 0;
     
@@ -159,10 +161,10 @@
                                             constrainedToSize:CGSizeMake(textWidth, MAX_HEIGHT)
                                                 lineBreakMode:UILineBreakModeWordWrap];
     CGFloat subjectLabelHeight = subjectLabelSize.height;
-    int subjectlines = subjectLabelHeight / 16;
-    subjectLabel.frame = CGRectMake(textLeft, PADDING, textWidth, subjectLabelHeight);
+    int subjectlines = 1;
+    subjectLabel.frame = CGRectMake(textLeft, PADDING, textWidth, subjectlines * 14);
     subjectLabel.numberOfLines = subjectlines;
-    totalHeight += subjectLabelHeight + PADDING;
+    totalHeight += subjectlines * 14 + PADDING;
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"M-dd"];
@@ -204,8 +206,8 @@
         }
     }
 
-    if(totalHeight < 50)
-        totalHeight = 50;
+    if(totalHeight < 46)
+        totalHeight = 46;
 
     totalHeight += PADDING;
     

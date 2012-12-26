@@ -41,8 +41,17 @@
     self.tabBarController.navigationItem.leftBarButtonItem = nil;
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
     
-    [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]];
-    self.tabBarController.title = @"系统设置";
+//    [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]];
+//    self.tabBarController.title = @"系统设置";
+
+    UILabel *textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    textTitleLabel.backgroundColor = [UIColor clearColor];
+    textTitleLabel.textAlignment = UITextAlignmentCenter;
+    textTitleLabel.textColor = APP_TITLECOLOR;
+    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    textTitleLabel.text = @"系统设置";
+    self.navigationItem.titleView = textTitleLabel;
+    [textTitleLabel release];
 }
 
 - (void)viewDidLoad

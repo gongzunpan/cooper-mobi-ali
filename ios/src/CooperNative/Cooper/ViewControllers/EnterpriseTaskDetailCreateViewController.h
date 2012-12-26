@@ -22,23 +22,27 @@
 
 @interface EnterpriseTaskDetailCreateViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DateTextFieldDelegate>
 {
-    UITableView *detailView;
-    
+//    UITableView *detailView;
+
     GCPlaceholderTextView *subjectTextView;
     
-    UIView *assigneeView;
-    UITextField *assigneeTextField;
-    
-    UIView *priorityView;
-    SEFilterControl *priorityControl;
-    
-    UIView *dueTimeView;
-    UITextField *dueTimeTextField;
+//    UIView *assigneeView;
+//    UITextField *assigneeTextField;
+
+//    UIView *priorityView;
+//    SEFilterControl *priorityControl;
+
+//    UIView *dueTimeView;
+//    UITextField *dueTimeTextField;
+
+    UILabel *textTitleLabel;
     
     EnterpriseService *enterpriseService;
 }
 
 @property (retain, nonatomic) NSMutableDictionary *taskDetailDict;
+@property (retain, nonatomic) UIViewController *prevViewController;
+@property (assign, nonatomic) int createType;
 
 @end
 

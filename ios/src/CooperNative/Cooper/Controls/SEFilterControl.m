@@ -31,7 +31,7 @@
 @end
 
 @implementation SEFilterControl
-@synthesize SelectedIndex, progressColor;
+@synthesize selectedIndex, progressColor;
 
 -(CGPoint)getCenterPointForIndex:(int) i{
     return CGPointMake((i/(float)(titlesArr.count-1)) * (self.frame.size.width-RIGHT_OFFSET-LEFT_OFFSET) + LEFT_OFFSET, i==0?self.frame.size.height-55-TITLE_SELECTED_DISTANCE:self.frame.size.height-55);
@@ -246,7 +246,7 @@
 }
 
 -(void) setSelectedIndex:(int)index{
-    SelectedIndex = index;
+    selectedIndex = index;
     [self animateTitlesToIndex:index];
     [self animateHandlerToIndex:index];
     [self sendActionsForControlEvents:UIControlEventValueChanged];
@@ -257,8 +257,8 @@
 }
 
 -(void) ItemSelected: (UITapGestureRecognizer *) tap {
-    SelectedIndex = [self getSelectedTitleInPoint:[tap locationInView:self]];
-    [self setSelectedIndex:SelectedIndex];
+    selectedIndex = [self getSelectedTitleInPoint:[tap locationInView:self]];
+    [self setSelectedIndex:selectedIndex];
     
     [self sendActionsForControlEvents:UIControlEventTouchUpInside];
     [self sendActionsForControlEvents:UIControlEventValueChanged];
@@ -266,8 +266,8 @@
 
 -(void) TouchUp: (UIButton*) btn{
     
-    SelectedIndex = [self getSelectedTitleInPoint:btn.center];
-    [self animateHandlerToIndex:SelectedIndex];
+    selectedIndex = [self getSelectedTitleInPoint:btn.center];
+    [self animateHandlerToIndex:selectedIndex];
     [self sendActionsForControlEvents:UIControlEventTouchUpInside];
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }

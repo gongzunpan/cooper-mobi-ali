@@ -53,15 +53,16 @@ typedef Constant ConstantClass;
 
 ////////////////////////////////////////////////////////////////
 //企业任务相关API接口
-#define ENTERPRISE_GETRELEVANTTASKS_URL      @"/EnterpriseTask/GetRelevantTasks"
-#define ENTERPRISE_CHANGETASKCOMPLETED_URL  @"/EnterpriseTask/ChangeTaskCompleted"
+#define ENTERPRISE_GETRELEVANTTASKS_URL         @"/EnterpriseTask/GetRelevantTasks"
+#define ENTERPRISE_CHANGETASKCOMPLETED_URL      @"/EnterpriseTask/ChangeTaskCompleted"
 #define ENTERPRISE_CHANGETASKDUETIME_URL        @"/EnterpriseTask/ChangeTaskDueTime"
 #define ENTERPRISE_CHANGETASKPRIORITY_URL       @"/EnterpriseTask/ChangeTaskPriority"
-#define ENTERPRISE_UPDATETASK_URL           @"/EnterpriseTask/UpdateTask"
-#define ENTERPRISE_CREATETASK_URL           @"/EnterpriseTask/CreateTask"
-#define ENTERPRISE_CREATETASKATTACH_URL     @"/EnterpriseTask/CreateTaskAttach"
-#define ENTERPRISE_TASKDETAIL_URL             @"/EnterpriseTask/TaskDetail"
-#define ENTERPRISE_GETTODOTASKS_URL         @"/EnterpriseTask/GetTodoTasks"
+#define ENTERPRISE_UPDATETASK_URL               @"/EnterpriseTask/UpdateTask"
+#define ENTERPRISE_CREATETASK_URL               @"/EnterpriseTask/CreateTask"
+#define ENTERPRISE_NEWTASK_URL                  @"/EnterpriseTask/NewTask"
+#define ENTERPRISE_CREATETASKATTACH_URL         @"/EnterpriseTask/CreateTaskAttach"
+#define ENTERPRISE_TASKDETAIL_URL               @"/EnterpriseTask/TaskDetail"
+#define ENTERPRISE_GETTODOTASKS_URL             @"/EnterpriseTask/GetTodoTasks"
 ////////////////////////////////////////////////////////////////
 
 #define REQUEST_TYPE                    @"RequestType"
