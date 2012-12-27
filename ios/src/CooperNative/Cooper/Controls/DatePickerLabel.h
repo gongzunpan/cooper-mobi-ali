@@ -6,14 +6,14 @@
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
-@class DateTextField;
+@class DatePickerLabel;
 
-@protocol DateTextFieldDelegate <NSObject>
+@protocol DatePickerLabelDelegate <NSObject>
 @optional
-- (void)tableViewCell:(DateTextField *)textField didEndEditingWithDate:(NSDate *)value;
+- (void)tableViewCell:(DatePickerLabel *)label didEndEditingWithDate:(NSDate *)value;
 @end
 
-@interface DateTextField : UITextField<UIPopoverControllerDelegate>
+@interface DatePickerLabel : UILabel<UIPopoverControllerDelegate>
 {
     UIPopoverController *popoverController;
 	UIToolbar *inputAccessoryView;
@@ -24,7 +24,7 @@
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) UIDatePicker *datePicker;
 
-@property (strong) IBOutlet id<DateTextFieldDelegate> delegate;
+@property (strong) IBOutlet id<DatePickerLabelDelegate> delegate;
 
 - (void)setMaxDate:(NSDate *)max;
 - (void)setMinDate:(NSDate *)min;

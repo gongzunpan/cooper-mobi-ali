@@ -6,9 +6,9 @@
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
-#import "DateTextField.h"
+#import "DatePickerLabel.h"
 
-@implementation DateTextField
+@implementation DatePickerLabel
 @synthesize delegate;
 @synthesize dateValue;
 @synthesize dateFormatter;

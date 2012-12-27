@@ -18,6 +18,7 @@
 
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:workId forKey:@"workId"];
+    [params setObject:[NSNumber numberWithInt:1] forKey:@"includeCompleted"];
 
     HttpWebRequest *request = [[HttpWebRequest alloc] init];
     [request postAsync:url params:params headers:nil context:context delegate:delegate];
@@ -46,6 +47,8 @@
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:taskId forKey:@"id"];
+    [params setObject:[NSNumber numberWithInt:1] forKey:@"loadAttachment"];
+    [params setObject:[NSNumber numberWithInt:1] forKey:@"loadFeedback"];
     
     HttpWebRequest *request = [[HttpWebRequest alloc] init];
     [request postAsync:url params:params headers:nil context:context delegate:delegate];
@@ -103,10 +106,11 @@
            subject:(NSString*)subject
               body:(NSString*)body
            dueTime:(NSString*)dueTime
-    assigneeUserId:(NSString*)assigneeUserId
+    assigneeWorkId:(NSString*)assigneeWorkId
    relatedUserJson:(NSString*)relatedUserJson
           priority:(NSNumber*)priority
        isCompleted:(NSNumber*)isCompleted
+     attachmentIds:(NSString*)attachmentIds
            context:(NSMutableDictionary*)context
           delegate:(id)delegate
 {
@@ -118,10 +122,11 @@
     [params setObject:subject forKey:@"subject"];
     [params setObject:body forKey:@"body"];
     [params setObject:dueTime forKey:@"dueTime"];
-    [params setObject:assigneeUserId forKey:@"assigneeUserId"];
+    [params setObject:assigneeWorkId forKey:@"assigneeWorkId"];
     [params setObject:relatedUserJson forKey:@"relatedUserJson"];
     [params setObject:priority forKey:@"priority"];
     [params setObject:isCompleted forKey:@"isCompleted"];
+    [params setObject:attachmentIds forKey:@"attachmentIds"];
     
     HttpWebRequest *request = [[HttpWebRequest alloc] init];
     [request postAsync:url params:params headers:nil context:context delegate:delegate];
@@ -192,6 +197,22 @@
     
     HttpWebRequest *request = [[HttpWebRequest alloc] init];
     [request postAsync:url params:params fileData:attachmentData fileKey:@"attachment" headers:nil context:context delegate:delegate];
+    [request release];
+}
+- (void)findUsers:(NSString*)workId
+              key:(NSString*)key
+          context:(NSMutableDictionary*)context
+         delegate:(id)delegate
+{
+    NSString *url = [[[ConstantClass instance] rootPath] stringByAppendingFormat:ENTERPRISE_FINDUSERS_URL];
+    NSLog(@"【FindUsers服务接口路径】%@", url);
+
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:workId forKey:@"workId"];
+    [params setObject:key forKey:@"key"];
+
+    HttpWebRequest *request = [[HttpWebRequest alloc] init];
+    [request postAsync:url params:params headers:nil context:context delegate:delegate];
     [request release];
 }
 

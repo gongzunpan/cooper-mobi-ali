@@ -7,7 +7,7 @@
 //
 
 #import "EnterpriseTaskDetailCreateViewController.h"
-#import "CustomButton.h"
+#import "SearchUserViewController.h"
 
 @implementation EnterpriseTaskDetailCreateViewController
 
@@ -111,7 +111,7 @@
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewClick:)];
     [self.view addGestureRecognizer:recognizer];
     [recognizer release];
-    
+
     textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
     textTitleLabel.backgroundColor = [UIColor clearColor];
     textTitleLabel.textAlignment = UITextAlignmentCenter;
@@ -141,7 +141,7 @@
     UIButton *saveTaskBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveTaskBtn setTitleColor:APP_TITLECOLOR forState:UIControlStateNormal];
     saveTaskBtn.frame = CGRectMake(1, 6, 54, 30);
-//    [saveTaskBtn addTarget:self action:@selector(newTask:) forControlEvents:UIControlEventTouchUpInside];
+    [saveTaskBtn addTarget:self action:@selector(newTask:) forControlEvents:UIControlEventTouchUpInside];
     saveTaskBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     [saveTaskBtn setTitle:@"确认" forState:UIControlStateNormal];
     [rightView addSubview:saveTaskBtn];
@@ -159,6 +159,7 @@
         subjectTextView = [[GCPlaceholderTextView alloc] init];
         subjectTextView.frame = CGRectMake(10, 10, 279, 85);
         subjectTextView.font = [UIFont systemFontOfSize:16.0f];
+        subjectTextView.placeholder = @"写点什么";
         subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
         subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
         subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -178,6 +179,7 @@
             subjectTextView = [[GCPlaceholderTextView alloc] init];
             subjectTextView.frame = CGRectMake(105, 10, 185, 85);
             subjectTextView.font = [UIFont systemFontOfSize:16.0f];
+            subjectTextView.placeholder = @"写点什么";
             subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
             subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
             subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -192,19 +194,19 @@
         if(pictureId != nil) {
             NSString *pictureThumbUrl = [taskDetailDict objectForKey:@"pictureThumbUrl"];
             //cell.textLabel.text = attachmentFileName;
-            UIImageView *imageView = [[UIImageView alloc] init];
-            imageView.frame = CGRectMake(10, 10, 85, 85);
-            imageView.userInteractionEnabled = YES;
+            pictureImageView = [[[UIImageView alloc] init] autorelease];
+            pictureImageView.frame = CGRectMake(10, 10, 85, 85);
+            pictureImageView.userInteractionEnabled = YES;
             UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
-            [imageView addGestureRecognizer:recognizer];
+            [pictureImageView addGestureRecognizer:recognizer];
             [recognizer release];
-            [imageView setImageWithURL:[NSURL URLWithString:pictureThumbUrl]];
-            [detailInfoView addSubview:imageView];
-            [imageView release];
+            [pictureImageView setImageWithURL:[NSURL URLWithString:pictureThumbUrl]];
+            [detailInfoView addSubview:pictureImageView];
 
             subjectTextView = [[GCPlaceholderTextView alloc] init];
             subjectTextView.frame = CGRectMake(105, 10, 185, 85);
             subjectTextView.font = [UIFont systemFontOfSize:16.0f];
+            subjectTextView.placeholder = @"写点什么";
             subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
             subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
             subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -227,10 +229,29 @@
     UIView *assigneeView = [[UIView alloc] initWithFrame:CGRectMake(0, 26, 270, 44)];
     assigneeView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_assignee.png"]];
 
-    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(242, 12, 18, 18)];
-    [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
+    assigneeBtn = [[CustomButton alloc] initWithFrame:CGRectZero];
+    //assigneeBtn.layer.cornerRadius = 6.0f;
+    assigneeBtn.backgroundColor = [UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1];
+    assigneeBtn.userInteractionEnabled = NO;
+    assigneeBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    [assigneeBtn setTitleColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] forState:UIControlStateNormal];
+//    [assigneeBtn setTitle:@"萧玄" forState:UIControlStateNormal];
+//    CGSize size = CGSizeMake([Tools screenMaxWidth], 10000);
+//    CGSize labelsize = [assigneeBtn.titleLabel.text sizeWithFont:assigneeBtn.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
+//    CGFloat labelsizeHeight = labelsize.height + 10;
+//    assigneeBtn.frame = CGRectMake(10, 8, labelsize.width + 40, labelsizeHeight);
 
-    [assigneeView addSubview:assigneeChooseBtn];
+    [assigneeView addSubview:assigneeBtn];
+
+    UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(242, 12, 18, 18)] autorelease];
+    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
+    [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
+    UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
+    [assigenChooseView addGestureRecognizer:chooseRecognizer];
+    [chooseRecognizer release];
+
+    [assigenChooseView addSubview:assigneeChooseBtn];
+    [assigneeView addSubview:assigenChooseView];
 
     [assigneePanelView addSubview:assigneeView];
 
@@ -265,86 +286,45 @@
     dueTimeTitleLabel.textColor = [UIColor colorWithRed:158.0/255 green:154.0/255 blue:150.0/255 alpha:1];
     dueTimeTitleLabel.text = @"期望完成时间";
     [moreView addSubview:dueTimeTitleLabel];
+
+    dueTimeLabel = [[DatePickerLabel alloc] initWithFrame:CGRectMake(200, 105, 120, 24)];
+    dueTimeLabel.backgroundColor = [UIColor clearColor];
+    dueTimeLabel.textColor = [UIColor colorWithRed:158.0/255 green:154.0/255 blue:150.0/255 alpha:1];
+    //dueTimeLabel.text = @"2012-12-21";
+    dueTimeLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *dueTimeRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectDueTime:)];
+    [dueTimeLabel addGestureRecognizer:dueTimeRecognizer];
+    dueTimeLabel.delegate = self;
+    [dueTimeRecognizer release];
+    [moreView addSubview:dueTimeLabel];
     
     [self.view addSubview:moreView];
     [moreView release];
-    
-    
-//    detailView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [Tools screenMaxWidth], 180) style:UITableViewStyleGrouped];
-//    detailView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//    detailView.backgroundColor = [UIColor whiteColor];
-//    detailView.scrollEnabled = NO;
-//    detailView.dataSource = self;
-//    detailView.delegate = self;
-//    detailView.hidden = YES;
-//    [self.view addSubview:detailView];
+}
 
-//    assigneeView = [[UIView alloc] initWithFrame:CGRectMake(0, 125, [Tools screenMaxWidth], 40)];
-//    assigneeView.backgroundColor = [UIColor whiteColor];
-//    [self.view addSubview:assigneeView];
-//    assigneeTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 270, 30)];
-//    assigneeTextField.placeholder = @"指派人";
-//    assigneeTextField.borderStyle = UITextBorderStyleRoundedRect;
-//    UIImageView *chooseUserImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chooseuser.png"]];
-//    chooseUserImageView.frame = CGRectMake(0, 0, 16, 16);
-//    assigneeTextField.rightView = chooseUserImageView;
-//    assigneeTextField.rightViewMode = UITextFieldViewModeAlways; 
-//    chooseUserImageView.userInteractionEnabled = YES;
-//    [assigneeTextField addSubview:chooseUserImageView];
-//    [assigneeView addSubview:assigneeTextField];
-//    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
-//    [assigneeTextField addGestureRecognizer:recognizer];
-//    [recognizer release];
-//    
-//    UIImageView *moreImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"down.png"]];
-//    moreImageView.frame = CGRectMake(285, 10, 26, 26);
-//    moreImageView.userInteractionEnabled = YES;
-//    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(more:)];
-//    [moreImageView addGestureRecognizer:recognizer];
-//    [recognizer release];
-//    [assigneeView addSubview:moreImageView];
-//    assigneeView.hidden = YES;
-//    
-//    [moreImageView release];
-//    [chooseUserImageView release];
-//    [assigneeTextField release];
-//    [assigneeView release];
+- (void)selectDueTime:(id)sender
+{
+    [dueTimeLabel becomeFirstResponder];
+}
 
-//    priorityView = [[UIView alloc] initWithFrame:CGRectMake(0, 165, [Tools screenMaxWidth], 90)];
-//    [self.view addSubview:priorityView];
-//    
-//    UILabel *priorityLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, [Tools screenMaxWidth], 20)];
-//    priorityLabel.text = @"优先级";
-//    [priorityView addSubview:priorityLabel];
-//    [priorityLabel release];
-//    
-//    priorityControl = [[SEFilterControl alloc]initWithFrame:CGRectMake(10, 30, 300, 60)
-//                                                     Titles:[NSArray arrayWithObjects:@"尽快完成", @"稍后完成", @"迟些再说", nil]];
-//    [priorityControl setProgressColor:[UIColor lightGrayColor]];
-//    [priorityControl setHandlerColor:[UIColor darkGrayColor]];
-//    [priorityControl setTitlesColor:[UIColor blackColor]];
-//    priorityControl.selectedIndex = 0;
-//    //[priorityControl setTitlesFont:[UIFont fontWithName:@"Didot" size:14]];
-//    //[priorityControl addTarget:self action:@selector(filterValueChanged:) forControlEvents:UIControlEventValueChanged];
-//    [priorityView addSubview:priorityControl];
-//                       
-//    dueTimeView = [[UIView alloc] initWithFrame:CGRectMake(0, 265, [Tools screenMaxWidth], 100)];
-//    [self.view addSubview:dueTimeView];
-//    
-//    UILabel *dueTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, [Tools screenMaxWidth], 20)];
-//    dueTimeLabel.text = @"期待完成时间";
-//    [dueTimeView addSubview:dueTimeLabel];
-//    [dueTimeLabel release];
-//    
-//    dueTimeTextField = [[DateTextField alloc] initWithFrame:CGRectMake(10, 30, [Tools screenMaxWidth] - 20, 35)];
-//    dueTimeTextField.borderStyle = UITextBorderStyleRoundedRect;
-//    dueTimeTextField.placeholder = @"期待完成时间";
-//    [dueTimeView addSubview:dueTimeTextField];
+- (void)modifyAssignee:(NSMutableDictionary*)assignee
+{
+    NSString *workId = [assignee objectForKey:@"workId"];
+    [taskDetailDict setObject:workId forKey:@"assigneeWorkId"];
+    NSString *name = [assignee objectForKey:@"name"];
+
+    [assigneeBtn setTitle:name forState:UIControlStateNormal];
+    CGSize size = CGSizeMake([Tools screenMaxWidth], 10000);
+    CGSize labelsize = [assigneeBtn.titleLabel.text sizeWithFont:assigneeBtn.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
+    CGFloat labelsizeHeight = labelsize.height + 10;
+    assigneeBtn.frame = CGRectMake(10, 8, labelsize.width + 40, labelsizeHeight);
 }
 
 - (void)viewClick:(id)sender
-{ 
+{
+    NSLog(@"viewClick");
     [subjectTextView resignFirstResponder];
+    [dueTimeLabel resignFirstResponder];
 }
 
 - (void)goBack:(id)sender
@@ -355,41 +335,48 @@
 
 - (void)newTask:(id)sender
 {
-//    NSString *creatorWorkId = [taskDetailDict objectForKey:@"creatorWorkId"];
-//    NSString *subject = subjectTextView.text;
-//    NSString *dueTime = dueTimeTextField.text;
-//    NSString *assigneeWorkId = [taskDetailDict objectForKey:@"assigneeWorkId"];
-//    NSNumber *priority = [NSNumber numberWithInt: priorityControl.selectedIndex];
-//    NSString *attachmentIds = @"";
-//    if(createType == 1) {
-//         attachmentIds = [taskDetailDict objectForKey:@"attachmentId"];
-//        if (subject == nil && [subject isEqualToString:@""]) {
-//            subject = [NSString stringWithFormat:@"%@%@", @"语音任务", [Tools ShortNSDateToNSString:[NSDate date]]];
-//        }
-//    }
-//    else if(createType == 2) {
-//        attachmentIds = [taskDetailDict objectForKey:@"pictureId"];
-//        if (subject == nil && [subject isEqualToString:@""]) {
-//            subject = [NSString stringWithFormat:@"%@%@", @"图片任务", [Tools ShortNSDateToNSString:[NSDate date]]];
-//        }
-//    }
-//
-//    self.HUD = [Tools process:@"正在提交" view:self.view];
-//    NSMutableDictionary *context = [NSMutableDictionary dictionary];
-//    [context setObject:@"NewTask" forKey:REQUEST_TYPE];
-//    [enterpriseService newTask:creatorWorkId
-//                       subject:subject
-//                       dueTime:dueTime
-//                assigneeWorkId:assigneeWorkId
-//                      priority:priority
-//                 attachmentIds:attachmentIds
-//                       context:context
-//                      delegate:self];
+    NSString *creatorWorkId = [taskDetailDict objectForKey:@"creatorWorkId"];
+    NSString *subject = subjectTextView.text;
+    NSString *dueTime = dueTimeLabel.text;
+    NSString *assigneeWorkId = [taskDetailDict objectForKey:@"assigneeWorkId"];
+    NSNumber *priority = [NSNumber numberWithInt: priorityOptionView.selectedIndex];
+    NSString *attachmentIds = @"";
+    if(createType == 1) {
+         attachmentIds = [taskDetailDict objectForKey:@"attachmentId"];
+        if (subject == nil || [subject isEqualToString:@""]) {
+            subject = [NSString stringWithFormat:@"%@%@", @"语音任务", [Tools ShortNSDateToNSString:[NSDate date]]];
+        }
+    }
+    else if(createType == 2) {
+        attachmentIds = [taskDetailDict objectForKey:@"pictureId"];
+        if (subject == nil || [subject isEqualToString:@""]) {
+            subject = [NSString stringWithFormat:@"%@%@", @"图片任务", [Tools ShortNSDateToNSString:[NSDate date]]];
+        }
+    }
+
+    self.HUD = [Tools process:@"正在提交" view:self.view];
+    NSMutableDictionary *context = [NSMutableDictionary dictionary];
+    [context setObject:@"NewTask" forKey:REQUEST_TYPE];
+    [enterpriseService newTask:creatorWorkId
+                       subject:subject
+                       dueTime:dueTime
+                assigneeWorkId:assigneeWorkId
+                      priority:priority
+                 attachmentIds:attachmentIds
+                       context:context
+                      delegate:self];
 }
 
 - (void)chooseUser:(id)sender
 {
     NSLog(@"chooseUser");
+
+    SearchUserViewController *searchUserController = [[[SearchUserViewController alloc] init] autorelease];
+    searchUserController.delegate = self;
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:searchUserController animated:NO];
+
+    //[searchUserController release];
 }
 
 - (void)more:(id)sender
@@ -1009,17 +996,17 @@
                 
                 if(state == [NSNumber numberWithInt:0]) {
                     NSMutableDictionary *data = [dict objectForKey:@"data"];
-                    NSString *attachmentId = [data objectForKey:@"attachmentId"];
-                    NSString *attachmentFileName = [data objectForKey:@"fileName"];
-                    NSString *attachmentUrl = [data objectForKey:@"url"];
-                    NSString *attachmentThumbUrl = [data objectForKey:@"thumbUrl"];
+                    NSString *pictureId = [data objectForKey:@"attachmentId"];
+                    NSString *pictureFileName = [data objectForKey:@"fileName"];
+                    NSString *pictureUrl = [data objectForKey:@"url"];
+                    NSString *pictureThumbUrl = [data objectForKey:@"thumbUrl"];
 
-                    [taskDetailDict setObject:attachmentId forKey:@"attachmentId"];
-                    [taskDetailDict setObject:attachmentFileName forKey:@"attachmentFileName"];
-                    [taskDetailDict setObject:attachmentUrl forKey:@"attachmentUrl"];
-                    [taskDetailDict setObject:attachmentThumbUrl forKey:@"attachmentThumbUrl"];
-                
-//                    [detailView reloadData];
+                    [taskDetailDict setObject:pictureId forKey:@"pictureId"];
+                    [taskDetailDict setObject:pictureFileName forKey:@"pictureFileName"];
+                    [taskDetailDict setObject:pictureUrl forKey:@"pictureUrl"];
+                    [taskDetailDict setObject:pictureThumbUrl forKey:@"pictureThumbUrl"];
+
+                    [pictureImageView setImageWithURL:[NSURL URLWithString:pictureThumbUrl]];
                 }
             }
         }

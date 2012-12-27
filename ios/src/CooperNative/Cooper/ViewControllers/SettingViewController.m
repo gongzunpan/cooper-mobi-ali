@@ -82,7 +82,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -104,6 +104,26 @@
                 cell.editingAccessoryType = UITableViewCellAccessoryNone;
                 
                 UIView *selectedView = [[UIView alloc] initWithFrame:cell.frame];   
+                selectedView.backgroundColor = [UIColor colorWithRed:220/255.0f green:220/255.0f blue:220/255.0f alpha:1.0];
+                cell.backgroundColor = [UIColor whiteColor];
+                //设置选中后cell的背景颜色
+                cell.selectedBackgroundView = selectedView;
+                [selectedView release];
+            }
+        }
+        else if(indexPath.row == 1)
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:@"AboutCell"];
+            if(!cell)
+            {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AboutCell"] autorelease];
+
+                cell.textLabel.text = @"关于";
+
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.editingAccessoryType = UITableViewCellAccessoryNone;
+
+                UIView *selectedView = [[UIView alloc] initWithFrame:cell.frame];
                 selectedView.backgroundColor = [UIColor colorWithRed:220/255.0f green:220/255.0f blue:220/255.0f alpha:1.0];
                 cell.backgroundColor = [UIColor whiteColor];
                 //设置选中后cell的背景颜色

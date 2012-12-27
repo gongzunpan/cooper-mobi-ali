@@ -15,6 +15,8 @@
 #import "BodyTextView.h"
 #import "CooperService/EnterpriseService.h"
 #import "CodesharpSDK/JSCoreTextView.h"
+#import "ImagePreviewViewController.h"
+#import "AudioPreviewViewController.h"
 
 @interface EnterpriseTaskDetailEditViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,DateLabelDelegate, PriorityButtonDelegate, UITextViewDelegate, BodyTextViewDelegate>
 {
@@ -22,6 +24,8 @@
     UIView *assigneeView;
     
     CGPoint viewCenter;
+
+    UILabel *textTitleLabel;
     
     EnterpriseService *enterpriseService;
 }

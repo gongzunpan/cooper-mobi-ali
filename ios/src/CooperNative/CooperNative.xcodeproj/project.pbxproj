@@ -113,7 +113,7 @@
 		18A61AFD1687423E00FD04C2 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A61AFC1687423E00FD04C2 /* down.png */; };
 		18A61B0716874C2800FD04C2 /* SEFilterControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A61B0416874C2800FD04C2 /* SEFilterControl.m */; };
 		18A61B0816874C2800FD04C2 /* SEFilterKnob.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A61B0616874C2800FD04C2 /* SEFilterKnob.m */; };
-		18A61B0B16874F5000FD04C2 /* DateTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A61B0A16874F5000FD04C2 /* DateTextField.m */; };
+		18A61B0B16874F5000FD04C2 /* DatePickerLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A61B0A16874F5000FD04C2 /* DatePickerLabel.m */; };
 		18A61B1A16875A2F00FD04C2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A61B1916875A2F00FD04C2 /* AVFoundation.framework */; };
 		18A61B1C16875A7500FD04C2 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A61B1B16875A7500FD04C2 /* AudioToolbox.framework */; };
 		18A61B2016875ACA00FD04C2 /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A61B1F16875ACA00FD04C2 /* libmp3lame.a */; };
@@ -167,6 +167,9 @@
 		6AB3FC58168B43C400D66D46 /* detailcreate_more.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AB3FC57168B43C400D66D46 /* detailcreate_more.png */; };
 		6AB3FC5A168B478B00D66D46 /* detailcreate_assigneeAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AB3FC59168B478B00D66D46 /* detailcreate_assigneeAdd.png */; };
 		6AB3FC5C168B482700D66D46 /* detailcreate_duetime.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AB3FC5B168B482700D66D46 /* detailcreate_duetime.png */; };
+		6AB3FD12168BE22700D66D46 /* SearchUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB3FD11168BE22700D66D46 /* SearchUserViewController.m */; };
+		6AC4E763168C2B9F00B15635 /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4E762168C2B9F00B15635 /* ImagePreviewViewController.m */; };
+		6AC4E767168C33E400B15635 /* AudioPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4E766168C33E300B15635 /* AudioPreviewViewController.m */; };
 		6ACD351E16858635008CFC41 /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ACD351B16858635008CFC41 /* JASidePanelController.m */; };
 		6ACD351F16858635008CFC41 /* UIViewController+JASidePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ACD351D16858635008CFC41 /* UIViewController+JASidePanel.m */; };
 		6AD180EB168020B20064FA10 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD180EA168020B20064FA10 /* ImageIO.framework */; };
@@ -465,8 +468,8 @@
 		18A61B0416874C2800FD04C2 /* SEFilterControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SEFilterControl.m; path = Controls/SEFilterControl.m; sourceTree = "<group>"; };
 		18A61B0516874C2800FD04C2 /* SEFilterKnob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SEFilterKnob.h; path = Controls/SEFilterKnob.h; sourceTree = "<group>"; };
 		18A61B0616874C2800FD04C2 /* SEFilterKnob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SEFilterKnob.m; path = Controls/SEFilterKnob.m; sourceTree = "<group>"; };
-		18A61B0916874F4F00FD04C2 /* DateTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateTextField.h; path = Controls/DateTextField.h; sourceTree = "<group>"; };
-		18A61B0A16874F5000FD04C2 /* DateTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DateTextField.m; path = Controls/DateTextField.m; sourceTree = "<group>"; };
+		18A61B0916874F4F00FD04C2 /* DatePickerLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DatePickerLabel.h; path = Controls/DatePickerLabel.h; sourceTree = "<group>"; };
+		18A61B0A16874F5000FD04C2 /* DatePickerLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DatePickerLabel.m; path = Controls/DatePickerLabel.m; sourceTree = "<group>"; };
 		18A61B1916875A2F00FD04C2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		18A61B1B16875A7500FD04C2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		18A61B1E16875ACA00FD04C2 /* lame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lame.h; sourceTree = "<group>"; };
@@ -544,6 +547,13 @@
 		6AB3FC57168B43C400D66D46 /* detailcreate_more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = detailcreate_more.png; sourceTree = "<group>"; };
 		6AB3FC59168B478B00D66D46 /* detailcreate_assigneeAdd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = detailcreate_assigneeAdd.png; sourceTree = "<group>"; };
 		6AB3FC5B168B482700D66D46 /* detailcreate_duetime.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = detailcreate_duetime.png; sourceTree = "<group>"; };
+		6AB3FD10168BE22700D66D46 /* SearchUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchUserViewController.h; path = ViewControllers/SearchUserViewController.h; sourceTree = "<group>"; };
+		6AB3FD11168BE22700D66D46 /* SearchUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchUserViewController.m; path = ViewControllers/SearchUserViewController.m; sourceTree = "<group>"; };
+		6AB3FD13168C0B9D00D66D46 /* EnterpriseTaskCreateDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EnterpriseTaskCreateDelegate.h; path = ViewControllers/EnterpriseTaskCreateDelegate.h; sourceTree = "<group>"; };
+		6AC4E761168C2B9F00B15635 /* ImagePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImagePreviewViewController.h; path = ViewControllers/ImagePreviewViewController.h; sourceTree = "<group>"; };
+		6AC4E762168C2B9F00B15635 /* ImagePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImagePreviewViewController.m; path = ViewControllers/ImagePreviewViewController.m; sourceTree = "<group>"; };
+		6AC4E765168C33E300B15635 /* AudioPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioPreviewViewController.h; path = ViewControllers/AudioPreviewViewController.h; sourceTree = "<group>"; };
+		6AC4E766168C33E300B15635 /* AudioPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioPreviewViewController.m; path = ViewControllers/AudioPreviewViewController.m; sourceTree = "<group>"; };
 		6ACD351A16858635008CFC41 /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASidePanelController.h; sourceTree = "<group>"; };
 		6ACD351B16858635008CFC41 /* JASidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JASidePanelController.m; sourceTree = "<group>"; };
 		6ACD351C16858635008CFC41 /* UIViewController+JASidePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+JASidePanel.h"; sourceTree = "<group>"; };
@@ -949,6 +959,13 @@
 				6AD181EA16819DC70064FA10 /* EnterpriseImageViewController.m */,
 				188023BE16889AF000F55DBF /* AudioViewController.h */,
 				188023BF16889AF100F55DBF /* AudioViewController.m */,
+				6AB3FD10168BE22700D66D46 /* SearchUserViewController.h */,
+				6AB3FD11168BE22700D66D46 /* SearchUserViewController.m */,
+				6AB3FD13168C0B9D00D66D46 /* EnterpriseTaskCreateDelegate.h */,
+				6AC4E761168C2B9F00B15635 /* ImagePreviewViewController.h */,
+				6AC4E762168C2B9F00B15635 /* ImagePreviewViewController.m */,
+				6AC4E765168C33E300B15635 /* AudioPreviewViewController.h */,
+				6AC4E766168C33E300B15635 /* AudioPreviewViewController.m */,
 			);
 			name = EnterpriseViewController;
 			sourceTree = "<group>";
@@ -1309,8 +1326,8 @@
 				1868A4D015F7544200762733 /* InputPickerDelegate.h */,
 				6A7D87BF160AE51B004C7C9C /* TeamTaskFilterLabel.h */,
 				6A7D87C0160AE51B004C7C9C /* TeamTaskFilterLabel.m */,
-				18A61B0916874F4F00FD04C2 /* DateTextField.h */,
-				18A61B0A16874F5000FD04C2 /* DateTextField.m */,
+				18A61B0916874F4F00FD04C2 /* DatePickerLabel.h */,
+				18A61B0A16874F5000FD04C2 /* DatePickerLabel.m */,
 			);
 			name = Controls;
 			sourceTree = "<group>";
@@ -1834,7 +1851,7 @@
 				18A61AF916872E1A00FD04C2 /* GCPlaceholderTextView.m in Sources */,
 				18A61B0716874C2800FD04C2 /* SEFilterControl.m in Sources */,
 				18A61B0816874C2800FD04C2 /* SEFilterKnob.m in Sources */,
-				18A61B0B16874F5000FD04C2 /* DateTextField.m in Sources */,
+				18A61B0B16874F5000FD04C2 /* DatePickerLabel.m in Sources */,
 				188023C016889AF100F55DBF /* AudioViewController.m in Sources */,
 				188023C91688A30D00F55DBF /* TabbarLineView.m in Sources */,
 				6AE294C516897D3000D6107D /* TBXML+Compression.m in Sources */,
@@ -1854,6 +1871,9 @@
 				6AE294FF1689998600D6107D /* CXMLNode_XPathExtensions.m in Sources */,
 				6AE295001689998600D6107D /* CTidy.m in Sources */,
 				1880243E168B5AF300F55DBF /* PriorityOptionView.m in Sources */,
+				6AB3FD12168BE22700D66D46 /* SearchUserViewController.m in Sources */,
+				6AC4E763168C2B9F00B15635 /* ImagePreviewViewController.m in Sources */,
+				6AC4E767168C33E400B15635 /* AudioPreviewViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

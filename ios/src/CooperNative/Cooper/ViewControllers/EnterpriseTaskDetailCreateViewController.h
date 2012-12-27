@@ -14,17 +14,22 @@
 //#import "CommentTextField.h"
 //#import "PriorityButton.h"
 //#import "DateLabel.h"
-#import "DateTextField.h"
+#import "DatePickerLabel.h"
 //#import "BodyTextView.h"
 #import "CooperService/EnterpriseService.h"
 #import "SEFilterControl.h"
 #import "PriorityOptionView.h"
+#import "EnterpriseTaskCreateDelegate.h"
+#import "CustomButton.h"
 //#import "CodesharpSDK/JSCoreTextView.h"
 
-@interface EnterpriseTaskDetailCreateViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DateTextFieldDelegate>
+@interface EnterpriseTaskDetailCreateViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DatePickerLabelDelegate, EnterpriseTaskCreateDelegate>
 {
     GCPlaceholderTextView *subjectTextView;
     PriorityOptionView *priorityOptionView;
+    DatePickerLabel *dueTimeLabel;
+    CustomButton *assigneeBtn;
+    UIImageView *pictureImageView;
 
     UILabel *textTitleLabel;
     

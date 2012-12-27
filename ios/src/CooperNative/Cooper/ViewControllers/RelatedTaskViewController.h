@@ -10,6 +10,9 @@
 #import "CustomButton.h"
 #import "EnterpriseTaskTableCell.h"
 #import "EnterpriseTaskDetailEditViewController.h"
+#import "EnterpriseTaskDetailCreateViewController.h"
+#import "AudioViewController.h"
+#import "TabbarLineView.h"
 #import "CooperService/EnterpriseService.h"
 
 @interface RelatedTaskViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate, EnterpriseTaskTableCellDelegate>
@@ -17,6 +20,9 @@
     UIView *emptyView;
     UITableView *taskView;
     UIView *tabbarView;
+
+    UIActionSheet *photoActionSheet;
+    UIActionSheet *audioActionSheet;
     
     EnterpriseService *enterpriseService;
     

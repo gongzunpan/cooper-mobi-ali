@@ -35,6 +35,17 @@
 	
     enterpriseService = [[EnterpriseService alloc] init];
 
+    viewCenter = self.view.center;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+
     [self initContentView];
 
     taskDetailDict = [[NSMutableDictionary alloc] init];
@@ -96,7 +107,7 @@
 //获取在制定的分区编号下的纪录数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 6;
+    return 7;
 }
 //填充单元格
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -109,6 +120,84 @@
         {
             if(indexPath.row == 0)
             {
+                cell = [tableView dequeueReusableCellWithIdentifier:@"AttachmentCell"];
+                if(!cell)
+                {
+                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AttachmentCell"] autorelease];
+                    cell.textLabel.text = @"附件:";
+                    [cell.textLabel setTextColor:[UIColor grayColor]];[cell.textLabel setFont:[UIFont boldSystemFontOfSize:16]];
+                }
+
+                NSMutableArray *attachments = [taskDetailDict objectForKey:@"attachments"];
+                if(attachments.count > 0) {
+                   
+                    CGFloat attachTop = 0.0f;
+                    NSInteger count = 0;
+                    for (NSMutableDictionary *dict in attachments) {
+                        NSString *fileName = [dict objectForKey:@"fileName"];
+                        NSString *url = [dict objectForKey:@"url"];
+
+                        UILabel *label = [[[UILabel alloc] init] autorelease];
+                        //imageView.tag = [dict objectForKey:@"url"];
+                        //[imageView setImageWithURL:[NSURL URLWithString:thumbUrl]];
+                        label.text = fileName;
+                        label.frame = CGRectMake(110, attachTop, 210, 40);
+                        label.userInteractionEnabled = YES;
+                        UITapGestureRecognizer *recognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(getAudioUrl:)] autorelease];
+                        [label addGestureRecognizer:recognizer];
+                        [cell.contentView addSubview:label];
+                        attachTop += 32.0f;
+                        count++;
+                    }
+
+                    [cell setFrame:CGRectMake(0, 0, [Tools screenMaxWidth], attachTop + 15)];
+                }
+                else {
+                    UILabel *emptyLabel = [[[UILabel alloc] init] autorelease];
+                    emptyLabel.text = @"无";
+                    emptyLabel.frame = CGRectMake(110, 15, 40, 16);
+                    [cell.contentView addSubview:emptyLabel];
+                }
+            }
+            if(indexPath.row == 1)
+            {
+                cell = [tableView dequeueReusableCellWithIdentifier:@"PictureCell"];
+                if(!cell)
+                {
+                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"PictureCell"] autorelease];
+                    cell.textLabel.text = @"图片:";
+                    [cell.textLabel setTextColor:[UIColor grayColor]];[cell.textLabel setFont:[UIFont boldSystemFontOfSize:16]];
+                }
+
+                NSMutableArray *pictures = [taskDetailDict objectForKey:@"pictures"];
+                if(pictures.count > 0) {
+                    CGFloat picLeft = 0.0f;
+                    NSInteger count = 0;
+                    for (NSMutableDictionary *dict in pictures) {
+                        NSString *thumbUrl = [dict objectForKey:@"thumbUrl"];
+                        
+                        UIImageView *imageView = [[[UIImageView alloc] init] autorelease];
+                        //imageView.tag = [dict objectForKey:@"url"];
+                        [imageView setImageWithURL:[NSURL URLWithString:thumbUrl]];
+                        imageView.frame = CGRectMake(110 +picLeft, 2, 40, 40);
+                        imageView.tag = count;
+                        imageView.userInteractionEnabled = YES;
+                        UITapGestureRecognizer *recognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(getPicUrl:)] autorelease];
+                        [imageView addGestureRecognizer:recognizer];
+                        [cell.contentView addSubview:imageView];
+                        picLeft += 42.0f;
+                        count++;
+                    }
+                }
+                else {
+                    UILabel *emptyLabel = [[[UILabel alloc] init] autorelease];
+                    emptyLabel.text = @"无";
+                    emptyLabel.frame = CGRectMake(110, 15, 40, 16);
+                    [cell.contentView addSubview:emptyLabel];
+                }
+            }
+            else if(indexPath.row == 2)
+            {
                 cell = [tableView dequeueReusableCellWithIdentifier:@"StatusCell"];
                 if(!cell)
                 {
@@ -117,16 +206,17 @@
                     [cell.textLabel setTextColor:[UIColor grayColor]];[cell.textLabel setFont:[UIFont boldSystemFontOfSize:16]];
                     
                     statusButton = [[CustomButton alloc] initWithFrame:CGRectZero image:[UIImage imageNamed:@"btn_bg_gray.png"]];
-                    
-//                    if(![[task.editable stringValue] isEqualToString:[[NSNumber numberWithInt:0] stringValue]])
-//                    {
+
+                    NSNumber *isExternal = [taskDetailDict objectForKey:@"isExternal"];
+                    if(![isExternal isEqualToNumber:[NSNumber numberWithInt:1]])
+                    {
                         statusButton.userInteractionEnabled = YES;
-//                    }
-//                    else
-//                    {
-//                        statusButton.userInteractionEnabled = NO;
-//                    }
-                    
+                    }
+                    else
+                    {
+                        statusButton.userInteractionEnabled = NO;
+                    }
+
                     [statusButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
                     
                     [statusButton addTarget:self action:@selector(switchStatus) forControlEvents:UIControlEventTouchUpInside];
@@ -147,7 +237,7 @@
                     [cell.contentView addSubview:statusButton];
                 }
             }
-            else if(indexPath.row == 1)
+            else if(indexPath.row == 3)
             {
                 cell = [tableView dequeueReusableCellWithIdentifier:@"DueDateCell"];
                 if(!cell)
@@ -189,7 +279,7 @@
                     [cell.contentView addSubview:dueDateLabel];
                 }
             }
-            else if(indexPath.row == 2)
+            else if(indexPath.row == 4)
             {
                 cell = [tableView dequeueReusableCellWithIdentifier:@"PriorityCell"];
                 if(!cell)
@@ -218,7 +308,7 @@
                 }
                 
                 NSNumber *priority = [taskDetailDict objectForKey:@"priority"];
-                if(![priority isEqualToNumber:[NSNumber numberWithInt:-1]]) {
+                if(![priority isEqualToNumber:[NSNumber numberWithInt:99]]) {
                     [priorityButton setTitle: [NSString stringWithFormat:@"%@    >", [self getPriorityValue:[priority stringValue]]] forState:UIControlStateNormal];
                     //oldPriority = [task.priority copy];
                     
@@ -227,8 +317,15 @@
                     [priorityButton setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
                     [cell.contentView addSubview:priorityButton];
                 }
+                else {
+                    [priorityButton setTitle: [NSString stringWithFormat:@"%@    >", @"请选择"] forState:UIControlStateNormal];
+                    CGSize size = CGSizeMake([Tools screenMaxWidth],10000);
+                    CGSize labelsize = [priorityButton.titleLabel.text sizeWithFont:priorityButton.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
+                    [priorityButton setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
+                    [cell.contentView addSubview:priorityButton];
+                }
             }
-            else if(indexPath.row == 3)
+            else if(indexPath.row == 5)
             {
                 cell = [tableView dequeueReusableCellWithIdentifier:@"AssigneeCell"];
                 if(!cell)
@@ -307,7 +404,7 @@
 //                    assigneeView.frame = CGRectMake(110, 0, [Tools screenMaxWidth] - 110, 44);
 //                }
             }
-            else if(indexPath.row == 4)
+            else if(indexPath.row == 6)
             {
                 cell = [tableView dequeueReusableCellWithIdentifier:@"SubjectCell"];
                 if(!cell)
@@ -330,46 +427,55 @@
                 NSString *subject = [taskDetailDict objectForKey:@"subject"];
                 subjectTextField.text = subject;
 
-            }
-            else if(indexPath.row == 5)
-            {
-                cell = [tableView dequeueReusableCellWithIdentifier:@"BodyCell"];
-                if(!cell)
+                NSNumber *isExternal = [taskDetailDict objectForKey:@"isExternal"];
+                if(![isExternal isEqualToNumber:[NSNumber numberWithInt:1]])
                 {
-                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"BodyCell"] autorelease];
-                    
-                    bodyTextView = [[BodyTextView alloc] initWithFrame:self.view.frame];
-                    bodyTextView.userInteractionEnabled = YES;
-                    [bodyTextView setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-                    [bodyTextView setAutocorrectionType:UITextAutocorrectionTypeNo];
-                    bodyTextView.returnKeyType = UIReturnKeyDefault;
-                    bodyTextView.keyboardType = UIReturnKeyDone;
-                    bodyTextView.scrollEnabled = YES;
-                    bodyTextView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-                    bodyTextView.delegate = self;
-                    bodyTextView.bodyDelegate = self;
-                    [bodyTextView setFont:[UIFont systemFontOfSize:16]];
-                    
-                    bodyScrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 240)] autorelease];
-                    [bodyScrollView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-                    [bodyScrollView setContentSize:bodyTextView.frame.size];
-                    [bodyScrollView addSubview:bodyTextView];
-                    
-                    [cell addSubview:bodyScrollView];
-                    
-                    bodyCell = cell;
+                    subjectTextField.userInteractionEnabled = YES;
                 }
-
-                NSString *body = [taskDetailDict objectForKey:@"body"];
-                bodyTextView.text = body;
-                
-                int totalheight = bodyTextView.contentSize.height;
-                //            if(bodyTextView.contentSize.height < 300)
-                //            {
-                //                totalheight = 300;
-                //            }
-                [cell setFrame:CGRectMake(0, 0, [Tools screenMaxWidth], totalheight + 200)];
+                else
+                {
+                    subjectTextField.userInteractionEnabled = NO;
+                }
             }
+//            else if(indexPath.row == 5)
+//            {
+//                cell = [tableView dequeueReusableCellWithIdentifier:@"BodyCell"];
+//                if(!cell)
+//                {
+//                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"BodyCell"] autorelease];
+//                    
+//                    bodyTextView = [[BodyTextView alloc] initWithFrame:self.view.frame];
+//                    bodyTextView.userInteractionEnabled = YES;
+//                    [bodyTextView setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+//                    [bodyTextView setAutocorrectionType:UITextAutocorrectionTypeNo];
+//                    bodyTextView.returnKeyType = UIReturnKeyDefault;
+//                    bodyTextView.keyboardType = UIReturnKeyDone;
+//                    bodyTextView.scrollEnabled = YES;
+//                    bodyTextView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+//                    bodyTextView.delegate = self;
+//                    bodyTextView.bodyDelegate = self;
+//                    [bodyTextView setFont:[UIFont systemFontOfSize:16]];
+//                    
+//                    bodyScrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 240)] autorelease];
+//                    [bodyScrollView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+//                    [bodyScrollView setContentSize:bodyTextView.frame.size];
+//                    [bodyScrollView addSubview:bodyTextView];
+//                    
+//                    [cell addSubview:bodyScrollView];
+//                    
+//                    bodyCell = cell;
+//                }
+//
+//                NSString *body = [taskDetailDict objectForKey:@"body"];
+//                bodyTextView.text = body;
+//                
+//                int totalheight = bodyTextView.contentSize.height;
+//                //            if(bodyTextView.contentSize.height < 300)
+//                //            {
+//                //                totalheight = 300;
+//                //            }
+//                [cell setFrame:CGRectMake(0, 0, [Tools screenMaxWidth], totalheight + 200)];
+//            }
 //            else if(indexPath.row == 6) {
 //                
 //                cell = [tableView dequeueReusableCellWithIdentifier:@"ImageCell"];
@@ -386,12 +492,6 @@
     }
     
     return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = (UITableViewCell*)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.frame.size.height;
 }
 
 - (void)tableViewCell:(DateLabel *)label didEndEditingWithDate:(NSDate *)value
@@ -413,6 +513,12 @@
     [dueDateLabel setFrame:CGRectMake(110, 8, labelsize.width + 40, labelsize.height + 10)];
     
 //    [delegate loadTaskData];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell*)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.frame.size.height;
 }
 
 - (void)tableViewCell:(PriorityButton *)button didEndEditingWithValue:(NSString *)value
@@ -441,9 +547,21 @@
     
     NSString *body = [taskDetailDict objectForKey:@"body"];
     NSString *dueTime = [taskDetailDict objectForKey:@"dueTime"];
-    NSString *assigneeUserId = [taskDetailDict objectForKey:@"assigneeUserId"];
+    NSString *assigneeWorkId = [taskDetailDict objectForKey:@"assigneeWorkId"];
     NSNumber *priority = [taskDetailDict objectForKey:@"priority"];
     NSNumber *isCompleted = [taskDetailDict objectForKey:@"isCompleted"];
+
+    NSString *attachmentsStr = @"";
+    NSMutableArray *attachments = [taskDetailDict objectForKey:@"attachments"];
+    NSMutableArray *pictures = [taskDetailDict objectForKey:@"pictures"];
+    NSMutableArray *attachmentIds = [NSMutableArray array];
+    for (NSMutableDictionary *dict in attachments) {
+        [attachmentIds addObject:[dict objectForKey:@"attachmentId"]];
+    }
+    for (NSMutableDictionary *dict in pictures) {
+        [attachmentIds addObject:[dict objectForKey:@"attachmentId"]];
+    }
+    attachmentsStr = [attachmentIds componentsJoinedByString:@"||"];
     
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"UpdateTask" forKey:REQUEST_TYPE];
@@ -451,10 +569,11 @@
                           subject:subject
                              body:body
                           dueTime:dueTime
-                   assigneeUserId:assigneeUserId
+                   assigneeWorkId:assigneeWorkId
                   relatedUserJson:@""
                          priority:priority
                       isCompleted:isCompleted
+                    attachmentIds:attachmentsStr
                           context:context
                          delegate:self];
     
@@ -468,9 +587,21 @@
     [taskDetailDict setObject:body forKey:@"body"];
     
     NSString *dueTime = [taskDetailDict objectForKey:@"dueTime"];
-    NSString *assigneeUserId = [taskDetailDict objectForKey:@"assigneeUserId"];
+    NSString *assigneeWorkId = [taskDetailDict objectForKey:@"assigneeWorkId"];
     NSNumber *priority = [taskDetailDict objectForKey:@"priority"];
     NSNumber *isCompleted = [taskDetailDict objectForKey:@"isCompleted"];
+
+    NSString *attachmentsStr = @"";
+    NSMutableArray *attachments = [taskDetailDict objectForKey:@"attachments"];
+    NSMutableArray *pictures = [taskDetailDict objectForKey:@"pictures"];
+    NSMutableArray *attachmentIds = [NSMutableArray array];
+    for (NSMutableDictionary *dict in attachments) {
+        [attachmentIds addObject:[dict objectForKey:@"attachmentId"]];
+    }
+    for (NSMutableDictionary *dict in pictures) {
+        [attachmentIds addObject:[dict objectForKey:@"attachmentId"]];
+    }
+    attachmentsStr = [attachmentIds componentsJoinedByString:@"||"];
     
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"UpdateTask" forKey:REQUEST_TYPE];
@@ -478,10 +609,11 @@
                           subject:subject
                              body:body
                           dueTime:dueTime
-                   assigneeUserId:assigneeUserId
+                   assigneeWorkId:assigneeWorkId
                   relatedUserJson:@""
                          priority:priority
                       isCompleted:isCompleted
+                    attachmentIds:attachmentsStr
                           context:context
                          delegate:self];
 }
@@ -683,8 +815,12 @@
                     NSString *assigneeWorkId = [assigneeDict objectForKey:@"workId"];
 //                    NSMutableDictionary *related = [data objectForKey:@"related"];
                     NSString *dueTime = [data objectForKey:@"dueTime"] == [NSNull null] ? @"" : [data objectForKey:@"dueTime"];
-                    NSNumber *priority = [data objectForKey:@"priority"] == [NSNull null] ? [NSNumber numberWithInt:-1] : [data objectForKey:@"priority"];
+                    NSNumber *priority = [data objectForKey:@"priority"] == [NSNull null] ? [NSNumber numberWithInt:99] : [data objectForKey:@"priority"];
                     NSNumber *isCompleted = [data objectForKey:@"isCompleted"];
+                    NSNumber *isExternal = [data objectForKey:@"isExternal"];
+
+                    NSMutableArray *attachments = [[data objectForKey:@"attachments"] copy];
+                    NSMutableArray *pictures = [[data objectForKey:@"pictures"] copy];
                     
                     [taskDetailDict setObject:taskId forKey:@"taskId"];
                     [taskDetailDict setObject:subject forKey:@"subject"];
@@ -694,6 +830,9 @@
                     [taskDetailDict setObject:isCompleted forKey:@"isCompleted"];
                     [taskDetailDict setObject:assigneeName forKey:@"assigneeName"];
                     [taskDetailDict setObject:assigneeWorkId forKey:@"assigneeWorkId"];
+                    [taskDetailDict setObject:attachments forKey:@"attachments"];
+                    [taskDetailDict setObject:pictures forKey:@"pictures"];
+                    [taskDetailDict setObject:isExternal forKey:@"isExternal"];
                     
                     [detailView reloadData];
                 }
@@ -750,14 +889,27 @@
 
 - (void)initContentView
 {
-    self.title = @"任务编辑";
-    
+    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    textTitleLabel.backgroundColor = [UIColor clearColor];
+    textTitleLabel.textAlignment = UITextAlignmentCenter;
+    textTitleLabel.textColor = APP_TITLECOLOR;
+    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    self.navigationItem.titleView = textTitleLabel;
+    textTitleLabel.text = @"查看";
+
+    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBtn setFrame:CGRectMake(5, 5, 25, 25)];
-    [backBtn setBackgroundImage:[UIImage imageNamed:BACK_IMAGE] forState:UIControlStateNormal];
-    [backBtn addTarget: self action: @selector(goBack:) forControlEvents: UIControlEventTouchUpInside];
-    UIBarButtonItem *backButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:backBtn] autorelease];
+    [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
+    [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+    [backView addSubview:backBtn];
+    backView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *backRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack:)];
+    [backView addGestureRecognizer:backRecognizer];
+    [backRecognizer release];
+    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backView];
     self.navigationItem.leftBarButtonItem = backButtonItem;
+    [backButtonItem release];
+    [backView release];
     
 //    CustomButton *saveTaskBtn = [[[CustomButton alloc] initWithFrame:CGRectMake(5,5,50,30) image:[UIImage imageNamed:@"btn_center.png"]] autorelease];
 //    saveTaskBtn.layer.cornerRadius = 6.0f;
@@ -811,6 +963,46 @@
 
     [Tools layerTransition:self.navigationController.view from:@"left"];
     [self.navigationController popViewControllerAnimated:NO];
+}
+
+- (void)getPicUrl:(id)sender
+{
+    NSLog("getPicUrl");
+    UITapGestureRecognizer *imageView = (UITapGestureRecognizer*)sender;
+    NSMutableArray *pictures = [taskDetailDict objectForKey:@"pictures"];
+    NSMutableDictionary *dict = [pictures objectAtIndex:0];
+    NSString *url = [dict objectForKey:@"url"];
+
+    ImagePreviewViewController *controller = [[[ImagePreviewViewController alloc] init] autorelease];
+    controller.url = url;
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:controller animated:NO];
+}
+
+- (void)getAudioUrl:(id)sender
+{
+    NSLog("getAudioUrl");
+    UITapGestureRecognizer *recognizer = (UITapGestureRecognizer*)sender;
+    UILabel *label = (UILabel*)recognizer.view;
+    NSMutableArray *attachments = [taskDetailDict objectForKey:@"attachments"];
+    for (NSMutableDictionary *dict in attachments) {
+        NSString *fileName = [dict objectForKey:@"fileName"];
+        if([label.text isEqualToString:fileName]) {
+            NSString *url = [dict objectForKey:@"url"];
+            NSLog("url:%@", url);
+
+            if([fileName.pathExtension isEqualToString:@"mp3"]) {
+                AudioPreviewViewController *controller = [[[AudioPreviewViewController alloc] init] autorelease];
+                controller.url = url;
+                [Tools layerTransition:self.navigationController.view from:@"right"];
+                [self.navigationController pushViewController:controller animated:NO];
+            }
+
+            break;
+        }
+    }
+    
+
 }
 
 @end

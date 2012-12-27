@@ -123,9 +123,9 @@
     [cell setTaskInfo:taskInfoDict];
     cell.delegate = self;
     
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    cell.showsReorderControl = YES;
+    //cell.showsReorderControl = YES;
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
     UIView *selectedView = [[UIView alloc] initWithFrame:cell.frame];
     selectedView.backgroundColor = [UIColor colorWithRed:220/255.0f green:220/255.0f blue:220/255.0f alpha:1.0];
@@ -295,7 +295,7 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    textTitleLabel.text = @"相关任务";
+    textTitleLabel.text = @"相关任务(内测)";
     
     NSLog(@"【请求任务响应数据】%@\n【返回状态码】%d", request.responseString, request.responseStatusCode);
     
@@ -380,6 +380,149 @@
 - (void)goBack:(id)sender
 {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)startAudio:(id)sender
+{
+    audioActionSheet = [[UIActionSheet alloc]
+                        initWithTitle:nil
+                        delegate:self
+                        cancelButtonTitle:@"取消"
+                        destructiveButtonTitle:nil
+                        otherButtonTitles: @"开始录音",nil];
+    [audioActionSheet showInView:self.view];
+}
+
+- (void)startAdd:(id)sender
+{
+    EnterpriseTaskDetailCreateViewController *taskDetailCreateViewController = [[EnterpriseTaskDetailCreateViewController alloc] init];
+
+    taskDetailCreateViewController.prevViewController = self;
+    taskDetailCreateViewController.createType = 0;
+
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:taskDetailCreateViewController animated:NO];
+
+    [taskDetailCreateViewController release];
+}
+
+- (void)startPhoto:(id)sender
+{
+    photoActionSheet = [[UIActionSheet alloc]
+                        initWithTitle:nil
+                        delegate:self
+                        cancelButtonTitle:@"取消"
+                        destructiveButtonTitle:nil
+                        otherButtonTitles: @"开始拍照", @"从相册选择",nil];
+    [photoActionSheet showInView:self.view];
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(actionSheet == photoActionSheet) {
+        switch (buttonIndex) {
+            case 0:
+                //拍照
+                [self takePhoto];
+
+                break;
+            case 1:
+                //拍照
+                [self localPhoto];
+                break;
+            default:
+                break;
+        }
+    }
+    else if(actionSheet == audioActionSheet) {
+        switch (buttonIndex) {
+            case 0:
+                //录音
+                [self takeAudio];
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+- (void)takePhoto
+{
+    //资源类型为照相机
+    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
+    //判断是否有相机
+    if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        //设置拍照后的图片可被编辑
+        picker.allowsEditing = YES;
+        //资源类型为照相机
+        picker.sourceType = sourceType;
+        [self presentModalViewController:picker animated:YES];
+        [picker release];
+    }else {
+        NSLog(@"该设备无摄像头");
+    }
+}
+
+- (void)localPhoto
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    //资源类型为图片库
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.delegate = self;
+    //设置选择后的图片可被编辑
+    picker.allowsEditing = YES;
+    [self presentModalViewController:picker animated:YES];
+    [picker release];
+}
+
+- (void)takeAudio
+{
+    AudioViewController *audioViewController = [[AudioViewController alloc] init];
+    audioViewController.prevViewController = self;
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:audioViewController animated:NO];
+
+    [audioViewController release];
+}
+
+#pragma Delegate method UIImagePickerControllerDelegate
+
+//- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+//{
+//    NSLog(@"cancel camara.");
+//}
+
+//图像选取器的委托方法，选完图片后回调该方法
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo{
+
+    if (image != nil) {
+
+        NSData *data;
+        NSString *fileName;
+        if (UIImagePNGRepresentation(image)) {
+            //返回为png图像
+            data = UIImagePNGRepresentation(image);
+            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"png"];
+        }
+        else {
+            //返回为JPEG图像
+            data = UIImageJPEGRepresentation(image, 1.0);
+            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"jpg"];
+        }
+        //保存到阿里云盘
+        self.title = @"图片上传中...";
+        NSMutableDictionary *context = [NSMutableDictionary dictionary];
+        [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
+        [enterpriseService createTaskAttach:data
+                                   fileName:fileName
+                                       type:@"picture"
+                                    context:context
+                                   delegate:self];
+    }
+    //关闭相册界面
+    [picker dismissModalViewControllerAnimated:YES];
 }
 
 @end

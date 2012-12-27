@@ -98,6 +98,7 @@
     durationLabel = [[[UILabel alloc] init] autorelease];
     durationLabel.font = [UIFont boldSystemFontOfSize:56.0f];
     durationLabel.text = @"00:00";
+    durationLabel.backgroundColor = [UIColor clearColor];
     durationLabel.textAlignment = UITextAlignmentCenter;
     durationLabel.frame = CGRectMake(0, 0, [Tools screenMaxWidth], 60);
     [recordingView addSubview:durationLabel];

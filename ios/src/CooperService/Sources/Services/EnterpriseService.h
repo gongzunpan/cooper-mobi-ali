@@ -41,10 +41,11 @@
            subject:(NSString*)subject
               body:(NSString*)body
            dueTime:(NSString*)dueTime
-    assigneeUserId:(NSString*)assigneeUserId
+    assigneeWorkId:(NSString*)assigneeWorkId
    relatedUserJson:(NSString*)relatedUserJson
           priority:(NSNumber*)priority
        isCompleted:(NSNumber*)isCompleted
+     attachmentIds:(NSString*)attachmentIds
            context:(NSMutableDictionary*)context
           delegate:(id)delegate;
 //创新新任务
@@ -72,5 +73,10 @@
                     type:(NSString*)type
                  context:(NSMutableDictionary*)context
                 delegate:(id)delegate;
+//搜索用户
+- (void)findUsers:(NSString*)workId
+               key:(NSString*)key
+           context:(NSMutableDictionary*)context
+          delegate:(id)delegate;
 
 @end
